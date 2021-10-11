@@ -17,11 +17,10 @@ function App(){
       if(notesFromStorage){
         setNotes(notesFromStorage)}
         notesFromStorage.map(notes => {
-        // if(notes.dateToRemind - new Date() < 86400 ){
-        //     alert(`Due in less than 24 hours! ${notes.title}`)
-        //   }
-        console.log(notes.dateToRemind)
-        console.log(notes.dateToRemind)
+        if(notes.dateToRemind === new Date().toISOString().split('T')[0] ){
+            alert(`Reminder Due for ${notes.title}!! 
+            Note: ${notes.note}`)
+          }
         })
   }, [])
   useEffect(async() => {
