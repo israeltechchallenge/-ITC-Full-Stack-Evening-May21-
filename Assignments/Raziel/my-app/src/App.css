@@ -1,0 +1,16 @@
+*{
+margin: 0;
+padding: 0;
+}
+
+
+.header{
+  height: 200px;
+  width: 100%;
+  background-color:#E9EEF6;
+  text-align: center;
+ padding-top:50px ;
+}
+ h3{
+ margin: 20px 0;
+ }
