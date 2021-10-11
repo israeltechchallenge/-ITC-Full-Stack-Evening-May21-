@@ -17,7 +17,6 @@ Modal.setAppElement('#root');
 
 function Note({ note, index, deleteNote, editNote }) {
 
-    let subtitle;
     const [modalIsOpen, setIsOpen] = useState(false);
     const [titleChange, setTitleChange] = useState(`${note.title}`)
     const [noteChange, setNoteChange] = useState(`${note.note}`)
@@ -25,10 +24,6 @@ function Note({ note, index, deleteNote, editNote }) {
 
   function openModal() {
     setIsOpen(true);
-  }
-
-  function afterOpenModal() {
-    subtitle.style.color = '#f00';
   }
 
   function closeModal(e) {
@@ -51,12 +46,11 @@ function Note({ note, index, deleteNote, editNote }) {
     <button onClick={() => deleteNote(index, note.id)}>Delete</button>
     <Modal
         isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Note Modal"
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>{note.title}</h2>
+        <h2>{note.title}</h2>
         <h3>{note.readbleDate}</h3>
         <p>{note.note}</p>
         <form className="form" onSubmit={EditANote}>

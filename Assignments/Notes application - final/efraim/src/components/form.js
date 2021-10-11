@@ -10,8 +10,7 @@ class Form extends React.Component {
         super(props)
         this.state = {
             noteValue: '',
-            titleValue:'',
-            date: new Date()
+            titleValue:''
         }
         this.submitNote = this.submitNote.bind(this);
         this.handleNoteChange = this.handleNoteChange.bind(this)
@@ -26,7 +25,7 @@ class Form extends React.Component {
     }
     handleDateChange(e){
         this.setState({date: e.target.value})
-        console.log(e.target.value)
+       
     }
     submitNote(e) {
         e.preventDefault();
@@ -54,8 +53,8 @@ render() {
             <input type="text" placeholder="title" value={this.state.titleValue} onChange={this.handleTitleChange}/>
             <label>Note</label>
             <TextareaAutosize  type="text" placeholder="note" required value={this.state.noteValue} onChange={this.handleNoteChange} />
-            <label>Reminder</label>
-            <input type="date" value={this.state.date} onChange={this.handleDateChange}/>
+            <label>Date to Remind</label>
+            <input type="date"  onChange={this.handleDateChange}/>
             <button type="submit" >Add</button>
         </form>    
              </div>
