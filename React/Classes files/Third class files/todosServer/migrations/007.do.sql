@@ -1,0 +1,1 @@
+ALTER TABLE todos ADD COLUMN img_url VARCHAR(200) 

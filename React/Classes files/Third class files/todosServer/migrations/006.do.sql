@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN pp_url VARCHAR(200) AFTER role

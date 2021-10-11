@@ -1,0 +1,1 @@
+INSERT INTO users (email, pass, role) VALUES ('admin@gmail.com','dsf74398fjf8439f','admin')

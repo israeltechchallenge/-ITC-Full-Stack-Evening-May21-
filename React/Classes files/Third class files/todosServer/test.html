@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <form id="fileform">
+        <input type="file" name="myfile" accept="image/*" id="myfile" multiple="false" />
+        <button type="submit" >upload</button>
+    </form>
+    <img src="" id="img2" />
+    <script>
+        document.getElementById('fileform').addEventListener('submit', async (e) =>{
+            e.preventDefault()
+            const myfile = document.getElementById("myfile")
+            console.log(myfile.files[0])
+            const obj = new FormData()
+            obj.append('avatar',myfile.files[0])
+            console.log(obj)
+            const response =  fetch('http://localhost:5500/profile',{
+                method: 'PUT',
+                 body:obj
+                })
+                
+            const data = response.json()
+            document.getElementById("img2").src = data.fileUrl
+            return false
+        })
+
+    </script>
+</body>
+</html>
