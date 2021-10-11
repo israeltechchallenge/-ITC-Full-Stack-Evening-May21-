@@ -40,14 +40,15 @@ function Note({ note, index, deleteNote, editNote }) {
     const title = titleChange
     const newNote = noteChange
     editNote(note.id, title, newNote)
-}
+} 
+
 
 
     return <div className="note" onClick={openModal}>
     <h2>{note.title}</h2>
-    <h3>{note.date}</h3>
+    <h3>{note.readbleDate}</h3>
     <p>{note.note}</p>
-    <button onClick={() => deleteNote(index)}>Delete</button>
+    <button onClick={() => deleteNote(index, note.id)}>Delete</button>
     <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
@@ -56,7 +57,7 @@ function Note({ note, index, deleteNote, editNote }) {
         contentLabel="Note Modal"
       >
         <h2 ref={(_subtitle) => (subtitle = _subtitle)}>{note.title}</h2>
-        <h3>{note.date}</h3>
+        <h3>{note.readbleDate}</h3>
         <p>{note.note}</p>
         <form className="form" onSubmit={EditANote}>
           <label>Edit Note Below!</label>

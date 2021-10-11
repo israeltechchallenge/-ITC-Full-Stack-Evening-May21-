@@ -1,22 +1,62 @@
 import './App.css';
 import Form from './components/form'
 import NoteList from './components/notelist'
-import {useState} from 'react'
+import ArchiveList from './components/archiveList'
+import localforage from "localforage";
+import {useState, useEffect} from 'react'
 
 
 function App(){
-  
+ 
   const [notes, setNotes] = useState([])
+  const [archivedNotes, setArchivedNotes] = useState([])
+  const [showArchive, setShowArchive] = useState(false)
+
+  useEffect(async() => {
+      const notesFromStorage = await localforage.getItem('notes')
+      if(notesFromStorage){
+        setNotes(notesFromStorage)}
+        notesFromStorage.map(notes => {
+        // if(notes.dateToRemind - new Date() < 86400 ){
+        //     alert(`Due in less than 24 hours! ${notes.title}`)
+        //   }
+        console.log(notes.dateToRemind)
+        console.log(notes.dateToRemind)
+        })
+  }, [])
+  useEffect(async() => {
+    const archiveFromStorage = await localforage.getItem('archivedNotes')
+    if(archivedNotes){
+      setArchivedNotes(archiveFromStorage)
+    }
+}, [])
 
   function addNote (newNote) {
-    setNotes([...notes, newNote])
+    const newNotesArray = [...notes, newNote]
+    setNotes(newNotesArray)
+    localforage.setItem('notes', newNotesArray)
+  }
+
+  function restoreNote (restoredNote, index) {
+    const newNotesArray = [...notes, restoredNote]
+    setNotes(newNotesArray)
+    const newArchiveArray = [...archivedNotes]
+    newArchiveArray.splice(index, 1)
+    setArchivedNotes(newArchiveArray)
+    localforage.setItem('notes', newNotesArray)
+    localforage.setItem('archivedNotes', newArchiveArray)
   }
 
   function deleteNote (index) {
       if (window.confirm("Do you really want to delete?")) {
       const newNoteArray = [...notes]
+      const noteToArchive = newNoteArray[index]
+      const newArchiveArray = [...archivedNotes, noteToArchive]
+      setArchivedNotes(newArchiveArray)
       newNoteArray.splice(index, 1)
       setNotes(newNoteArray)
+      localforage.setItem('notes', newNoteArray)
+      localforage.setItem('archivedNotes', newArchiveArray)
     }}
 
   function editNote(id, title, note) {
@@ -25,12 +65,24 @@ function App(){
     noteToEdit.date = new Date().toUTCString().slice(0, -7)
     noteToEdit.title = title
     setNotes([...notes])
+    localforage.setItem('notes', notes)
   }
-
+  function showTheArchive(){
+    if(archivedNotes.length !== 0){
+      setShowArchive(!showArchive)
+    }else{
+      alert("No deleted notes!")
+    }
+  }
+  
       return (
      <div>
       <Form addNote={addNote} />
       <NoteList notes={notes} deleteNote={deleteNote} editNote={editNote}/>
+      <button onClick={showTheArchive}>
+              Show/Hide Archived
+            </button>
+      {showArchive && <ArchiveList archivedNotes={archivedNotes} restoreNote={restoreNote}/>}
      </div>
   );
 }

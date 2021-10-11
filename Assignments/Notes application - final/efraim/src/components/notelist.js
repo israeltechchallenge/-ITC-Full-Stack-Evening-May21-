@@ -1,4 +1,3 @@
-import React from 'react'
 import Note from './note'
 function NoteList ({ notes, deleteNote, editNote }) {
         return <div className="flex">
