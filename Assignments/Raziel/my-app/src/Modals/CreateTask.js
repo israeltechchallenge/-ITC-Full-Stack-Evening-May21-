@@ -33,7 +33,7 @@ function CreateTask({ modal, toggle, subbmit }) {
 
     subbmit(task);
 
- e.target.reset();
+
   };
 
   return (
