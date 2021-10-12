@@ -1,64 +1,67 @@
 import '../App.css';
-import { render } from '@testing-library/react'
-import React from 'react'
-
-
+import DateRemind from './dateRemind'
+import {useState, useEffect} from 'react'
 import TextareaAutosize from 'react-textarea-autosize';
 
-class Form extends React.Component {
-    constructor(props){
-        super(props)
-        this.state = {
-            noteValue: '',
-            titleValue:''
-        }
-        this.submitNote = this.submitNote.bind(this);
-        this.handleNoteChange = this.handleNoteChange.bind(this)
-        this.handleTitleChange = this.handleTitleChange.bind(this)
-        this.handleDateChange = this.handleDateChange.bind(this)
+function Form(props)  {
+   
+    const [noteValue, setNoteValue] = useState('')
+    const [titleValue, setTitleValue] = useState('')
+    const [dateValue, setDateValue] = useState('')
+    const [isAddNote, setIsAddNote] = useState(false)
+
+    useEffect(() => {
+        if(props.addNote)
+        setIsAddNote(true)
+    }, [])
+    
+    
+    function handleNoteChange(e){
+        setNoteValue(e.target.value)
     }
-    handleNoteChange(e){
-        this.setState({noteValue: e.target.value})
+    function handleTitleChange(e){
+        setTitleValue(e.target.value)
     }
-    handleTitleChange(e){
-        this.setState({titleValue: e.target.value})
-    }
-    handleDateChange(e){
-        this.setState({date: e.target.value})
-       
-    }
-    submitNote(e) {
+    
+    function submitNote(e) {
         e.preventDefault();
-        const title = this.state.titleValue
-        const note = this.state.noteValue
-        const dateToRemind = this.state.date
+        if(props.addNote){
+        const title = titleValue
+        const note = noteValue
+        const dateToRemind = dateValue
         const readbleDate = new Date().toUTCString().slice(0, -7)
         const id = "id" + Math.random().toString(16).slice(2)
         let newNote = {}
-        if(this.state.titleValue !== ''){
+        if(titleValue !== ''){
             newNote= {title: title, note: note, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
         }else{
             newNote= {note: note, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
         }
-        this.props.addNote(newNote)
-        this.setState({noteValue: '', titleValue: ''})
+        props.addNote(newNote)
+        setTitleValue('')
+        setNoteValue('')
+    }else{
+        const title = titleValue
+        const note = noteValue
+        const noteID = props.noteID
+        props.editNote(noteID, title, note)
+        setTitleValue('')
+        setNoteValue('')
     }
+}
    
-render() {
 
-  
     return <div>
-        <form className="form" onSubmit={this.submitNote}>
+        <form className="form" onSubmit={submitNote}>
             <label>title</label>
-            <input type="text" placeholder="title" value={this.state.titleValue} onChange={this.handleTitleChange}/>
+            <input type="text" placeholder="title" value={titleValue} onChange={handleTitleChange}/>
             <label>Note</label>
-            <TextareaAutosize  type="text" placeholder="note" required value={this.state.noteValue} onChange={this.handleNoteChange} />
-            <label>Date to Remind</label>
-            <input type="date"  onChange={this.handleDateChange}/>
+            <TextareaAutosize  type="text" placeholder="note" required value={noteValue} onChange={handleNoteChange} />
+            {isAddNote &&<DateRemind dateValue={dateValue} setDateValue={setDateValue}/>}
             <button type="submit" >Add</button>
         </form>    
              </div>
 }
-}
+
 
 export default Form
