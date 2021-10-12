@@ -35,9 +35,16 @@ function App(){
     setNotes(newNotesArray)
     localforage.setItem('notes', newNotesArray)
   }
+  
+  function sortNotes(notesArray){
+    notesArray.sort(function (a, b) {
+      return new Date(a.readbleDate) - new Date(b.readbleDate);
+  });
+  }
 
   function restoreNote (restoredNote, index) {
     const newNotesArray = [...notes, restoredNote]
+    sortNotes(newNotesArray)
     setNotes(newNotesArray)
     const newArchiveArray = [...archivedNotes]
     newArchiveArray.splice(index, 1)
