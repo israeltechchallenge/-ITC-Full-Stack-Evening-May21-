@@ -13,7 +13,8 @@ function Form(props)  {
     useEffect(() => {
         if(props.addNote)
         setIsAddNote(true)
-    }, [])
+    }, [props.addNote]) 
+    // not sure if i need to do this
     
     
     function handleNoteChange(e){
@@ -50,7 +51,6 @@ function Form(props)  {
     }
 }
    
-
     return <div>
         <form className="form" onSubmit={submitNote}>
             <label>title</label>
@@ -58,7 +58,7 @@ function Form(props)  {
             <label>Note</label>
             <TextareaAutosize  type="text" placeholder="note" required value={noteValue} onChange={handleNoteChange} />
             {isAddNote &&<DateRemind dateValue={dateValue} setDateValue={setDateValue}/>}
-            <button type="submit" >Add</button>
+            <button type="submit" >{isAddNote ? 'Add' : 'Edit'}</button>
         </form>    
              </div>
 }

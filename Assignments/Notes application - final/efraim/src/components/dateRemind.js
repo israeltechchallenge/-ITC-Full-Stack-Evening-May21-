@@ -5,7 +5,7 @@ function dateRemind ({setDateValue, dateValue}) {
         setDateValue(e.target.value)
     }
         return <div><label>Date to Remind</label>
-        <input type="date"  onChange={handleDateChange}/>
+        <input type="date" value={dateValue} onChange={handleDateChange}/>
         </div>
 }
 export default dateRemind

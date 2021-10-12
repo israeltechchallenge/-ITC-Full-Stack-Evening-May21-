@@ -19,10 +19,8 @@ Modal.setAppElement('#root');
 function Note({ note, index, deleteNote, editNote }) {
 
     const [modalIsOpen, setIsOpen] = useState(false);
-    // const [titleChange, setTitleChange] = useState(`${note.title}`)
-    // const [noteChange, setNoteChange] = useState(`${note.note}`)
-    
 
+    
   function openModal() {
     setIsOpen(true);
   }
@@ -31,14 +29,6 @@ function Note({ note, index, deleteNote, editNote }) {
     e.stopPropagation()
     setIsOpen(false);
   }
-//   const EditANote = (e) => {
-//     e.preventDefault()
-//     const title = titleChange
-//     const newNote = noteChange
-//     editNote(note.id, title, newNote)
-// } 
-
-
 
     return <div className="note" onClick={openModal}>
     <h2>{note.title}</h2>
@@ -56,12 +46,6 @@ function Note({ note, index, deleteNote, editNote }) {
         <p>{note.note}</p>
         <label>Edit Note Below!</label>
         <Form editNote={editNote} noteID={note.id} />
-        {/* <form className="form" onSubmit={EditANote}>
-          <label>Edit Note Below!</label>
-            <input type="text" value={titleChange} onChange={(e) => setTitleChange(e.target.value)} />
-            <input type="text" value={noteChange} onChange={(e) => setNoteChange(e.target.value)} />
-            <button type="submit">Edit!</button>
-        </form> */}
         <button onClick={(e)=>closeModal(e)}>close</button>
       </Modal>
 </div>
