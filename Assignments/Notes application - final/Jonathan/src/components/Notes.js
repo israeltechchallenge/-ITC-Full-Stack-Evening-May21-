@@ -77,13 +77,14 @@ const Notes = ({ note, handleDeleteNote, editNotes }) => {
         style={customStyles}
         contentLabel="Example Modal"
       >
+         <button onClick={closeModal} className="close">✖️</button>
         <Form
           handleSumbit={handleEdit}
           handleData={editFormData}
           handleChangeTitle={handleEditFormChange}
           handleChangeBody={handleEditFormChange}
           buttonLabel="Update" />
-        <button onClick={closeModal}>close</button>
+       
       </Modal>
     </>
   )

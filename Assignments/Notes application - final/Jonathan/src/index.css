@@ -66,3 +66,8 @@ form{
 .delete-icon {
   cursor: pointer;
 }
+
+.close{
+  position: relative;
+  left:305px
+}
