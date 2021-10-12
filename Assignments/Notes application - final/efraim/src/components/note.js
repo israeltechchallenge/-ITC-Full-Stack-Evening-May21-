@@ -33,6 +33,7 @@ function Note({ note, index, deleteNote, editNote }) {
     return <div className="note" onClick={openModal}>
     <h2>{note.title}</h2>
     <h3>{note.readbleDate}</h3>
+    <h3>{note.updatedDate}</h3>
     <p>{note.note}</p>
     <button onClick={() => deleteNote(index, note.id)}>Delete</button>
     <Modal
@@ -43,6 +44,7 @@ function Note({ note, index, deleteNote, editNote }) {
       >
         <h2>{note.title}</h2>
         <h3>{note.readbleDate}</h3>
+        <h3>{note.updatedDate}</h3>
         <p>{note.note}</p>
         <label>Edit Note Below!</label>
         <Form editNote={editNote} noteID={note.id} />

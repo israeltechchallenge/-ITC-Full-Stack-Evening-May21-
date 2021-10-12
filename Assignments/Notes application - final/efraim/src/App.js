@@ -68,7 +68,7 @@ function App(){
   function editNote(id, title, note) {
     const noteToEdit = notes.find(note=> note.id === id)
     noteToEdit.note = note
-    noteToEdit.date = new Date().toUTCString().slice(0, -7)
+    noteToEdit.updatedDate = `Updated On: ${new Date().toUTCString().slice(0, -7)}`
     noteToEdit.title = title
     setNotes([...notes])
     localforage.setItem('notes', notes)
