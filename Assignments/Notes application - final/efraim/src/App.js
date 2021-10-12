@@ -12,23 +12,26 @@ function App(){
   const [archivedNotes, setArchivedNotes] = useState([])
   const [showArchive, setShowArchive] = useState(false)
 
-  useEffect(async() => {
+  useEffect(() => {
+    async function getNotesFromStorage(){
       const notesFromStorage = await localforage.getItem('notes')
       if(notesFromStorage){
-        setNotes(notesFromStorage)}
-        notesFromStorage.map(notes => {
+        setNotes(notesFromStorage)
+        notesFromStorage.forEach(notes => {
         if(notes.dateToRemind === new Date().toISOString().split('T')[0] ){
             alert(`Reminder Due for ${notes.title}!! 
             Note: ${notes.note}`)
           }
-        })
+        })}}
+        getNotesFromStorage()
   }, [])
-  useEffect(async() => {
+  useEffect(() => {
+    async function getArchiveFromStorage(){
     const archiveFromStorage = await localforage.getItem('archivedNotes')
-    if(archivedNotes){
+    if(archiveFromStorage){
       setArchivedNotes(archiveFromStorage)
-    }
-}, [])
+    }}getArchiveFromStorage()
+},[])
 
   function addNote (newNote) {
     const newNotesArray = [...notes, newNote]
