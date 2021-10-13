@@ -2,7 +2,6 @@ import React,{useState} from "react";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 
 import EditTask from '../Modals/EditTask'
-import CreateTask from '../Modals/CreateTask'
 const colors = [
     {
       primaryColor: "#5D93E1",
