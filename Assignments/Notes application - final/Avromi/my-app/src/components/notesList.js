@@ -1,5 +1,6 @@
 import React from 'react';
-import ToDo from './toDo'
+import ToDo from './toDo';
+
 
 export default class NotesList extends React.Component {
     constructor(props) {
@@ -17,7 +18,7 @@ export default class NotesList extends React.Component {
           rowGap: 16,
           gridTemplateColumns: 'repeat(4, 1fr)'
       }}>
-          {this.props.notes.map((note) => <ToDo todo={note.text} key={note.id}/>)}
+          {this.props.notes.map((note) => <ToDo todo={note.text} time={note.date}  key={note.id}/>)}
       </div>
           );
          }

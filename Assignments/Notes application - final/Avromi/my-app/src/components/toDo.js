@@ -1,3 +1,4 @@
+import dateFormat from "dateformat";
 function ToDo(props){
 return <div style={{ 
     padding: 18,
@@ -10,6 +11,7 @@ return <div style={{
 
 }}>
     {props.todo}
+  <p style={{fontSize:'12px'}}>{dateFormat(props.time).toLocaleString()}</p>
 
 
 </div>;
