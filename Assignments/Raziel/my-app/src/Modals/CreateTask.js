@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
+import TextareaAutosize from 'react-textarea-autosize';
 
 function CreateTask({ modal, toggle, subbmit }) {
   const [taskName, setTaskName] = useState("");
@@ -25,7 +26,7 @@ function CreateTask({ modal, toggle, subbmit }) {
   const createTask = (e) => {
     e.preventDefault();
 
-    if (taskName === "" && description === "") {
+    if (taskName === "" && description === "" ) {
       alert("Cannot creat an empty task");
       return;
     }
@@ -63,7 +64,7 @@ function CreateTask({ modal, toggle, subbmit }) {
           </div>
           <label>Description</label>
           <div className="form-group">
-            <textarea
+            <TextareaAutosize
               className="form-control"
               name="description"
               value={description}
