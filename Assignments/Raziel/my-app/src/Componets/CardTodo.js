@@ -58,6 +58,7 @@ const updateTasks=(item) => {
         </span>
         <p className="mt-3">{toDOItem.description}</p>
         <span className="date">{toDOItem.date}</span>
+        <span className="date">{toDOItem.updateDate}</span>
         <div style={{ position: "absolute", right: "20px", bottom: "20px" }}>
           <AiFillEdit
             className="icon"

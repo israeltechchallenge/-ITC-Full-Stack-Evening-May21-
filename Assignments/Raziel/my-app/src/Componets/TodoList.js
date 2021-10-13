@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import CreateTask from "../Modals/CreateTask";
 import localforage from "localforage";
 import CardTodo from "../Componets/CardTodo";
+import moment from "moment";
+import { BsFillBellFill } from "react-icons/bs";
 
 function TodoList() {
   const [modal, setModal] = useState(false);
@@ -19,8 +21,7 @@ function TodoList() {
       }
       taskFromStorage.map((notes) => {
         if (notes.reminderDate === new Date().toISOString().slice(0, 10)) {
-          alert(`Reminder Due for ${notes.name}!! 
-    `);
+          alert(`Reminder for note:${notes.name}`);
         }
       });
     }
@@ -60,9 +61,12 @@ function TodoList() {
   const updateListArray = (item, index) => {
     let tempList = taskList;
     tempList[index] = item;
+    item.date=moment().format("MMM Do  h:mm A");
+    item.updateDate=  moment().format("MMM Do  h:mm A");
     setTaskList(tempList);
     localforage.setItem("taskList", tempList);
     window.location.reload();
+
   };
 
   return (

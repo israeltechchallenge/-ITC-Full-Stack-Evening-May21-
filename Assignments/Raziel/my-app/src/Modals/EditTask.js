@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import moment from "moment";
 
 function EditTask({ modal, toggle, updateTasks, item }) {
   const [taskName, setTaskName] = useState("");
@@ -26,7 +25,6 @@ function EditTask({ modal, toggle, updateTasks, item }) {
     let taskUpdate = {
       name: taskName,
       description: description,
-     
     };
 
     updateTasks(taskUpdate);
@@ -61,7 +59,7 @@ function EditTask({ modal, toggle, updateTasks, item }) {
       <ModalFooter>
         <Button color="primary" onClick={updateTask}>
           Update Task
-        </Button>{" "}
+        </Button>
         <Button color="secondary" onClick={toggle}>
           Cancel
         </Button>
