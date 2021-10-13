@@ -4,10 +4,14 @@ import Form from './Form'
 
 const AddNote = ({ handleAddNotes }) => {
 
+    const [value, setDatePicker] = useState(new Date());
+
     const [state, setState] = useState({
         body: '',
         title: ''
     })
+
+    
 
     function handleChange(e){
         const value = e.target.value
@@ -17,13 +21,18 @@ const AddNote = ({ handleAddNotes }) => {
         })
     }
 
+    function handleChangeDate(e){
+        setDatePicker(e)
+    }
+
+
     function handleAddNote(e) {
         e.preventDefault();
         if (state.body.trim().length > 0) {
-            handleAddNotes(state.body, state.title)
-            setState({ body: '', title: '' })
+            handleAddNotes(state.body, state.title, value)
+            setState({ body: '', title: '', datereminder: new Date()})
         } else {
-            setState({ body: '', title: '' })
+            setState({ body: '', title: '', datereminder: new Date()})
         }
     }
 
@@ -32,8 +41,10 @@ const AddNote = ({ handleAddNotes }) => {
         <Form
             handleSumbit={(e) => handleAddNote(e)}
             handleData={state}
+            handleDate ={value}
             handleChangeBody={handleChange}
             handleChangeTitle={handleChange}
+            handleChangeDate = {handleChangeDate}
             buttonLabel="Add Notes"
         />
     )

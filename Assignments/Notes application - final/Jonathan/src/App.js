@@ -26,6 +26,12 @@ const App = () => {
       const savedArchiveNotes = await localForage.getItem('notes-restore-app')
       if (savedNotes) {
         setNotes(savedNotes)
+        savedNotes.forEach(note => {
+          if (note.datetoreminder === new Date()) {
+            alert(`Notes: ${note.title}`)
+          }
+        });
+    
       }
       if (savedArchiveNotes) {
         setNotesArchive(savedArchiveNotes)
@@ -35,7 +41,7 @@ const App = () => {
   }, [])
 
 
-  function addNotes(body, title) {
+  function addNotes(body, title, datereminder) {
 
     const now = new Date()
 
@@ -44,7 +50,8 @@ const App = () => {
       title: title,
       text: body,
       createdate: date.format(now, 'MMM DDD hh:mm A'),
-      updatedate: null
+      updatedate: null,
+      datetoremind: datereminder
     }
 
     const newNotes = [...notes, newNote]
@@ -103,11 +110,11 @@ const App = () => {
       </div>
       <div className="text-center mt-5 mb-5" >
         <button
-          onClick={() => (archiveNotes.length === 0) ? alert('Empty Notes') 
-                : setShowArchiveList(!showArchiveList)}>Archive Notes
-      </button>
-      {showArchiveList && <ArchiveList archivenotes={archiveNotes} handleRestoreNote={restoreNote} />}
-    </div>
+          onClick={() => (archiveNotes.length === 0) ? alert('Empty Notes')
+            : setShowArchiveList(!showArchiveList)}>Archive Notes
+        </button>
+        {showArchiveList && <ArchiveList archivenotes={archiveNotes} handleRestoreNote={restoreNote} />}
+      </div>
     </div >
 
   )

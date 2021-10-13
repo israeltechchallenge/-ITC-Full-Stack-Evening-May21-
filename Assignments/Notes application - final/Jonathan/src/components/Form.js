@@ -1,7 +1,7 @@
 import TextareaAutosize from 'react-textarea-autosize'
+import DateTimePicker from 'react-datetime-picker';
 
-
-const Form = ({ handleSumbit, handleData, handleChangeTitle, handleChangeBody, buttonLabel }) => {
+const Form = ({ handleSumbit, handleData, handleDate, handleChangeTitle, handleChangeBody, buttonLabel, handleChangeDate }) => {
     return (
         <form onSubmit={handleSumbit}>
             <div className="mt-1">
@@ -24,9 +24,19 @@ const Form = ({ handleSumbit, handleData, handleChangeTitle, handleChangeBody, b
                     onChange={handleChangeBody}
                     required
                 />
+
+                {buttonLabel !== "Update" ?
+                    <DateTimePicker
+                        onChange={handleChangeDate}
+                        value={handleDate}
+                        required
+                    /> : null
+                }
+
             </div>
+
             <div className="d-flex justify-content-center mt-2">
-                {buttonLabel = "Update" ?
+                {buttonLabel === "Update" ?
                     <button className="btn btn-primary mt-4">{buttonLabel}</button>
                     :
                     <button className="save btn btn-primary">{buttonLabel}</button>}
