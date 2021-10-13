@@ -1,5 +1,8 @@
-import React from "react";
+import React,{useState} from "react";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
+
+import EditTask from '../Modals/EditTask'
+import CreateTask from '../Modals/CreateTask'
 const colors = [
     {
       primaryColor: "#5D93E1",
@@ -22,11 +25,21 @@ const colors = [
       secondaryColor: "#F3F0FD",
     },
   ];
-function CardTodo({ toDOItem, index, delteTask }) {
+function CardTodo({ toDOItem, index, delteTask,updateListArray }) {
+
+  const [modal,setModal] =useState(false);
+
+  const toggle=()=>{setModal(!modal)};
+
  
   const handelDelete = (index) => {
     delteTask(index);
   };
+
+const updateTasks=(item) => {
+  updateListArray(item,index)
+}
+
 
   return (
     <div class="card-wrapper ">
@@ -50,6 +63,7 @@ function CardTodo({ toDOItem, index, delteTask }) {
           <AiFillEdit
             className="icon"
             style={{ color: colors[index % 5].primaryColor, cursor: "pointer" }}
+            onClick={()=>setModal(true)}
           />
           <AiOutlineDelete
             className="icon"
@@ -58,6 +72,7 @@ function CardTodo({ toDOItem, index, delteTask }) {
           />
         </div>
       </div>
+      <CreateTask modal={modal} toggle={toggle} updateTasks={updateTasks}  item={toDOItem}/>
     </div>
   );
 }

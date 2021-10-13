@@ -1,57 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 
-function CreateTask({ modal, toggle, subbmit }) {
+function EditTask({ modal, toggle, updateTasks, item }) {
   const [taskName, setTaskName] = useState("");
   const [description, setDescription] = useState("");
-  const [date,setDate] = useState("");
 
   const handelChange = (e) => {
     const { name, value } = e.target;
-    if (name === "taskName" ) {
+    if (name === "taskName") {
       setTaskName(value);
-     
-    } else if(name==="date"){
-      setDate(value);
-    }
-     else {
+    } else {
       setDescription(value);
     }
-   
   };
 
-  const createTask = (e) => {
+  useEffect(()=>{
+      setTaskName(item.name);
+      setDescription(item.description);
+  },[])
+
+  const updateTask = (e) => {
     e.preventDefault();
 
-    if (taskName === "" && description === "") {
-      alert("Cannot creat an empty task");
-      return;
-    }
-
-    let task = {
+    let taskUpdate = {
       name: taskName,
       description: description,
-      id: uuidv4(),
       date: moment().format("MMM Do  h:mm A"),
     };
-    
-    subbmit(task);
-     
-    setDescription('');
-    setTaskName('');
-    setDate('');
 
+    updateTasks(taskUpdate);
   };
 
   return (
     <Modal isOpen={modal} toggle={toggle}>
-      <ModalHeader toggle={toggle}>Create your task</ModalHeader>
+      <ModalHeader toggle={toggle}>Edit Task</ModalHeader>
       <ModalBody>
-        <form >
+        <form>
           <div className="form-group">
-            <label>Task name</label>
+            <label>Update Task</label>
             <input
               type="text"
               className="form-control tm-2"
@@ -60,7 +47,7 @@ function CreateTask({ modal, toggle, subbmit }) {
               onChange={handelChange}
             />
           </div>
-          <label>Description</label>
+          <label> Update Description</label>
           <div className="form-group">
             <textarea
               className="form-control"
@@ -69,20 +56,11 @@ function CreateTask({ modal, toggle, subbmit }) {
               onChange={handelChange}
             />
           </div>
-          <label>Date to remind</label>
-          <div className="form-group">
-            <input type="date"
-              className="form-control"
-              name="date"
-              value={date}
-              onChange={handelChange}
-            />
-          </div>
         </form>
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={createTask}>
-          Add task
+        <Button color="primary" onClick={updateTask}>
+          Update Task
         </Button>{" "}
         <Button color="secondary" onClick={toggle}>
           Cancel
@@ -92,4 +70,4 @@ function CreateTask({ modal, toggle, subbmit }) {
   );
 }
 
-export default CreateTask;
+export default EditTask;
