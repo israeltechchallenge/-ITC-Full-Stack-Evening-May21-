@@ -7,21 +7,45 @@ import moment from "moment";
 function TodoList() {
   const [modal, setModal] = useState(false);
   const [taskList, setTaskList] = useState([]);
-  const [deletedNotes, setDeletedNotes] = useState([]);
-  const toggle = () => {
-    setModal(!modal);
-  };
+  const[deletedNotes,setDeletedNotes] = useState([])
+  const toggle=()=>{setModal(!modal)};
 
-  useEffect(() => {
-    async function saveArchiveToStorage() {
-      const deletedNotes = await localforage.getItem("deltedNotes");
-      if (deletedNotes) {
-        setDeletedNotes(deletedNotes);
+
+
+
+
+useEffect( () => {
+
+ async function saveDataToStorgae() {
+  const taskFromStorage = await localforage.getItem("taskList");
+  if (taskFromStorage) {
+    setTaskList(taskFromStorage);
+  }
+  taskFromStorage.map(notes => {
+    if(notes.reminderDate ===new Date().toISOString().slice(0, 10) ){
+        alert(`Reminder Due for ${notes.name}!! 
+    `)
+
       }
-      console.log(deletedNotes);
-    }
-    saveArchiveToStorage();
-  }, []);
+    })
+
+}
+saveDataToStorgae();
+},[])
+
+
+
+useEffect( () => {
+
+  async function saveArchiveToStorage() {
+   const deletedNotes = await localforage.getItem("deltedNotes");
+   if (deletedNotes) {
+    setDeletedNotes(deletedNotes);
+  }
+ console.log(deletedNotes)
+ }
+ saveArchiveToStorage();
+ },[])
 
   const submitTask = (task) => {
     let tempList = taskList;
@@ -29,11 +53,16 @@ function TodoList() {
     setTaskList(tempList);
     localforage.setItem("taskList", tempList);
     setModal(false);
+    console.log(tempList)
   };
 
+ 
+
+
+  
   const delteTask = (index) => {
     if (window.confirm("Do you really want to delete?")) {
-      const tempList = taskList;
+      const tempList = taskList;  
       tempList.splice(index, 1);
       setTaskList(tempList);
       localforage.setItem("taskList", tempList);
@@ -49,6 +78,7 @@ function TodoList() {
     window.location.reload();
   };
 
+
   return (
     <>
       <div className="header ">
@@ -58,7 +88,7 @@ function TodoList() {
         </button>
       </div>
       <div className="task-container">
-        {taskList.map((item, index) => (
+        { taskList.map((item, index) => (
           <CardTodo
             toDOItem={item}
             key={item.id}
