@@ -26,14 +26,16 @@ const App = () => {
       const savedArchiveNotes = await localForage.getItem('notes-restore-app')
       if (savedNotes) {
         setNotes(savedNotes)
-    
         savedNotes.forEach(note => {
-          if (note.datetoremind === new Date().toLocaleDateString()) {
-            alert(`Title: ${note.title} 
-                   Note: ${note.text}`)
-          }
+          if (note.datetoremind.toLocaleDateString() === new Date().toLocaleDateString()) {
+            const diff = Math.abs(note.datetoremind.getTime() - new Date().getTime())
+            if (Math.ceil(diff/1000 / 60) < 10)
+              alert(`Notes: 
+                    Title: ${note.title}
+                    Body: ${note.text}`)
+            }
         });
-    
+
       }
       if (savedArchiveNotes) {
         setNotesArchive(savedArchiveNotes)
@@ -53,7 +55,7 @@ const App = () => {
       text: body,
       createdate: date.format(now, 'MMM DDD hh:mm A'),
       updatedate: null,
-      datetoremind: datereminder.toLocaleDateString()
+      datetoremind: datereminder
     }
 
     const newNotes = [...notes, newNote]
