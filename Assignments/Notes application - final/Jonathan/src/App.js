@@ -26,9 +26,11 @@ const App = () => {
       const savedArchiveNotes = await localForage.getItem('notes-restore-app')
       if (savedNotes) {
         setNotes(savedNotes)
+    
         savedNotes.forEach(note => {
-          if (note.datetoreminder === new Date()) {
-            alert(`Notes: ${note.title}`)
+          if (note.datetoremind === new Date().toLocaleDateString()) {
+            alert(`Title: ${note.title} 
+                   Note: ${note.text}`)
           }
         });
     
@@ -51,7 +53,7 @@ const App = () => {
       text: body,
       createdate: date.format(now, 'MMM DDD hh:mm A'),
       updatedate: null,
-      datetoremind: datereminder
+      datetoremind: datereminder.toLocaleDateString()
     }
 
     const newNotes = [...notes, newNote]
