@@ -72,7 +72,7 @@ const updateTasks=(item) => {
           />
         </div>
       </div>
-      <CreateTask modal={modal} toggle={toggle} updateTasks={updateTasks}  item={toDOItem}/>
+      <EditTask modal={modal} toggle={toggle} updateTasks={updateTasks}  item={toDOItem}/>
     </div>
   );
 }

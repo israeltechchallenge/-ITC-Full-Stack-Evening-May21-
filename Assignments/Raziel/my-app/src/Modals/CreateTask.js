@@ -35,6 +35,7 @@ function CreateTask({ modal, toggle, subbmit }) {
       description: description,
       id: uuidv4(),
       date: moment().format("MMM Do  h:mm A"),
+      reminderDate:date,
     };
     
     subbmit(task);
@@ -83,7 +84,7 @@ function CreateTask({ modal, toggle, subbmit }) {
       <ModalFooter>
         <Button color="primary" onClick={createTask}>
           Add task
-        </Button>{" "}
+        </Button>
         <Button color="secondary" onClick={toggle}>
           Cancel
         </Button>

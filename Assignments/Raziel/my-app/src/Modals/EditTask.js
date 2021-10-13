@@ -26,7 +26,7 @@ function EditTask({ modal, toggle, updateTasks, item }) {
     let taskUpdate = {
       name: taskName,
       description: description,
-      date: moment().format("MMM Do  h:mm A"),
+     
     };
 
     updateTasks(taskUpdate);

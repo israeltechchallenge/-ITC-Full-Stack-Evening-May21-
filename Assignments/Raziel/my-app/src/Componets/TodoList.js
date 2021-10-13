@@ -2,11 +2,28 @@ import React, { useState, useEffect } from "react";
 import CreateTask from "../Modals/CreateTask";
 import localforage from "localforage";
 import CardTodo from "../Componets/CardTodo";
+import moment from "moment";
 
 function TodoList() {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
   const [taskList, setTaskList] = useState([]);
+
+  useEffect(async() => {
+    const listFromStorage = await localforage.getItem('taskList')
+    if(listFromStorage){
+      setTaskList(listFromStorage)}
+      listFromStorage.map(notes => {
+      if(notes.reminderDate === moment().format("MMM Do  h:mm A") ){
+          alert(`Reminder for the task: ${notes.name}!! 
+          Note: ${notes.description}`)
+        }
+      })
+
+}, [])
+
+
+
 
   const submitTask = (task) => {
     let tempList = taskList;
@@ -22,8 +39,11 @@ function TodoList() {
     if (taskFromStorage) {
       setTaskList(taskFromStorage);
     }
+
   }, []);
 
+
+  
   const delteTask = (index) => {
     if (window.confirm("Do you really want to delete?")) {
       const tempList = taskList;
@@ -42,6 +62,7 @@ function TodoList() {
     window.location.reload();
   };
 
+
   return (
     <>
       <div className="header ">
@@ -51,7 +72,7 @@ function TodoList() {
         </button>
       </div>
       <div className="task-container">
-        {taskList.map((item, index) => (
+        { taskList.map((item, index) => (
           <CardTodo
             toDOItem={item}
             key={item.id}
