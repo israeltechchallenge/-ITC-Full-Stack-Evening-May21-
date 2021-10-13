@@ -1,7 +1,9 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import AddNote from './components/AddNote'
 import NotesList from './components/NotesList'
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import * as localForage from "localforage";
 
 import { nanoid } from 'nanoid';
 
@@ -10,18 +12,24 @@ import ordinal from 'date-and-time/plugin/ordinal'
 
 date.plugin(ordinal)
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      notes: []
-    }
-    this.addNotes = this.addNotes.bind(this)
-    this.deleteNote = this.deleteNote.bind(this)
-    this.editNotes = this.editNotes.bind(this)
-  }
+const App = () => {
 
-  addNotes(body, title) {
+  const [notes, setNotes] = useState([])
+
+  useEffect(() => {
+    async function getNotesFromForage() {
+      const savedNotes = await localForage.getItem('notes-app')
+      if (savedNotes) {
+        setNotes(savedNotes)
+      }
+    }
+    getNotesFromForage()
+  }, [])
+
+
+  
+
+  function addNotes(body, title) {
 
     const now = new Date()
 
@@ -33,40 +41,42 @@ class App extends React.Component {
       updatedate: null
     }
 
-    const newNotes = [...this.state.notes, newNote]
+    const newNotes = [...notes, newNote]
 
-    this.setState({ notes: newNotes })
+    setNotes(newNotes)
 
+    localForage.setItem('notes-app', newNotes)
   }
 
-  editNotes(id, title, body) {
-    
+  function editNotes(id, title, body) {
+
     const now = new Date()
-    const notes = [...this.state.notes]
     const foundNotes = notes.find(note => note.id === id)
     foundNotes.title = title
     foundNotes.text = body
     foundNotes.updatedate = date.format(now, 'MMM DDD hh:mm A')
-    this.setState({ notes: notes })
+    setNotes(notes)
+    localForage.setItem('notes-app', notes)
   }
 
-  deleteNote(id) {
-    const newNotes = this.state.notes.filter(note => note.id !== id)
-    this.setState({ notes: newNotes })
+  function deleteNote(id) {
+    const newNotes = notes.filter(note => note.id !== id)
+    setNotes(newNotes)
+    localForage.setItem('notes-app', newNotes)
   }
 
-  render() {
-    return (
-      <div className="container ">
-        <div className="d-flex justify-content-center mt-1">
-          <AddNote handleAddNotes={this.addNotes} />
-        </div>
-        <div className="mt-2">
-          <NotesList notes={this.state.notes} handleDeleteNote={this.deleteNote} editNotes={this.editNotes} />
-        </div>
+
+  return (
+    <div className="container ">
+      <div className="d-flex justify-content-center mt-1">
+        <AddNote handleAddNotes={addNotes} />
       </div>
-    )
-  }
+      <div className="mt-2">
+        <NotesList notes={notes} handleDeleteNote={deleteNote} editNotes={editNotes} />
+      </div>
+    </div>
+  )
+
 }
 
 export default App

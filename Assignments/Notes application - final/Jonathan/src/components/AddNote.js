@@ -1,49 +1,43 @@
-import React from 'react'
-
+import React, { useState } from 'react'
 
 import Form from './Form'
 
-class AddNote extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            body: '',
-            title: ''
-        };
-        this.handleChangeTitle = this.handleChangeTitle.bind(this)
-        this.handleChangeBody = this.handleChangeBody.bind(this)
+const AddNote = ({ handleAddNotes }) => {
+
+    const [state, setState] = useState({
+        body: '',
+        title: ''
+    })
+
+    function handleChange(e){
+        const value = e.target.value
+        setState({
+            ...state,
+            [e.target.name]:value
+        })
     }
 
-    handleChangeTitle(e) {
-        this.setState({ title: e.target.value })
-    }
-
-    handleChangeBody(e) {
-        this.setState({ body: e.target.value })
-    }
-
-    handleAddNote(e) {
+    function handleAddNote(e) {
         e.preventDefault();
-        if (this.state.body.trim().length > 0) {
-            const { handleAddNotes } = this.props
-            handleAddNotes(this.state.body, this.state.title)
-            this.setState({ body: '', title: '' })
+        if (state.body.trim().length > 0) {
+            handleAddNotes(state.body, state.title)
+            setState({ body: '', title: '' })
         } else {
-            this.setState({ body: '', title: '' })
+            setState({ body: '', title: '' })
         }
     }
 
-    render() {
-        return (
-            <Form
-                handleSumbit={(e) => this.handleAddNote(e)}
-                handleData={this.state}
-                handleChangeBody={(e) => this.handleChangeBody(e)}
-                handleChangeTitle={(e) => this.handleChangeTitle(e)}
-                buttonLabel = "Add Notes"
-            />
-        )
-    }
+
+    return (
+        <Form
+            handleSumbit={(e) => handleAddNote(e)}
+            handleData={state}
+            handleChangeBody={handleChange}
+            handleChangeTitle={handleChange}
+            buttonLabel="Add Notes"
+        />
+    )
+
 }
 
 export default AddNote

@@ -67,7 +67,7 @@ const Notes = ({ note, handleDeleteNote, editNotes }) => {
           {updatedate === null ? null : <small>Updated: {updatedate}</small>}        
           <MdDeleteForever className="delete-icon" size='1.3em' onClick={() => {
             (window.confirm('Are you sure you want to delete this note')) ?
-              handleDeleteNote(id) : alert('Deleted Cancelled')
+              handleDeleteNote(id) : alert('Deleted Cancelled') 
           }} />
         </div>
       </div>
