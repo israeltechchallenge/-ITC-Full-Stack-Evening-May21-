@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import TextareaAutosize from 'react-textarea-autosize';
 
+
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -8,11 +9,14 @@ class Form extends Component {
       title: "",
       notes: "",
     };
+
   }
+  
   getTitleValue = (e) => {
     this.setState({
-      title: e.target.value,
+      title: e.target.value,      
     });
+    console.log(this.props.modal)
   };
   getNoteValue = (e) => {
     this.setState({
@@ -34,12 +38,34 @@ class Form extends Component {
     }
   };
   
+  editHandle = (e) => {
+    e.preventDefault();
+    const { editNote } = this.props;
+    if (this.state.notes !== "") {
+      const data = {
+        title: this.state.title, 
+        note: this.state.notes, 
+        id: this.props.id
+      }
+      editNote(data);
+      this.setState({
+        title: "",
+        notes: "",
+      });
+    } else {
+      alert("You must add a Note");
+    }
+    return;
+  };
+  
+
   render() {
     return (
       <div>
         <form
-         
-          onSubmit={(e) => this.handleSubmit(e)}
+
+      onSubmit={(e)=> this.props.modal ? this.editHandle(e) : this.handleSubmit(e)}
+
         >
           <div  style={{ 
                 marginTop: "20px" ,   
@@ -84,7 +110,8 @@ class Form extends Component {
             type="submit"
             className="btn btn-primary"
           >
-            Add Note
+            {this.props.modal ? <p
+            >Edit</p> : <p>Add</p>}
           </button>
         </form>
       </div>
@@ -93,3 +120,5 @@ class Form extends Component {
 }
 
 export default Form;
+
+
