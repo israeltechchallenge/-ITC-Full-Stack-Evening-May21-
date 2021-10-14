@@ -12,6 +12,7 @@ import Modal from 'react-modal'
 
 const customStyles = {
   content: {
+    width: '80%',
     top: '50%',
     left: '50%',
     right: 'auto',
@@ -80,8 +81,7 @@ const Note = ({ note, deleteNote, editTheNote }) => {
           showModal={showModal}
           setShowModal={setShowModal}
           editTheNote={editTheNote}
-          oldTitle={note.title}
-          oldDescription={note.description}
+          note={note}
         />
       </Modal>
     </div>

@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.1.10",
     "bootstrap": "^5.1.1",
     "caniuse-lite": "^1.0.30001265",
+    "localforage": "^1.10.0",
     "mdb-react-ui-kit": "^1.4.0",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-rc.0",

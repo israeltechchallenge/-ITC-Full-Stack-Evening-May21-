@@ -1,6 +1,7 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import Form from './components/Form'
 import ListNotes from './components/ListNotes';
+import * as localForage from "localforage";
 
 function App() {
 
@@ -10,9 +11,9 @@ function App() {
   //Add the note to the array of notes
   const createTheNote = (newNote) => {
     //Add the new note to the previous array
-    setNotes([
-      ...notes, newNote
-    ])
+    const newNotesArray = [...notes, newNote]
+    setNotes(newNotesArray)
+    localForage.setItem('notes', newNotesArray);
   }
 
 
@@ -20,7 +21,8 @@ function App() {
   const deleteTheNote = key => {
     const filteredNotes = notes.filter(note => note.key !== key)
     //The new state (new array of note) is going to be all the array as before but without the note that I deleted
-    setNotes(filteredNotes)
+    setNotes(filteredNotes);
+    localForage.setItem('notes', filteredNotes);
   }
 
   //I pass this function by prop and call from the other Component with the information of the note I want to edit and the new information
@@ -33,7 +35,18 @@ function App() {
 
     //Update the array of notes
     setNotes(notes)
+    localForage.setItem('notes', notes);
   }
+
+  useEffect(() => {
+    async function getLocalForage() {
+      const notesFromStorage = await localForage.getItem('notes')
+      if (notesFromStorage) {
+        setNotes(notesFromStorage)
+      }
+    }
+    getLocalForage()
+  }, [])
 
   return (
     <Fragment>
