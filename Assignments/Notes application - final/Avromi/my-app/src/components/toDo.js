@@ -12,6 +12,7 @@ return <div style={{
 }}>
     {props.todo}
   <p style={{fontSize:'12px'}}>{dateFormat(props.time).toLocaleString()}</p>
+  <button onClick={()=>props.deleteNote(props.index)}>Delete </button>
 
 
 </div>;
