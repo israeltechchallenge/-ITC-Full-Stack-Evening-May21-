@@ -37,3 +37,8 @@ form{
 .submit__button{
   margin: 10px 0 30px 0;
 }
+
+.content:hover {
+  cursor: pointer;
+  background-color: blueviolet;
+}
