@@ -1,6 +1,6 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-
+import TextareaAutosize from 'react-autosize-textarea';
 
 export default class InputText extends React.Component {
     constructor(props) {
@@ -44,7 +44,7 @@ export default class InputText extends React.Component {
           
                  <input tyoe="text" placeholder="Note Title" value={this.state.title} onChange={this.handleTitleChange} />
                  <br/>
-                  <textarea placeholder="Add note here" value={this.state.text} onChange={this.handleTextChange} />
+                  <TextareaAutosize placeholder="Add note here" value={this.state.text} onChange={this.handleTextChange} />
                <br/>
                 <input type="submit" value="ADD" />
               </form>
