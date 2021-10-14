@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import moment from "moment";
 
 function EditTask({ modal, toggle, updateTasks, item }) {
   const [taskName, setTaskName] = useState("");
   const [description, setDescription] = useState("");
-
+  const [createDate, setCreateDate] = useState("");
   const handelChange = (e) => {
     const { name, value } = e.target;
     if (name === "taskName") {
@@ -25,6 +26,7 @@ function EditTask({ modal, toggle, updateTasks, item }) {
     let taskUpdate = {
       name: taskName,
       description: description,
+      date: item.date
     };
 
     updateTasks(taskUpdate);

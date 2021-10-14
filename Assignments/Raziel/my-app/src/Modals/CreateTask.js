@@ -37,7 +37,8 @@ function CreateTask({ modal, toggle, subbmit }) {
       id: uuidv4(),
       date: moment().format("MMM Do  h:mm A"),
       reminderDate:date,
-      updateDate: ''
+      updateDate:""
+     
     };
     
     subbmit(task);

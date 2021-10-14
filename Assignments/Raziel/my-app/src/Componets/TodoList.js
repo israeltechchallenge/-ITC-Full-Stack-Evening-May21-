@@ -3,7 +3,6 @@ import CreateTask from "../Modals/CreateTask";
 import localforage from "localforage";
 import CardTodo from "../Componets/CardTodo";
 import moment from "moment";
-import { BsFillBellFill } from "react-icons/bs";
 
 function TodoList() {
   const [modal, setModal] = useState(false);
@@ -15,7 +14,8 @@ function TodoList() {
 
   useEffect(() => {
     async function saveDataToStorgae() {
-      const taskFromStorage = await localforage.getItem("taskList");
+      const getTasks =await localforage.getItem("taskList");
+      const taskFromStorage =(getTasks) ? getTasks : [];
       if (taskFromStorage) {
         setTaskList(taskFromStorage);
       }
@@ -24,33 +24,32 @@ function TodoList() {
           alert(`Reminder for note:${notes.name}`);
         }
       });
+
     }
     saveDataToStorgae();
   }, []);
 
-  useEffect(() => {
-    async function saveArchiveToStorage() {
-      const deletedNotes = await localforage.getItem("deltedNotes");
-      if (deletedNotes) {
-        setDeletedNotes(deletedNotes);
-      }
-      console.log(deletedNotes);
-    }
-    saveArchiveToStorage();
-  }, []);
+  // useEffect(() => {
+  //   async function saveArchiveToStorage() {
+  //     const deletedNotes = await localforage.getItem("deltedNotes");
+  //     if (deletedNotes) {
+  //       setDeletedNotes(deletedNotes);
+  //     }
+  //     console.log(deletedNotes);
+  //   }
+  //   saveArchiveToStorage();
+  // }, []);
 
   const submitTask = (task) => {
-    let tempList = taskList;
-    tempList.push(task);
+   const tempList = [...taskList,task]
     setTaskList(tempList);
     localforage.setItem("taskList", tempList);
     setModal(false);
-    console.log(tempList);
   };
 
   const delteTask = (index) => {
     if (window.confirm("Do you really want to delete?")) {
-      const tempList = taskList;
+      const tempList =[ ...taskList];
       tempList.splice(index, 1);
       setTaskList(tempList);
       localforage.setItem("taskList", tempList);
@@ -59,16 +58,17 @@ function TodoList() {
   };
 
   const updateListArray = (item, index) => {
-    let tempList = taskList;
+    let tempList =[ ...taskList];
+    console.log(tempList)
     tempList[index] = item;
-    item.date=moment().format("MMM Do  h:mm A");
     item.updateDate=  moment().format("MMM Do  h:mm A");
     setTaskList(tempList);
     localforage.setItem("taskList", tempList);
-    window.location.reload();
+    // window.location.reload();
 
   };
 
+   
   return (
     <>
       <div className="header ">
@@ -78,7 +78,9 @@ function TodoList() {
         </button>
       </div>
       <div className="task-container">
+    
         {taskList.map((item, index) => (
+        
           <CardTodo
             toDOItem={item}
             key={item.id}
@@ -87,6 +89,7 @@ function TodoList() {
             updateListArray={updateListArray}
           />
         ))}
+        
       </div>
       <CreateTask toggle={toggle} modal={modal} subbmit={submitTask} />
     </>
