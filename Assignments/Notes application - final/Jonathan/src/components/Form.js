@@ -24,14 +24,21 @@ const Form = ({ handleSumbit, handleData, handleDate, handleChangeTitle, handleC
                     onChange={handleChangeBody}
                     required
                 />
-
                 {buttonLabel !== "Update" ?
-                    <DateTimePicker
-                        onChange={handleChangeDate}
-                        value={handleDate}
-                        required
-                    /> : null
+                    <div className="d-flex justify-content-center align-center">
+                        <label htmlFor="datetime" className="me-2">DateToRemind:</label>
+                        <DateTimePicker
+                            id="datetime"
+                            name="datetime"
+                            onChange={handleChangeDate}
+                            value={handleDate}
+                            required
+                        /> 
+                    </div> 
+                    : null
+
                 }
+
 
             </div>
 
@@ -39,7 +46,7 @@ const Form = ({ handleSumbit, handleData, handleDate, handleChangeTitle, handleC
                 {buttonLabel === "Update" ?
                     <button className="btn btn-primary mt-4">{buttonLabel}</button>
                     :
-                    <button className="save btn btn-primary">{buttonLabel}</button>}
+                    <button className="save btn btn-primary mt-4">{buttonLabel}</button>}
             </div>
         </form>
     )

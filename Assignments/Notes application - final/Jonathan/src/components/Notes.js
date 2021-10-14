@@ -63,13 +63,15 @@ const Notes = ({ note, handleDeleteNote, editNotes, handleArchiveNote }) => {
         <h2>{(title.length > 0) ? `Title: ${title}` : ''}</h2>
         <span className="mt-3">{text}</span>
         <div className="note-footer mt-4">
+        <div className="d-flex flex-column">
           <small>Created: {createdate}</small>
           {updatedate === null ? null : <small>Updated: {updatedate}</small>}
-          <MdDeleteForever className="delete-icon" size='1.3em' onClick={() => {
+          </div>
+          <MdDeleteForever color="#e65175" className="icon" size='1.3em' onClick={() => {
             (window.confirm('Are you sure you want to delete this note')) ?
               handleDeleteNote(id) : alert('Deleted Cancelled')
           }} />
-          <BiArchiveIn className="delete-icon" size='1.3em' onClick={() => {
+          <BiArchiveIn  color = "#3B5998" className="icon" size='1.3em' onClick={() => {
             (window.confirm('Are you sure you want to archive this note')) ?
               handleArchiveNote(id) : alert('Archive Cancelled')
           }} />
