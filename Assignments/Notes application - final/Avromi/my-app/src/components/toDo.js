@@ -23,6 +23,8 @@ return <div onClick={handleOpenModal} style={{
     
 
 }}>
+     
+
   <h3> {props.title}</h3>
     {props.todo}
   <p style={{fontSize:'12px'}}>{dateFormat(props.time).toLocaleString()}</p>
@@ -34,7 +36,7 @@ return <div onClick={handleOpenModal} style={{
           <h3> {props.title}</h3>
     {props.todo}
   <p style={{fontSize:'12px'}}>{dateFormat(props.time).toLocaleString()}</p>
-  <button onClick={()=>props.deleteNote(props.index)}>Delete </button>
+  <button onClick={()=>props.editNote(props.index)}>Edit Note </button>
         </ReactModal>
 </div>;
 }
