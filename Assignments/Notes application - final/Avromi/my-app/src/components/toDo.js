@@ -29,17 +29,17 @@ return <div onClick={handleOpenModal} style={{
     {props.todo}
   <p style={{fontSize:'12px'}}>{dateFormat(props.time).toLocaleString()}</p>
   <button onClick={()=>props.deleteNote(props.index)}>Delete </button>
-  <ReactModal 
+  <ReactModal
            isOpen={currentState}
            contentLabel="Minimal Modal Example">
           <button onClick={handleCloseModal}>Close Modal</button>
           <h3> {props.title}</h3>
     {props.todo}
   <p style={{fontSize:'12px'}}>{dateFormat(props.time).toLocaleString()}</p>
-  <button onClick={()=>props.editNote(props.index)}>Edit Note </button>
+  <button onClick={handleOpenModal}>Edit Note </button> 
         </ReactModal>
 </div>;
 }
-
+// ()=>props.editNote(props.index)
 
 export default ToDo
