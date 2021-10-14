@@ -10,6 +10,7 @@ class App extends React.Component  {
       notes:[],
       }  
       this.addNote = this.addNote.bind(this);
+      this.deleteNote = this.deleteNote.bind(this);
     }
   
     addNote(note){
@@ -20,13 +21,22 @@ class App extends React.Component  {
         
       })
     }
+    deleteNote(index){
+      const deleteIsTrue = window.confirm("Are you sure you want to delete this note?")
+      if (deleteIsTrue === true) {
+        const newNotes = this.state.notes
+        newNotes.splice(index,1)
+        this.setState({notes:newNotes})
+      }
+    }
     render(){
       console.log(this.state.notes);
   return (
     <div className="App">
       <header className="App-header">
  <TextInput addNote={this.addNote}/>
- <NotesList notes = {this.state.notes}/>
+ <br/>
+ <NotesList notes = {this.state.notes} deleteNote={this.deleteNote}/>
  </header>
  </div>
   );}

@@ -10,10 +10,10 @@ return <div style={{
     
 
 }}>
+  <h3> {props.title}</h3>
     {props.todo}
   <p style={{fontSize:'12px'}}>{dateFormat(props.time).toLocaleString()}</p>
-
-
+  <button onClick={()=>props.deleteNote(props.index)}>Delete </button>
 </div>;
 }
 export default ToDo
