@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import AddNote from './components/AddNote'
 import NotesList from './components/NotesList'
+import ArchiveList from './components/ArchiveList'
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import * as localForage from "localforage";
@@ -15,21 +17,35 @@ date.plugin(ordinal)
 const App = () => {
 
   const [notes, setNotes] = useState([])
+  const [archiveNotes, setNotesArchive] = useState([])
+  const [showArchiveList, setShowArchiveList] = useState(false)
 
   useEffect(() => {
     async function getNotesFromForage() {
       const savedNotes = await localForage.getItem('notes-app')
+      const savedArchiveNotes = await localForage.getItem('notes-restore-app')
       if (savedNotes) {
         setNotes(savedNotes)
+        savedNotes.forEach(note => {
+          if (note.datetoremind.toLocaleDateString() === new Date().toLocaleDateString()) {
+            const diff = Math.abs(note.datetoremind.getTime() - new Date().getTime())
+            if (Math.ceil(diff/1000 / 60) < 10)
+              alert(`Notes: 
+                    Title: ${note.title}
+                    Body: ${note.text}`)
+            }
+        });
+
+      }
+      if (savedArchiveNotes) {
+        setNotesArchive(savedArchiveNotes)
       }
     }
     getNotesFromForage()
   }, [])
 
 
-  
-
-  function addNotes(body, title) {
+  function addNotes(body, title, datereminder) {
 
     const now = new Date()
 
@@ -38,7 +54,8 @@ const App = () => {
       title: title,
       text: body,
       createdate: date.format(now, 'MMM DDD hh:mm A'),
-      updatedate: null
+      updatedate: null,
+      datetoremind: datereminder
     }
 
     const newNotes = [...notes, newNote]
@@ -65,6 +82,27 @@ const App = () => {
     localForage.setItem('notes-app', newNotes)
   }
 
+  function handleArchiveNotes(id) {
+    const index = notes.findIndex(note => note.id === id)
+    const note = notes[index]
+    const arrayArchiveNotes = [...archiveNotes, note]
+    notes.splice(index, 1)
+    setNotes(notes)
+    setNotesArchive(arrayArchiveNotes)
+    localForage.setItem('notes-app', notes)
+    localForage.setItem('notes-restore-app', arrayArchiveNotes)
+  }
+
+  function restoreNote(id) {
+    const index = archiveNotes.findIndex(restorenotes => restorenotes.id === id)
+    const note = archiveNotes[index]
+    const restoreNotes = [...notes, note]
+    archiveNotes.splice(index, 1)
+    setNotes(restoreNotes)
+    setNotesArchive(archiveNotes)
+    localForage.setItem('notes-app', restoreNotes)
+    localForage.setItem('notes-restore-app', archiveNotes)
+  }
 
   return (
     <div className="container ">
@@ -72,9 +110,17 @@ const App = () => {
         <AddNote handleAddNotes={addNotes} />
       </div>
       <div className="mt-2">
-        <NotesList notes={notes} handleDeleteNote={deleteNote} editNotes={editNotes} />
+        <NotesList notes={notes} handleDeleteNote={deleteNote} editNotes={editNotes} handleArchiveNote={handleArchiveNotes} />
       </div>
-    </div>
+      <div className="text-center mt-5 mb-5" >
+        <button
+          onClick={() => (archiveNotes.length === 0) ? alert('Empty Notes')
+            : setShowArchiveList(!showArchiveList)}>Archive Notes
+        </button>
+        {showArchiveList && <ArchiveList archivenotes={archiveNotes} handleRestoreNote={restoreNote} />}
+      </div>
+    </div >
+
   )
 
 }
