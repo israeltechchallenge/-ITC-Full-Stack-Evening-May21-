@@ -3,20 +3,20 @@ import swal from 'sweetalert'
 import Note from './Note'
 
 //In this Component Im going to render all the information of the notes
-const ListNotes = ({ notes, deleteTheNote, editTheNote }) => {
+const ListNotes = ({ notes, archiveTheNote, editTheNote }) => {
   //This function is called by the onClick Event and is reciving the "key" of the note that Im going to delete
   const deleteNote = key => {
     swal({
       title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this note!',
+      text: 'Once archived, you will be able to recover this note from archived section!',
       icon: 'warning',
       buttons: true,
       dangerMode: true
     }).then(willDelete => {
       if (willDelete) {
         //I use the function "delete" that Im sending by the props from the another Component and pass the "key" of the note that I want to delete
-        deleteTheNote(key)
-        swal('Poof! Your note has been deleted!', {
+        archiveTheNote(key)
+        swal('Poof! Your note has been archived!', {
           icon: 'success'
         })
       } else {
