@@ -8,10 +8,12 @@ const ArchiveNotes = ({ archivenote, handleRestoreNote }) => {
             <h2>{(title.length > 0) ? `Title: ${title}` : ''}</h2>
             <span className="mt-3">{text}</span>
             <div className="note-footer mt-4">
-                <small>Created: {createdate}</small>
-                {updatedate === null ? null : <small>Updated: {updatedate}</small>}
+                <div className="d-flex flex-column">
+                    <small>Created: {createdate}</small>
+                    {updatedate === null ? null : <small>Updated: {updatedate}</small>}
+                </div>
             </div>
-            <BiArchiveOut className="delete-icon" size='1.3em' onClick={() => {
+            <BiArchiveOut color = "#3B5998" className="icon archiveout" size='1.3em' onClick={() => {
                 (window.confirm('Are you sure you want to restore this note')) ?
                     handleRestoreNote(id) : alert('Restore Cancelled')
             }} />

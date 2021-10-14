@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
+
 import AddNote from './components/AddNote'
 import NotesList from './components/NotesList'
 import ArchiveList from './components/ArchiveList'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import * as localForage from "localforage";
+import swal from '@sweetalert/with-react'
 
 import { nanoid } from 'nanoid';
 
@@ -26,23 +27,34 @@ const App = () => {
       const savedArchiveNotes = await localForage.getItem('notes-restore-app')
       if (savedNotes) {
         setNotes(savedNotes)
-        savedNotes.forEach(note => {
-          if (note.datetoremind.toLocaleDateString() === new Date().toLocaleDateString()) {
-            const diff = Math.abs(note.datetoremind.getTime() - new Date().getTime())
-            if (Math.ceil(diff/1000 / 60) < 10)
-              alert(`Notes: 
-                    Title: ${note.title}
-                    Body: ${note.text}`)
-            }
-        });
-
+        alertNote(savedNotes)
       }
+
       if (savedArchiveNotes) {
         setNotesArchive(savedArchiveNotes)
+        alertNote(savedArchiveNotes)
       }
     }
     getNotesFromForage()
   }, [])
+
+  function alertNote(notesToRemind) {
+    notesToRemind.forEach(note => {
+      if (note.datetoremind.toLocaleDateString() === new Date().toLocaleDateString()) {
+        const diff = Math.abs(note.datetoremind.getTime() - new Date().getTime())
+        if (Math.ceil(diff / 1000 / 60) < 10)
+          swal(
+            <div>
+              <small>⌚</small>
+              <h2>{`Title: ${note.title}`}</h2>
+              <p>
+                {`${note.text}`}
+              </p>
+            </div>
+          )
+      }
+    });
+  }
 
 
   function addNotes(body, title, datereminder) {
@@ -105,6 +117,7 @@ const App = () => {
   }
 
   return (
+    
     <div className="container ">
       <div className="d-flex justify-content-center mt-1">
         <AddNote handleAddNotes={addNotes} />
@@ -113,7 +126,7 @@ const App = () => {
         <NotesList notes={notes} handleDeleteNote={deleteNote} editNotes={editNotes} handleArchiveNote={handleArchiveNotes} />
       </div>
       <div className="text-center mt-5 mb-5" >
-        <button
+        <button className="btn btn-dark"
           onClick={() => (archiveNotes.length === 0) ? alert('Empty Notes')
             : setShowArchiveList(!showArchiveList)}>Archive Notes
         </button>
