@@ -42,9 +42,9 @@ export default class InputText extends React.Component {
             return (
               <form onSubmit={this.handleSubmit}>
           
-                 <input tyoe="text" placeholder="Note Title" value={this.state.title} onChange={this.handleTitleChange} />
+                 <input tyoe="text" style={{ textAlign: 'center'}} placeholder="Note Title" value={this.state.title} onChange={this.handleTitleChange} />
                  <br/>
-                  <TextareaAutosize placeholder="Add note here" value={this.state.text} onChange={this.handleTextChange} />
+                  <TextareaAutosize style={{resize:'none', textAlign: 'center'}}placeholder="Add note here" value={this.state.text} onChange={this.handleTextChange} />
                <br/>
                 <input type="submit" value="ADD" />
               </form>
