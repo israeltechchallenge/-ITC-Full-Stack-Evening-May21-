@@ -11,7 +11,7 @@ function NotesList(props) {
           rowGap: 16,
           gridTemplateColumns: 'repeat(4, 1fr)'
       }}>
-          {props.notes.map((note, index) => <ToDo todo={note.text} time={note.date} index={index} deleteNote={props.deleteNote} key={note.id}/>)}
+          {props.notes.map((note, index) => <ToDo title={note.title} todo={note.text} time={note.date} index={index} deleteNote={props.deleteNote} key={note.id}/>)}
       </div>
           );
          

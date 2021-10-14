@@ -22,7 +22,7 @@ class App extends React.Component  {
       })
     }
     deleteNote(index){
-      const deleteIsTrue = window.confirm("Are you sure you want to delete this note?");
+      const deleteIsTrue = window.confirm("Are you sure you want to delete this note?")
       if (deleteIsTrue === true) {
         const newNotes = this.state.notes
         newNotes.splice(index,1)
@@ -35,6 +35,7 @@ class App extends React.Component  {
     <div className="App">
       <header className="App-header">
  <TextInput addNote={this.addNote}/>
+ <br/>
  <NotesList notes = {this.state.notes} deleteNote={this.deleteNote}/>
  </header>
  </div>
