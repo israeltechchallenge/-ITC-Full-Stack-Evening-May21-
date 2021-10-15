@@ -23,6 +23,8 @@ function Form({addNote, editNote, closeModal, note})  {
         setTitleValue(e.target.value)
     }
     
+    
+
     function submitNote(e) {
         e.preventDefault();
         let title = titleValue
