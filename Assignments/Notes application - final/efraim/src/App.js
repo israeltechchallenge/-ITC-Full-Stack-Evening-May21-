@@ -1,6 +1,6 @@
 import './App.css';
-import Form from './components/form'
-import NoteList from './components/notelist'
+import Form from './components/Form'
+import NoteList from './components/Notelist'
 import localforage from "localforage";
 import {useState, useEffect} from 'react'
 

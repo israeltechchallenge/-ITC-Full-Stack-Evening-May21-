@@ -1,5 +1,5 @@
 import '../App.css';
-import DateRemind from './dateRemind'
+import DateRemind from './DateRemind'
 import {useState, useEffect} from 'react'
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -14,7 +14,7 @@ function Form(props)  {
         if(props.addNote)
         setIsAddNote(true)
     }, [props.addNote]) 
-    // not sure if i need to do this, console was telling me I had to and wouldn't deploy until like this
+    // not sure if i need to do this dependency, console was telling me I had to and wouldn't deploy until like this
     // with the addProps in dependency
     
     
@@ -27,29 +27,26 @@ function Form(props)  {
     
     function submitNote(e) {
         e.preventDefault();
+        const title = titleValue
+        const note = noteValue
         if(props.addNote){
-        const title = titleValue
-        const note = noteValue
-        const dateToRemind = dateValue
-        const readbleDate = new Date().toUTCString().slice(0, -7)
-        const id = "id" + Math.random().toString(16).slice(2)
-        let newNote = {}
-        if(titleValue !== ''){
-            newNote= {title: title, note: note, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
+            const dateToRemind = dateValue
+            const readbleDate = new Date().toUTCString().slice(0, -7)
+            const id = "id" + Math.random().toString(16).slice(2)
+            let newNote = {}
+            if(titleValue !== ''){
+                newNote= {title: title, note: note, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
+            }else{
+                newNote= {note: note, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
+            }
+            props.addNote(newNote)
         }else{
-            newNote= {note: note, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
+            const noteID = props.noteID
+            props.editNote(noteID, title, note)
+            props.closeModal(e)
         }
-        props.addNote(newNote)
         setTitleValue('')
         setNoteValue('')
-    }else{
-        const title = titleValue
-        const note = noteValue
-        const noteID = props.noteID
-        props.editNote(noteID, title, note)
-        setTitleValue('')
-        setNoteValue('')
-    }
 }
    
     return <div>

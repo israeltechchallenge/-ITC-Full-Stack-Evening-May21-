@@ -1,12 +1,9 @@
-function ArchiveNote({ archivedNote, index, restoreNote }) {
+import DisplayNote from './DisplayNote'
+function ArchiveNote({ note, index, restoreNote }) {
     
     return <div className="note">
-    <h2>{archivedNote.title}</h2>
-    <h3>{archivedNote.readbleDate}</h3>
-    <h3>{archivedNote.updatedDate}</h3>
-    <p>{archivedNote.note}</p>
-    <button onClick={() => restoreNote(archivedNote, index)}>Restore</button>
-    
-</div>
+    <DisplayNote note={note} />
+    <button onClick={() => restoreNote(note, index)}>Restore</button>
+    </div>
     }
     export default ArchiveNote
