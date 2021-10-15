@@ -1,0 +1,49 @@
+.App {
+  text-align: center;
+  margin: auto;
+  width: 700px;
+  display: flex;
+  flex-direction: column;
+}
+.new-note-form {
+  display: flex;
+  flex-direction: column;
+  padding:8px;
+  gap:10px;
+}
+.title-filed-input {
+  width:25%;
+}
+.notes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap:10px
+}
+.note-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between  ;
+  height: 100%;
+  
+}
+.note-header {
+  margin-top: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+.note-operations {
+  display: flex;
+  cursor: pointer;
+}
+.note-title {
+  font-weight: bold;
+}
+.note-content {
+
+}
+.note-added-date {
+  font-size: 10px;
+}
+.note-dates {
+  font-size: 10px;
+}
