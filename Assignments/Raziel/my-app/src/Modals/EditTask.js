@@ -1,36 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import moment from "moment";
 
-function EditTask({ modal, toggle, updateTasks, item }) {
-  const [taskName, setTaskName] = useState("");
-  const [description, setDescription] = useState("");
-  const [createDate, setCreateDate] = useState("");
-  const handelChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "taskName") {
-      setTaskName(value);
-    } else {
-      setDescription(value);
-    }
-  };
+function EditTask({ modal, toggle,notes,editNote}) {
+  const [titleChange, setTitle] = useState("");
+  const [descriptionChange, setDescription] = useState("");
+  
 
-  useEffect(()=>{
-      setTaskName(item.name);
-      setDescription(item.description);
-  },[])
+  const handelTitleChange=(e)=>{
+    setTitle(e.target.value)
+  }
 
-  const updateTask = (e) => {
-    e.preventDefault();
+  
+  const handelDescriptionChange=(e)=>{
+    setDescription(e.target.value)
+  }
 
-    let taskUpdate = {
-      name: taskName,
-      description: description,
-      date: item.date
-    };
+  const submitUpdate=(e)=>{
+e.preventDefault();
+const title = titleChange;
+const description = descriptionChange;
+editNote(notes.id,title,description)
 
-    updateTasks(taskUpdate);
-  };
+  }
+
 
   return (
     <Modal isOpen={modal} toggle={toggle}>
@@ -42,24 +34,22 @@ function EditTask({ modal, toggle, updateTasks, item }) {
             <input
               type="text"
               className="form-control tm-2"
-              name="taskName"
-              value={taskName}
-              onChange={handelChange}
+              value={titleChange}
+              onChange={handelTitleChange}
             />
           </div>
           <label> Update Description</label>
           <div className="form-group">
             <textarea
               className="form-control"
-              name="description"
-              value={description}
-              onChange={handelChange}
+              value={descriptionChange}
+              onChange={handelDescriptionChange}
             />
           </div>
         </form>
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={updateTask}>
+        <Button color="primary" onClick={submitUpdate}>
           Update Task
         </Button>
         <Button color="secondary" onClick={toggle}>

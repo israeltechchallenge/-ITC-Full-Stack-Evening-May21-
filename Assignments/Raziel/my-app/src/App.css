@@ -5,7 +5,7 @@
   width: 100%;
   background-color:#E9EEF6;
   text-align: center;
- padding-top:50px ;
+    padding-top:50px ;
  
 }
  h3{
@@ -30,7 +30,13 @@
   margin-bottom: 20px;
 }
 .date{
-  margin-top: 25px;
+  margin-top: 20px;
+}
+
+.dateUpdate{
+  margin-top: 20px;
+  font-size:11px;
+  font-weight: bold;
 }
 .card-top{
   width: 100%;
@@ -49,12 +55,14 @@
 .card-header{
   margin-top: 10px;
   margin-bottom: 10px;
-  max-width: 80px;
+  max-width: 100%;
   height: 30px;
   padding: 1px 1px !important;
   text-align: center;
 }
-
+.empty{
+  margin-top: 30px;
+}
 .task-container{
   height: 100vh;
   width: 100%;
@@ -67,4 +75,9 @@
 .icon{
   font-size:25px;
   margin-left: 5px;
+}
+
+ .btn{
+ margin-top: 8px;
+ margin-left: 20px;
 }
