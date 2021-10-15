@@ -37,18 +37,17 @@ function App(){
     }}getArchiveFromStorage()
 },[])
 
-// useEffect(() => {
-//   async function getArchiveFromStorage(){
-//   const archiveFromStorage = await localforage.getItem('archivedNotes')
-//   if(archiveFromStorage){
-//     setArchivedNotes(archiveFromStorage)
-//   }}getArchiveFromStorage()
-// },[])
+useEffect(() => {
+  async function saveToLocalForage(){
+    await localforage.setItem('notes', notes)
+    await localforage.setItem('archivedNotes', archivedNotes)
+  }
+  saveToLocalForage()
+},[notes, archivedNotes])
 
   function addNote (newNote) {
     const newNotesArray = [...notes, newNote]
     setNotes(newNotesArray)
-    localforage.setItem('notes', newNotesArray)
   }
   
   function sortNotes(notesArray){
@@ -64,8 +63,6 @@ function App(){
     const newArchiveArray = [...archivedNotes]
     newArchiveArray.splice(index, 1)
     setArchivedNotes(newArchiveArray)
-    localforage.setItem('notes', newNotesArray)
-    localforage.setItem('archivedNotes', newArchiveArray)
   }
 
   function deleteNote (index) {
@@ -76,8 +73,6 @@ function App(){
       setArchivedNotes(newArchiveArray)
       newNoteArray.splice(index, 1)
       setNotes(newNoteArray)
-      localforage.setItem('notes', newNoteArray)
-      localforage.setItem('archivedNotes', newArchiveArray)
     }}
 
   function editNote(id, title, note) {
@@ -86,7 +81,6 @@ function App(){
     noteToEdit.updatedDate = `Updated On: ${new Date().toUTCString().slice(0, -7)}`
     noteToEdit.title = title
     setNotes([...notes])
-    localforage.setItem('notes', notes)
   }
   function showTheArchive(){
     if(archivedNotes.length !== 0){
