@@ -45,7 +45,7 @@ function Note({ note, index, deleteNote, editNote, restoreNote  }) {
       >
        <DisplayNote note={note} />
         <label>Edit Note Below!</label>
-        <Form editNote={editNote} closeModal={closeModal} noteID={note.id} />
+        <Form editNote={editNote} closeModal={closeModal} note={note} />
         <button onClick={(e)=>closeModal(e)}>close</button>
       </Modal>}
       
