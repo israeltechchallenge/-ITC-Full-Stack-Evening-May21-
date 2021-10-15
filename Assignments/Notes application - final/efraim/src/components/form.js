@@ -3,7 +3,7 @@ import DateRemind from './DateRemind'
 import {useState, useEffect} from 'react'
 import TextareaAutosize from 'react-textarea-autosize';
 
-function Form(props)  {
+function Form({addNote, editNote, closeModal, note})  {
    
     const [noteValue, setNoteValue] = useState('')
     const [titleValue, setTitleValue] = useState('')
@@ -11,9 +11,9 @@ function Form(props)  {
     const [isAddNote, setIsAddNote] = useState(false)
 
     useEffect(() => {
-        if(props.addNote)
+        if(addNote)
         setIsAddNote(true)
-    }, [props.addNote]) 
+    }, [addNote]) 
  
     
     function handleNoteChange(e){
@@ -25,23 +25,30 @@ function Form(props)  {
     
     function submitNote(e) {
         e.preventDefault();
-        const title = titleValue
-        const note = noteValue
-            if(props.addNote){
+        let title = titleValue
+        let noteText = noteValue
+            if(isAddNote === true){
+                if(noteValue === '') return
                 const dateToRemind = dateValue
                 const readbleDate = new Date().toUTCString().slice(0, -7)
                 const id = "id" + Math.random().toString(16).slice(2)
                 let newNote = {}
                 if(titleValue !== ''){
-                    newNote= {title: title, note: note, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
+                    newNote= {title: title, note: noteText, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
                 }else{
-                    newNote= {note: note, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
+                    newNote= {note: noteText, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
                 }
-                props.addNote(newNote)
+                addNote(newNote)
             }else{
-                const noteID = props.noteID
-                props.editNote(noteID, title, note)
-                props.closeModal(e)
+                if(titleValue === ''){
+                    title = note.title
+                }
+                if(noteValue === ''){
+                    noteText = note.note
+                }
+                const noteID = note.id
+                editNote(noteID, title, noteText)
+                closeModal(e)
             }
         setTitleValue('')
         setNoteValue('')
@@ -54,7 +61,7 @@ function Form(props)  {
             <input type="text" placeholder="title" value={titleValue} onChange={handleTitleChange}/>
             
             <label>Note</label>
-            <TextareaAutosize  type="text" placeholder="note" required value={noteValue} onChange={handleNoteChange} />
+            <TextareaAutosize  type="text" placeholder="note" value={noteValue} onChange={handleNoteChange} />
 
             {isAddNote && <DateRemind dateValue={dateValue} setDateValue={setDateValue}/>}
 

@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import Form from './Form'
+import Form from './form'
 import { useState } from 'react'
 import DisplayNote from './DisplayNote'
 
@@ -45,7 +45,7 @@ function Note({ note, index, deleteNote, editNote, restoreNote  }) {
       >
        <DisplayNote note={note} />
         <label>Edit Note Below!</label>
-        <Form editNote={editNote} closeModal={closeModal} noteID={note.id} />
+        <Form editNote={editNote} closeModal={closeModal} note={note} />
         <button onClick={(e)=>closeModal(e)}>close</button>
       </Modal>}
       

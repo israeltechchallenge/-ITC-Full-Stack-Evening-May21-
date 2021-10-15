@@ -1,5 +1,5 @@
 import './App.css';
-import Form from './components/Form'
+import Form from './components/form'
 import NoteList from './components/Notelist'
 import localforage from "localforage";
 import {useState, useEffect} from 'react'
@@ -77,6 +77,7 @@ useEffect(() => {
 
   function editNote(id, title, note) {
     const noteToEdit = notes.find(note=> note.id === id)
+    if(noteToEdit.title === title && noteToEdit.note === note) return
     noteToEdit.note = note
     noteToEdit.updatedDate = `Updated On: ${new Date().toUTCString().slice(0, -7)}`
     noteToEdit.title = title
