@@ -17,7 +17,7 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-function Note({ note, index, deleteNote, editNote }) {
+function Note({ note, index, deleteNote, editNote, restoreNote  }) {
 
     const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -33,8 +33,9 @@ function Note({ note, index, deleteNote, editNote }) {
 
     return <div className="note" onClick={openModal}>
     <DisplayNote note={note} />
-    <button onClick={() => deleteNote(index, note.id)}>Delete</button>
-    <Modal
+    {deleteNote && <button onClick={() => deleteNote(index, note.id)}>Delete</button>}
+    {restoreNote && <button onClick={() => restoreNote(note, index)}>Restore</button>}
+    {deleteNote && <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={customStyles}
@@ -44,7 +45,7 @@ function Note({ note, index, deleteNote, editNote }) {
         <label>Edit Note Below!</label>
         <Form editNote={editNote} closeModal={closeModal} noteID={note.id} />
         <button onClick={(e)=>closeModal(e)}>close</button>
-      </Modal>
+      </Modal>}
 </div>
     }
     export default Note

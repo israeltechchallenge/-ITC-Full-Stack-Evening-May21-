@@ -29,22 +29,22 @@ function Form(props)  {
         e.preventDefault();
         const title = titleValue
         const note = noteValue
-        if(props.addNote){
-            const dateToRemind = dateValue
-            const readbleDate = new Date().toUTCString().slice(0, -7)
-            const id = "id" + Math.random().toString(16).slice(2)
-            let newNote = {}
-            if(titleValue !== ''){
-                newNote= {title: title, note: note, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
+            if(props.addNote){
+                const dateToRemind = dateValue
+                const readbleDate = new Date().toUTCString().slice(0, -7)
+                const id = "id" + Math.random().toString(16).slice(2)
+                let newNote = {}
+                if(titleValue !== ''){
+                    newNote= {title: title, note: note, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
+                }else{
+                    newNote= {note: note, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
+                }
+                props.addNote(newNote)
             }else{
-                newNote= {note: note, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
+                const noteID = props.noteID
+                props.editNote(noteID, title, note)
+                props.closeModal(e)
             }
-            props.addNote(newNote)
-        }else{
-            const noteID = props.noteID
-            props.editNote(noteID, title, note)
-            props.closeModal(e)
-        }
         setTitleValue('')
         setNoteValue('')
 }
