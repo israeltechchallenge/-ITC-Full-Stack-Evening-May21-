@@ -13,6 +13,10 @@ function App(){
   const [archivedNotes, setArchivedNotes] = useState([])
   const [showArchive, setShowArchive] = useState(false)
 
+
+// originally had the async like useEffect(async()=> {logic }) but console and terminal was 
+//giving me an error and also couldn't deploy until i changed it to below
+
   useEffect(() => {
     async function getNotesFromStorage(){
       const notesFromStorage = await localforage.getItem('notes')

@@ -14,7 +14,8 @@ function Form(props)  {
         if(props.addNote)
         setIsAddNote(true)
     }, [props.addNote]) 
-    // not sure if i need to do this
+    // not sure if i need to do this, console was telling me I had to and wouldn't deploy until like this
+    // with the addProps in dependency
     
     
     function handleNoteChange(e){
