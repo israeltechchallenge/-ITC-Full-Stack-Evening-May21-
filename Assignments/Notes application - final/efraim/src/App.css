@@ -61,4 +61,7 @@ textarea {
   width: fit-content;
   text-align: center;
 }
+label{
+  text-align: center;
+}
 

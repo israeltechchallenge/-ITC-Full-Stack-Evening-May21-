@@ -1,7 +1,6 @@
 import './App.css';
 import Form from './components/form'
 import NoteList from './components/notelist'
-import ArchiveList from './components/archiveList'
 import localforage from "localforage";
 import {useState, useEffect} from 'react'
 
@@ -99,7 +98,7 @@ function App(){
       <button onClick={showTheArchive}>
               Show/Hide Archived
             </button>
-      {showArchive && <ArchiveList archivedNotes={archivedNotes} restoreNote={restoreNote}/>}
+      {showArchive && <NoteList notes={archivedNotes} restoreNote={restoreNote}/>}
      </div>
   );
 }
