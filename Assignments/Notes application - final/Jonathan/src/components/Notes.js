@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { MdDeleteForever } from 'react-icons/md'
-
+import { BiArchiveIn } from 'react-icons/bi'
 import Form from './Form'
 
 
@@ -19,7 +19,7 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-const Notes = ({ note, handleDeleteNote, editNotes }) => {
+const Notes = ({ note, handleDeleteNote, editNotes, handleArchiveNote }) => {
   const { id, text, createdate, updatedate, title } = note
 
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -40,7 +40,7 @@ const Notes = ({ note, handleDeleteNote, editNotes }) => {
 
   const [editFormData, setEditFormData] = useState(null);
 
-  //edit Click
+
   const handleEditFormChange = (e) => {
     e.preventDefault();
     const fieldName = e.target.getAttribute('name')
@@ -59,33 +59,41 @@ const Notes = ({ note, handleDeleteNote, editNotes }) => {
 
   return (
     <>
-      <div className="note" onClick={openModal}>
+      <div className="note" onDoubleClick={openModal}>
         <h2>{(title.length > 0) ? `Title: ${title}` : ''}</h2>
         <span className="mt-3">{text}</span>
         <div className="note-footer mt-4">
+        <div className="d-flex flex-column">
           <small>Created: {createdate}</small>
-          {updatedate === null ? null : <small>Updated: {updatedate}</small>}        
-          <MdDeleteForever className="delete-icon" size='1.3em' onClick={() => {
+          {updatedate === null ? null : <small>Updated: {updatedate}</small>}
+          </div>
+          <MdDeleteForever color="#e65175" className="icon" size='1.3em' onClick={() => {
             (window.confirm('Are you sure you want to delete this note')) ?
-              handleDeleteNote(id) : alert('Deleted Cancelled') 
+              handleDeleteNote(id) : alert('Deleted Cancelled')
+          }} />
+          <BiArchiveIn  color = "#3B5998" className="icon" size='1.3em' onClick={() => {
+            (window.confirm('Are you sure you want to archive this note')) ?
+              handleArchiveNote(id) : alert('Archive Cancelled')
           }} />
         </div>
       </div>
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Example Modal"
       >
-         <button onClick={closeModal} className="close">✖️</button>
+        <button onClick={closeModal} className="close">✖️</button>
         <Form
           handleSumbit={handleEdit}
           handleData={editFormData}
           handleChangeTitle={handleEditFormChange}
           handleChangeBody={handleEditFormChange}
           buttonLabel="Update" />
-       
+
       </Modal>
+
     </>
   )
 }

@@ -1,91 +1,104 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Form from "./components/Form";
-import Note from "./components/Note";
+import NoteList from "./components/NoteList";
 import "./App.css";
 import { v4 as uuidv4 } from "uuid";
+import localforage from "localforage";
 
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      notes: [],
-      modalOpen: false,
-    };
-    this.addNote = this.addNote.bind(this);
-    this.deleteNote = this.deleteNote.bind(this);
-    this.editNote = this.editNote.bind(this);
+const App = () => {
+  let notesFromStorage = localforage.getItem('notes')
+  if(!notesFromStorage){
+    notesFromStorage = [];
   }
+    // ARREGLO DE NOTAS
+  const [notes, setNotes] = useState([]);
 
-  addNote(title, note) {
+  // Use Effect para realizar ciertas operaciones cuando el state cambia
+useEffect(() => {
+  async function getNotes(){
+    const notesFromStorage = await localforage.getItem('notes')
+    if(notesFromStorage){
+      setNotes(notesFromStorage)
+}}
+      getNotes()
+}, [notesFromStorage])
+
+  function addNote(title, note) {
     const newData = {
       title: title,
       note: note,
       date: new Date().toLocaleString("en-GB"),
       id: uuidv4(),
+      update: null
     };
-    this.actualizarState(newData)
+    setNotes([...notes, newData]);
+    const setAdd = localforage.setItem('notes', newData)
+    console.log("setAdd", setAdd)
+  
   }
 
-  deleteNote(id) {
+  function deleteNote(id) {
     let r = window.confirm("You are going to delete this Note, are you sure?");
     if (r === true) {
-      const newNotes = this.state.notes.filter((note) => note.id !== id);
-      this.setState({ notes: newNotes });
+      const deleteNote = notes.filter((note) => note.id !== id);
+      setNotes(deleteNote)
+      const setDelete = localforage.setItem('notes', deleteNote)
+      console.log("setDelete", setDelete)
     } else {
       return;
     }
   }
 
-  editNote(data){
+  function editNote(data){
     console.log(data)
-    const editArray = this.state.notes;
+    const editArray = notes;
     const findNoteIndex = editArray.findIndex((note) => note.id === data.id);
     editArray[findNoteIndex].title = data.title;
     editArray[findNoteIndex].note = data.note;
-    editArray[findNoteIndex].date = new Date().toLocaleString("en-GB");
+    editArray[findNoteIndex].update = new Date().toLocaleString("en-GB");
 
-    this.setState((oldState) => ({ ...oldState, notes: editArray }));
-  }
+    // this.setState((oldState) => ({ ...oldState, notes: editArray }));
 
-  actualizarState(data){
-    this.setState((oldState) => {
-      console.log("oldState", oldState)
-      const newNotes = [...oldState.notes, data];
-      console.log("new state", { ...oldState, notes: newNotes })
-      return { ...oldState, notes: newNotes };
-    });
-  }
-  
-  openModal(e){
-    this.setState({ modalOpen: true });
-  }
-  closeModal(e){
-    this.setState({ modalOpen: false });
+    setNotes(editArray)
+    const setEdit = localforage.setItem('notes', editArray)
+    console.log("setDelete", setEdit)
   }
 
-  render() {
     return (
       <div className="App">
         <h1>Take Notes!</h1>
         <Form 
-        addNote={this.addNote}
+        addNote={addNote}
         />
-        <div style={{display: 'grid', gridTemplateColumns:'repeat(3, 1fr)'}}>
-          {this.state.notes.length === 0
-            ? null
-            : this.state.notes.map((notes) => (
-              <Note 
-              key={notes.id} 
+        <NoteList 
               notes={notes} 
-              deleteNote={this.deleteNote} 
-              editNote={this.editNote} 
-                 />
-            ))}
-        </div>
+              deleteNote={deleteNote} 
+              editNote={editNote} 
+          />
       </div>
     );
-  }
+
 }
 
 export default App;
+
+// useEffect( () => {
+//   let citasIniciales = localforage.getItem('notes');
+// console.log('get', notasEnLocalForage)
+//   if(citasIniciales) {
+//     localforage.setItem('notes', notes)
+    
+//   } else {
+//     localforage.setItem('notes', []);
+//   }
+// }, [notes, notasEnLocalForage] );
+
+// useEffect(() => {
+//   async function getNotes(){
+//     const notesFromStorage = await localforage.getItem('notes')
+//     if(notesFromStorage){
+//       setNotes(notesFromStorage)
+// }}
+//       getNotes()
+// }, [])

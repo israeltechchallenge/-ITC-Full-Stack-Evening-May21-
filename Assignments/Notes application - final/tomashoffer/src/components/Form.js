@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import TextareaAutosize from 'react-textarea-autosize';
+import { Button } from 'react-bootstrap';
 
 
 class Form extends Component {
@@ -12,7 +13,7 @@ class Form extends Component {
 
   }
   
-  getTitleValue = (e) => {
+  getTitleValue = (e) => { 
     this.setState({
       title: e.target.value,      
     });
@@ -41,17 +42,21 @@ class Form extends Component {
   editHandle = (e) => {
     e.preventDefault();
     const { editNote } = this.props;
+    console.log('notaActual', this.props.notaActual)
     if (this.state.notes !== "") {
       const data = {
         title: this.state.title, 
         note: this.state.notes, 
-        id: this.props.id
+        id: this.props.id,
+        update: new Date().toLocaleString("en-GB"),
       }
       editNote(data);
       this.setState({
         title: "",
         notes: "",
       });
+      this.props.closeModal()
+
     } else {
       alert("You must add a Note");
     }
@@ -61,7 +66,7 @@ class Form extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{marginBotom: '10px'}}>
         <form
 
       onSubmit={(e)=> this.props.modal ? this.editHandle(e) : this.handleSubmit(e)}
@@ -105,14 +110,13 @@ class Form extends Component {
              style={{overflow: 'hidden'}}
               />
           </div>
-          <button
-            style={{ margin: "20px" }}
+          <Button
+            style={{ marginTop: "20px", paddingTop: "15px", alignContent: "center", justifyContent: "center", color: 'black'}}
             type="submit"
-            className="btn btn-primary"
+            variant="outline-primary"
           >
-            {this.props.modal ? <p
-            >Edit</p> : <p>Add</p>}
-          </button>
+            {this.props.modal ? <p>Update Note</p> : <p>NEW NOTE!</p>}
+          </Button>
         </form>
       </div>
     );
