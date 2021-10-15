@@ -1,8 +1,8 @@
 import Note from './Note'
-function NoteList (props) {
+function NoteList ({ notes, deleteNote, editNote, restoreNote  }) {
         return <div className="flex">
-            {props.deleteNote && props.notes.map((note, index) => <Note note={note} key={note.id} index={index} deleteNote={props.deleteNote} editNote={props.editNote} />)}
-            {props.restoreNote && props.notes.map((archivedNote, index) => <Note note={archivedNote} key={archivedNote.id} index={index} restoreNote={props.restoreNote} />)}
+            {deleteNote && notes.map((note, index) => <Note note={note} key={note.id} index={index} deleteNote={deleteNote} editNote={editNote} />)}
+            {restoreNote && notes.map((archivedNote, index) => <Note note={archivedNote} key={archivedNote.id} index={index} restoreNote={restoreNote} />)}
         </div>
 }
 export default NoteList
