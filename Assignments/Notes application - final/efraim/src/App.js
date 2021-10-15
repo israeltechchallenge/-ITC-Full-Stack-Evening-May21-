@@ -1,7 +1,7 @@
 import './App.css';
 import Form from './components/Form'
 import NoteList from './components/Notelist'
-import localforage from "localforage";
+import localforage from 'localforage'
 import {useState, useEffect} from 'react'
 
 // deploy site https://distracted-bhabha-fb801a.netlify.app/
@@ -12,9 +12,11 @@ function App(){
   const [archivedNotes, setArchivedNotes] = useState([])
   const [showArchive, setShowArchive] = useState(false)
 
-  useEffect(() => {
+
+  useEffect(()=>{
     async function getNotesFromStorage(){
       const notesFromStorage = await localforage.getItem('notes')
+      const archiveFromStorage = await localforage.getItem('archivedNotes')
       if(notesFromStorage){
         setNotes(notesFromStorage)
         notesFromStorage.forEach(notes => {
@@ -22,27 +24,20 @@ function App(){
             alert(`Reminder Due for ${notes.title}!! 
             Note: ${notes.note}`)
           }
-        })}}
+        })}
+      if(archiveFromStorage){
+          setArchivedNotes(archiveFromStorage)
+        }}  
     getNotesFromStorage()
-  }, [])
-
+  },[])
 
   useEffect(() => {
-    async function getArchiveFromStorage(){
-    const archiveFromStorage = await localforage.getItem('archivedNotes')
-    if(archiveFromStorage){
-      setArchivedNotes(archiveFromStorage)
-    }}getArchiveFromStorage()
-},[])
-
-useEffect(() => {
-  async function saveToLocalForage(){
-    await localforage.setItem('notes', notes)
-    await localforage.setItem('archivedNotes', archivedNotes)
-  }
-  saveToLocalForage()
-},[notes, archivedNotes])
-
+    async function saveToLocalForage(){
+      await localforage.setItem('notes', notes)
+      await localforage.setItem('archivedNotes', archivedNotes)
+    }
+    saveToLocalForage()
+  },[notes, archivedNotes])
 
 
   function addNote (newNote) {
