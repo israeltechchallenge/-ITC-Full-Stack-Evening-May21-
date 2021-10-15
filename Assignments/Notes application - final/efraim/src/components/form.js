@@ -14,9 +14,7 @@ function Form(props)  {
         if(props.addNote)
         setIsAddNote(true)
     }, [props.addNote]) 
-    // not sure if i need to do this dependency, console was telling me I had to and wouldn't deploy until like this
-    // with the addProps in dependency
-    
+ 
     
     function handleNoteChange(e){
         setNoteValue(e.target.value)
@@ -51,11 +49,15 @@ function Form(props)  {
    
     return <div>
         <form className="form" onSubmit={submitNote}>
+
             <label>Title</label>
             <input type="text" placeholder="title" value={titleValue} onChange={handleTitleChange}/>
+            
             <label>Note</label>
             <TextareaAutosize  type="text" placeholder="note" required value={noteValue} onChange={handleNoteChange} />
-            {isAddNote &&<DateRemind dateValue={dateValue} setDateValue={setDateValue}/>}
+
+            {isAddNote && <DateRemind dateValue={dateValue} setDateValue={setDateValue}/>}
+
             <button type="submit" >{isAddNote ? 'Add' : 'Edit'}</button>
         </form>    
              </div>

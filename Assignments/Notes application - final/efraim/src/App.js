@@ -27,8 +27,10 @@ function App(){
             Note: ${notes.note}`)
           }
         })}}
-        getNotesFromStorage()
+    getNotesFromStorage()
   }, [])
+
+
   useEffect(() => {
     async function getArchiveFromStorage(){
     const archiveFromStorage = await localforage.getItem('archivedNotes')
@@ -44,6 +46,8 @@ useEffect(() => {
   }
   saveToLocalForage()
 },[notes, archivedNotes])
+
+
 
   function addNote (newNote) {
     const newNotesArray = [...notes, newNote]
