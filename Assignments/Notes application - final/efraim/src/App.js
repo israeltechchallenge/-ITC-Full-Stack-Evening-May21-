@@ -91,8 +91,11 @@ function App(){
   
       return (
      <div>
+       <h1>Notes App</h1>
       <Form addNote={addNote} />
+      <h2>My Notes</h2>
       <NoteList notes={notes} deleteNote={deleteNote} editNote={editNote}/>
+      <h2>My Archive</h2>
       <button onClick={showTheArchive}>
               Show/Hide Archived
             </button>
