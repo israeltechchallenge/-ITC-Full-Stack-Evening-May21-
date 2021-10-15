@@ -23,8 +23,10 @@ function Form({addNote, editNote, closeModal, note})  {
         setTitleValue(e.target.value)
     }
     
-    
 
+// instructions specifically said to use a form so this is how i did it..
+// my other plan was to just have two onclick buttons with a handleEdit and handleAdd function and split it up
+// then use the isAddNote to hide which button i didn't need.. but here is my solution using a form
     function submitNote(e) {
         e.preventDefault();
         let title = titleValue

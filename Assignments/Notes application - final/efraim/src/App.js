@@ -43,6 +43,7 @@ function App(){
   function addNote (newNote) {
     const newNotesArray = [...notes, newNote]
     setNotes(newNotesArray)
+    alert("Noted Added!")
   }
   
   function sortNotes(notesArray){
@@ -58,6 +59,7 @@ function App(){
     const newArchiveArray = [...archivedNotes]
     newArchiveArray.splice(index, 1)
     setArchivedNotes(newArchiveArray)
+    alert("Note Restored!")
   }
 
   function deleteNote (index) {
@@ -68,16 +70,22 @@ function App(){
       setArchivedNotes(newArchiveArray)
       newNoteArray.splice(index, 1)
       setNotes(newNoteArray)
+      alert("Note Deleted! You can now find it in the archives.")
     }}
 
   function editNote(id, title, note) {
     const noteToEdit = notes.find(note=> note.id === id)
-    if(noteToEdit.title === title && noteToEdit.note === note) return
+    if(noteToEdit.title === title && noteToEdit.note === note){
+      alert("Note not Edited!")
+      return
+    } 
     noteToEdit.note = note
     noteToEdit.updatedDate = `Updated On: ${new Date().toUTCString().slice(0, -7)}`
     noteToEdit.title = title
     setNotes([...notes])
+    alert("Edited Succefully!")
   }
+
   function showTheArchive(){
     if(archivedNotes.length !== 0){
       setShowArchive(!showArchive)
