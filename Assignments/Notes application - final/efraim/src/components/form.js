@@ -53,7 +53,7 @@ function Form(props)  {
    
     return <div>
         <form className="form" onSubmit={submitNote}>
-            <label>title</label>
+            <label>Title</label>
             <input type="text" placeholder="title" value={titleValue} onChange={handleTitleChange}/>
             <label>Note</label>
             <TextareaAutosize  type="text" placeholder="note" required value={noteValue} onChange={handleNoteChange} />
