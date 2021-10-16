@@ -3,7 +3,6 @@ import CreateTask from "../Modals/CreateTask";
 import localforage from "localforage";
 import CardList from "../Componets/CardList";
 import moment from "moment";
-import { AiFillRest } from "react-icons/ai";
 import ArhList from "../Componets/ArhList";
 function TodoList() {
   // localforage.clear()
@@ -23,7 +22,6 @@ function TodoList() {
       const localForageNotes = getNotes ? getNotes : [];
       if (localForageNotes) {
         setNotes(localForageNotes);
-        noteReminder(localForageNotes);
       }
     }
     getNotesFromForage();
@@ -49,17 +47,18 @@ function TodoList() {
     setModal(false);
   };
 
-  function noteReminder(notes) {
-    notes.forEach(note => {
-     if(note.dateRemind.toLocaleDateString() === new Date().toLocaleDateString()){
-       const diffTime=Math.abs(note.dateRemind - new Date().getTime());
-       if(diffTime / (1000 * 60 * 60 * 24)<10){
-        alert(`Reminder for note:${note.title}`);
 
-     }
-    }
+  function reminder(){
+    let noteReminder=[...notes];
+    noteReminder.forEach(note=>{
+      if((note.dateRemind) &&  (note.dateRemind <=(new Date()))){
+       alert(`Reminder for note:${note.title}`)
+      }
     })
   }
+
+  setInterval(function() { reminder() }, 2*60*1000);
+
 
   const addNote = (newNote) => {
     const newNotesToAdd = [...notes, newNote];
@@ -80,7 +79,17 @@ function TodoList() {
     localforage.setItem("notes", deletedNote);
     localforage.setItem("arhive", newArhNote);
   };
-  console.log(archivedNotes);
+
+  const restoreNotes = (id) => {
+    const index = archivedNotes.findIndex((note) => note.id === id);
+    const note = archivedNotes[index];
+    const restoreNotes = [...notes, note];
+    archivedNotes.splice(index, 1);
+    setNotes(restoreNotes);
+    setArchivedNotes(archivedNotes);
+    localforage.setItem("notes", restoreNotes);
+    localforage.setItem("arhive", archivedNotes);
+  };
 
   function showTheArchive() {
     if (archivedNotes.length !== 0) {
@@ -100,10 +109,12 @@ function TodoList() {
           Show Archive
         </button>
       </div>
-      <ArhList archivedNotes={archivedNotes} />
-
       <CreateTask toggle={toggle} modal={modal} addNote={addNote} />
       <CardList notes={notes} deleteNote={deleteNote} editNote={editNote} />
+      <h1 className="archive ">Archive</h1>
+      {showArchive && (
+        <ArhList archivedNotes={archivedNotes} restoreNotes={restoreNotes} />
+      )}
     </>
   );
 }

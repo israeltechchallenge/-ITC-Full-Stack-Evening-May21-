@@ -12,7 +12,13 @@
  margin: 20px 0;
  }
 
-
+.archive{
+  height: 100px;
+  width: 100%;
+  background-color:#e94707;
+  text-align: center;
+   padding-top:30px;
+}
 
  .card-container{
   height: 300px;

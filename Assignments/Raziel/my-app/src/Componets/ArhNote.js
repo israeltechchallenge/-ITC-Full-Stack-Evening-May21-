@@ -1,4 +1,7 @@
 import React from 'react'
+
+
+import {AiOutlineRedo} from  "react-icons/ai"
 const colors = [
     {
       primaryColor: "#5D93E1",
@@ -21,7 +24,7 @@ const colors = [
       secondaryColor: "#F3F0FD",
     },
   ];
-function ArhNote({index,arhItem}) {
+function ArhNote({index,arhItem,restoreNotes}) {
     return (
         <div className="card-wrapper ">
         <div
@@ -47,7 +50,7 @@ function ArhNote({index,arhItem}) {
           <span className="date">{arhItem.date}</span>
       
           <div style={{ position: "absolute", right: "20px", bottom: "20px" }}>
-           Restore
+           <AiOutlineRedo  style={{ color: colors[index % 5].primaryColor, cursor: "pointer" }} onClick={()=>restoreNotes(arhItem.id)} />
           </div>
         </div>
  
