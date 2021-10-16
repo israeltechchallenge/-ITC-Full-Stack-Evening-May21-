@@ -12,6 +12,8 @@
     "mdb-react-ui-kit": "^1.4.0",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-rc.0",
+    "react-datepicker": "^4.2.1",
+    "react-datetime-picker": "^3.4.2",
     "react-dom": "^17.0.2",
     "react-modal": "^3.14.3",
     "react-moment": "^1.1.1",

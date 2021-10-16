@@ -1,8 +1,7 @@
 import './App.css';
-import Form from './components/form'
-import NoteList from './components/notelist'
-import ArchiveList from './components/archiveList'
-import localforage from "localforage";
+import Form from './components/Form'
+import NoteList from './components/Notelist'
+import localforage from 'localforage'
 import {useState, useEffect} from 'react'
 
 // deploy site https://distracted-bhabha-fb801a.netlify.app/
@@ -13,9 +12,11 @@ function App(){
   const [archivedNotes, setArchivedNotes] = useState([])
   const [showArchive, setShowArchive] = useState(false)
 
-  useEffect(() => {
+
+  useEffect(()=>{
     async function getNotesFromStorage(){
       const notesFromStorage = await localforage.getItem('notes')
+      const archiveFromStorage = await localforage.getItem('archivedNotes')
       if(notesFromStorage){
         setNotes(notesFromStorage)
         notesFromStorage.forEach(notes => {
@@ -23,21 +24,26 @@ function App(){
             alert(`Reminder Due for ${notes.title}!! 
             Note: ${notes.note}`)
           }
-        })}}
-        getNotesFromStorage()
-  }, [])
+        })}
+      if(archiveFromStorage){
+          setArchivedNotes(archiveFromStorage)
+        }}  
+    getNotesFromStorage()
+  },[])
+
   useEffect(() => {
-    async function getArchiveFromStorage(){
-    const archiveFromStorage = await localforage.getItem('archivedNotes')
-    if(archiveFromStorage){
-      setArchivedNotes(archiveFromStorage)
-    }}getArchiveFromStorage()
-},[])
+    async function saveToLocalForage(){
+      await localforage.setItem('notes', notes)
+      await localforage.setItem('archivedNotes', archivedNotes)
+    }
+    saveToLocalForage()
+  },[notes, archivedNotes])
+
 
   function addNote (newNote) {
     const newNotesArray = [...notes, newNote]
     setNotes(newNotesArray)
-    localforage.setItem('notes', newNotesArray)
+    alert("Noted Added!")
   }
   
   function sortNotes(notesArray){
@@ -53,8 +59,7 @@ function App(){
     const newArchiveArray = [...archivedNotes]
     newArchiveArray.splice(index, 1)
     setArchivedNotes(newArchiveArray)
-    localforage.setItem('notes', newNotesArray)
-    localforage.setItem('archivedNotes', newArchiveArray)
+    alert("Note Restored!")
   }
 
   function deleteNote (index) {
@@ -65,18 +70,22 @@ function App(){
       setArchivedNotes(newArchiveArray)
       newNoteArray.splice(index, 1)
       setNotes(newNoteArray)
-      localforage.setItem('notes', newNoteArray)
-      localforage.setItem('archivedNotes', newArchiveArray)
+      alert("Note Deleted! You can now find it in the archives.")
     }}
 
   function editNote(id, title, note) {
     const noteToEdit = notes.find(note=> note.id === id)
+    if(noteToEdit.title === title && noteToEdit.note === note){
+      alert("Note not Edited!")
+      return
+    } 
     noteToEdit.note = note
     noteToEdit.updatedDate = `Updated On: ${new Date().toUTCString().slice(0, -7)}`
     noteToEdit.title = title
     setNotes([...notes])
-    localforage.setItem('notes', notes)
+    alert("Edited Succefully!")
   }
+
   function showTheArchive(){
     if(archivedNotes.length !== 0){
       setShowArchive(!showArchive)
@@ -87,12 +96,15 @@ function App(){
   
       return (
      <div>
+       <h1>Notes App</h1>
       <Form addNote={addNote} />
+      <h2>My Notes</h2>
       <NoteList notes={notes} deleteNote={deleteNote} editNote={editNote}/>
+      <h2>My Archive</h2>
       <button onClick={showTheArchive}>
               Show/Hide Archived
             </button>
-      {showArchive && <ArchiveList archivedNotes={archivedNotes} restoreNote={restoreNote}/>}
+      {showArchive && <NoteList notes={archivedNotes} restoreNote={restoreNote}/>}
      </div>
   );
 }

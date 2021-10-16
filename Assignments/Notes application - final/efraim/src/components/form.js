@@ -1,9 +1,9 @@
 import '../App.css';
-import DateRemind from './dateRemind'
+import DateRemind from './DateRemind'
 import {useState, useEffect} from 'react'
 import TextareaAutosize from 'react-textarea-autosize';
 
-function Form(props)  {
+function Form({addNote, editNote, closeModal, note})  {
    
     const [noteValue, setNoteValue] = useState('')
     const [titleValue, setTitleValue] = useState('')
@@ -11,11 +11,10 @@ function Form(props)  {
     const [isAddNote, setIsAddNote] = useState(false)
 
     useEffect(() => {
-        if(props.addNote)
+        if(addNote)
         setIsAddNote(true)
-    }, [props.addNote]) 
-    // not sure if i need to do this
-    
+    }, [addNote]) 
+ 
     
     function handleNoteChange(e){
         setNoteValue(e.target.value)
@@ -24,40 +23,52 @@ function Form(props)  {
         setTitleValue(e.target.value)
     }
     
+
+// instructions specifically said to use a form so this is how i did it..
+// my other plan was to just have two onclick buttons with a handleEdit and handleAdd function and split it up
+// then use the isAddNote to hide which button i didn't need.. but here is my solution using a form
     function submitNote(e) {
         e.preventDefault();
-        if(props.addNote){
-        const title = titleValue
-        const note = noteValue
-        const dateToRemind = dateValue
-        const readbleDate = new Date().toUTCString().slice(0, -7)
-        const id = "id" + Math.random().toString(16).slice(2)
-        let newNote = {}
-        if(titleValue !== ''){
-            newNote= {title: title, note: note, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
-        }else{
-            newNote= {note: note, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
-        }
-        props.addNote(newNote)
+        let title = titleValue
+        let noteText = noteValue
+            if(isAddNote === true){
+                if(noteValue === '') return
+                const dateToRemind = dateValue
+                const readbleDate = new Date().toUTCString().slice(0, -7)
+                const id = "id" + Math.random().toString(16).slice(2)
+                let newNote = {}
+                if(titleValue !== ''){
+                    newNote= {title: title, note: noteText, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
+                }else{
+                    newNote= {note: noteText, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
+                }
+                addNote(newNote)
+            }else{
+                if(titleValue === ''){
+                    title = note.title
+                }
+                if(noteValue === ''){
+                    noteText = note.note
+                }
+                const noteID = note.id
+                editNote(noteID, title, noteText)
+                closeModal(e)
+            }
         setTitleValue('')
         setNoteValue('')
-    }else{
-        const title = titleValue
-        const note = noteValue
-        const noteID = props.noteID
-        props.editNote(noteID, title, note)
-        setTitleValue('')
-        setNoteValue('')
-    }
 }
    
     return <div>
         <form className="form" onSubmit={submitNote}>
-            <label>title</label>
+
+            <label>Title</label>
             <input type="text" placeholder="title" value={titleValue} onChange={handleTitleChange}/>
+            
             <label>Note</label>
-            <TextareaAutosize  type="text" placeholder="note" required value={noteValue} onChange={handleNoteChange} />
-            {isAddNote &&<DateRemind dateValue={dateValue} setDateValue={setDateValue}/>}
+            <TextareaAutosize  type="text" placeholder="note" value={noteValue} onChange={handleNoteChange} />
+
+            {isAddNote && <DateRemind dateValue={dateValue} setDateValue={setDateValue}/>}
+
             <button type="submit" >{isAddNote ? 'Add' : 'Edit'}</button>
         </form>    
              </div>
