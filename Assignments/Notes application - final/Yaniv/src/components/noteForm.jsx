@@ -34,6 +34,11 @@ function NoteForm({ onAdd, onUpdate, existingNote }) {
         if (existingNote) onUpdate(note);
         else onAdd(note);
         setNoteInputs({ title: '', text: '', reminder: '' });
+        const titleLegend = document.querySelector('legend-title');
+        const textLegend = document.querySelector('legend-text');
+        titleLegend.style.display = 'none';
+        textLegend.style.display = 'none';
+        ;
     }
 
     const adjustTextareaHeight = () => {
