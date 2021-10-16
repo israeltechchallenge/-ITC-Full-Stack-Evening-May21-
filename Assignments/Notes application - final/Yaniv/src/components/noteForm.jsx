@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import dateToIsoStringWithTZ from '../utilities/dateToIsoStringWithTZ'
+
 function NoteForm({ onAdd, onUpdate, existingNote }) {
 
     const [noteInputs, setNoteInputs] = useState(existingNote ?
-        { title: existingNote.title, text: existingNote.text, reminder: existingNote.reminder }
+        { title: existingNote.title, text: existingNote.text, reminder: (existingNote.reminder ? dateToIsoStringWithTZ(new Date(existingNote.reminder)) : '') }
         :
         { title: '', text: '', reminder: '' });
+    const [reminderChanged, setReminderChanged] = useState(false);
 
     useEffect(() => {
         adjustTextareaHeight();
@@ -23,19 +26,22 @@ function NoteForm({ onAdd, onUpdate, existingNote }) {
         adjustTextareaHeight();
     }
 
-    const handleNoteReminder = (e) => setNoteInputs({ ...noteInputs, reminder: e.target.value });
+    const handleNoteReminder = (e) => {
+        setNoteInputs({ ...noteInputs, reminder: e.target.value });
+        setReminderChanged(true);
+    }
 
     const handleNote = (e) => {
         e.preventDefault();
         const noteId = (existingNote) ? existingNote.id : uuidv4();
         const noteCreatedAt = (existingNote) ? existingNote.createdAt : new Date();
-        const noteUpdatedAt = (existingNote) ? new Date() : null;
+        const noteUpdatedAt = (existingNote) ? ((reminderChanged) ? existingNote.updatedAt : new Date()) : null;
         const note = { title: noteInputs.title, text: noteInputs.text, reminder: noteInputs.reminder, createdAt: noteCreatedAt, updatedAt: noteUpdatedAt, id: noteId }
         if (existingNote) onUpdate(note);
         else onAdd(note);
         setNoteInputs({ title: '', text: '', reminder: '' });
-        const titleLegend = document.querySelector('legend-title');
-        const textLegend = document.querySelector('legend-text');
+        const titleLegend = document.querySelector('.legend-title');
+        const textLegend = document.querySelector('.legend-text');
         titleLegend.style.display = 'none';
         textLegend.style.display = 'none';
         ;
@@ -48,8 +54,6 @@ function NoteForm({ onAdd, onUpdate, existingNote }) {
     }
 
     const hideShowLegend = (input) => input.previousElementSibling.style.display = (input.value) ? "unset" : "none";
-
-    const dateToIsoStringWithTZ = (date) => new Date(date.getTime() - ((new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, 16).replace(' ','T');
 
     return (
         <form onSubmit={(e) => {handleNote(e)}}  className='note-form'>

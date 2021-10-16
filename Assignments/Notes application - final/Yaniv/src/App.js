@@ -40,19 +40,18 @@ function App() {
 
 
   const handleAdd = async (newNote) => {
-    const updatedNotes = { ...notes, ...{ active: [...notes.active, newNote] } };
+    const updatedNotes = { ...notes, ...{ active: [newNote, ...notes.active] } };
     setNotes(updatedNotes);
     await localforage.setItem('notes', updatedNotes);
   }
 
   const handleUpdate = async (updatedNote) => {
     let updatedActive = [...notes.active];
-    const reminderChanged = (updatedActive[modalNoteIndex].reminder !== updatedNote.reminder) ? true : false;
     if ((updatedActive[modalNoteIndex].title !== updatedNote.title) ||
         (updatedActive[modalNoteIndex].text !== updatedNote.text) ||
-        reminderChanged) {
+        (updatedActive[modalNoteIndex].reminder !== updatedNote.reminder)) {
       updatedActive.splice(modalNoteIndex, 1, updatedNote);
-      updatedActive = (!reminderChanged) ? sortByDate(updatedActive) : updatedActive;
+      updatedActive = sortByDate(updatedActive);
       const updatedNotes = { ...notes, ...{ active: updatedActive } };
       setNotes(updatedNotes);
       await localforage.setItem('notes', updatedNotes);
@@ -109,7 +108,7 @@ function App() {
   const checkReminder = () => {
     let updatedActive = [...notes.active];
     updatedActive.forEach((note, index) => {
-      if ((note.reminder) && (Date.parse(note.reminder) <= (new Date()))) {
+      if ((note.reminder) && (note.reminder <= (new Date()))) {
         swal("Note Reminder!", "", "info", { button: "Show Note" })
         .then(() => {
           note.reminder = '';  
