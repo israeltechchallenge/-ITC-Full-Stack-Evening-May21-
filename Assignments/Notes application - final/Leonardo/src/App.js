@@ -25,7 +25,7 @@ function App() {
     saveNotesList()
   }, [notesList, archiveList])
 
-  //Get the information from localForage when something change in the App
+  //Get the information from localForage when I initialite the App
   useEffect(() => {
     const getNotesList = async () => {
       const notesListFromForage = await localForage.getItem('notes');
@@ -42,7 +42,7 @@ function App() {
 
   const addNote = (newNote) => {
     //Copy the old array of notes and add the note that I recieve from the Form with an Id and a created date
-    setNotesList([...notesList, {...newNote, key: shortid.generate(), date: new Date()}])
+    setNotesList([...notesList, { ...newNote, key: shortid.generate(), date: new Date() }])
   }
 
   const updateNote = (noteInformation, index) => {
@@ -53,19 +53,23 @@ function App() {
   }
 
   const archiveNote = key => {
+    //Delete the note from the list of notes array
     const filteredNotes = notesList.filter(note => note.key !== key)
     setNotesList(filteredNotes);
 
+    //Add the note into the archive array
     const newArchiveNote = notesList.find(note => note.key === key)
     const newArchiveArray = [...archiveList, newArchiveNote]
     setArchiveList(newArchiveArray)
   }
 
   const restoreNote = key => {
+    //Add the note into the list of notes array
     const newRestoreNote = archiveList.find(note => note.key === key)
     const newNotesArray = [...notesList, newRestoreNote]
     setNotesList(newNotesArray)
 
+    //Delete the note from the archive array
     const filteredArchivedNotes = archiveList.filter(note => note.key !== key)
     setArchiveList(filteredArchivedNotes);
   }
@@ -74,12 +78,34 @@ function App() {
     setShowArchiveList(!showArchiveList)
   }
 
+  const sortNotesByReminderDate = () => {
+    notesList.sort((a, b) => a.reminderDate - b.reminderDate)
+  }
+  sortNotesByReminderDate()
+
+
+  const alertNoteReminder = () => {
+    notesList.forEach(note => {
+      if ((note.reminderDate.getHours() === new Date().getHours()) && (note.reminderDate.getMinutes() === new Date().getMinutes()) && (note.reminderDate.getSeconds() === new Date().getSeconds())) {
+        swal({
+          title: `Reminder of task ${note.title}`,
+          text: `${note.description}!`,
+          icon: "info",
+          button: "I will do it now!",
+        });
+      }
+    })
+  }
+  setInterval(alertNoteReminder, 1000);
+
   return (
     <div>
       <h1 className="text-center">Notes App</h1>
       <Form {...{ addNote, updateNote }} />
+      <div className="text-center mb-3">
+        <button onClick={changeStatusShowArchive} className={showArchiveList ? 'btn btn-danger' : 'btn btn-primary'}>{showArchiveList ? 'Hide archived notes' : 'Show archived notes'}</button>
+      </div>
       <h2>Notes: </h2>
-      <button onClick={changeStatusShowArchive}>Show/Hide archived notes</button>
       {notesList.length ? <ListNotes notes={notesList} {...{ updateNote, restoreNote, archiveNote }} /> : (<h3 className='text-center'>There are not notes to show</h3>)}
       {showArchiveList ? <h2>Archived Notes: </h2> : null}
       {showArchiveList ? <ListNotes notes={archiveList} {...{ updateNote, restoreNote, archiveNote }} archived /> : null}
