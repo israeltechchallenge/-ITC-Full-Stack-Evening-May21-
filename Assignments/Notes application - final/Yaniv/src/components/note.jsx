@@ -1,13 +1,14 @@
 import formatDate from '../utilities/fromatDate';
 
-function Note( { title, createdAt, updatedAt, text, onToggleArchive, isArchived, onOpenModal, index }) {
-    const createdFormattedDate = formatDate(createdAt, false);
-    const updatedFormattedDate = (updatedAt) ? formatDate(updatedAt, false) : null;
+function Note( { title, createdAt, updatedAt, text, onToggleArchive, onOpenModal, isArchived, hasReminder, index }) {
+    const createdFormattedDate = formatDate(createdAt, false, true);
+    const updatedFormattedDate = (updatedAt) ? formatDate(updatedAt, false, true) : null;
     const createdClass = (updatedAt) ? 'date' : 'title';
-    const archiveTopClass = (isArchived) ? ' note__item--archived' : ''
+    const archiveTopClass = (isArchived) ? ' note__item--archived' : '';
+
     return (
-        <div className='note tilt-in-fwd-br' onClick={(e) => onOpenModal(e, index, isArchived)}>
-            {<span className={`note__item note__item--close${archiveTopClass}`} onClick={() => onToggleArchive(index, isArchived)}>{isArchived ? '⭯' : '✖'}</span>}
+        <div className='note tilt-in-fwd-br' onClick={(e) => onOpenModal(e.target, index, isArchived)}>
+            <span className={`note__item note__item--close${archiveTopClass}`} onClick={() => onToggleArchive(index, isArchived)}><i className={`fas fa-trash${isArchived ? '-restore' : ''}`}></i></span>
             {title ?
             <div className={`note__item note__item--top${archiveTopClass}`}>
                 <h4 className='note__item note__item--title'>{title}</h4>
@@ -22,7 +23,8 @@ function Note( { title, createdAt, updatedAt, text, onToggleArchive, isArchived,
                 <p className={`note__item note__item--${createdClass}`}>created:<br />{createdFormattedDate}</p>
             </div>
             }
-                <p className='note__item note__item--text'>{text}</p>
+            <p className='note__item note__item--text'>{text}</p>
+            <span className="note__item note__item--reminder">{(hasReminder && (!isArchived)) ? <i className="fas fa-bell"></i> : ''}</span>
         </div>
     );
 }
