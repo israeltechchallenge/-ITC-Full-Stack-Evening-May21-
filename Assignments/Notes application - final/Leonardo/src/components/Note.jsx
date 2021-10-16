@@ -23,17 +23,12 @@ const customStyles = {
 }
 
 Modal.setAppElement('#root')
-
-const Note = ({ note, deleteNote, editTheNote }) => {
+const Note = ({ note, index, deleteNote, updateNote, archived, restoreNote }) => {
   const [showModal, setShowModal] = useState(false)
 
-  function handleOpenModal () {
-    setShowModal(true)
-  }
+  const handleOpenModal =() => {setShowModal(true)}
 
-  function handleCloseModal () {
-    setShowModal(false)
-  }
+  const handleCloseModal =() => {setShowModal(false)}
 
   return (
     <div>
@@ -43,28 +38,22 @@ const Note = ({ note, deleteNote, editTheNote }) => {
         style={{ maxWidth: '18rem' }}
       >
         <MDBCardHeader background='success'>
-          <p>
-            Created date: <Moment format='MMM Do h:mm:ss a'>{note.date}</Moment>
-          </p>
-          {note.updateDate ? (
-            <p>
-              Updated date:{' '}
-              <Moment format='MMM Do h:mm:ss a'>{note.updateDate}</Moment>
-            </p>
-          ) : null}
+          <p>Created date: <Moment format='MMM Do h:mm:ss a'>{note.date}</Moment></p>
+          {note.updateDate ? (<p>Updated date:<Moment format='MMM Do h:mm:ss a'>{note.updateDate}</Moment></p>) : null}
         </MDBCardHeader>
-        <MDBCardBody onClick={handleOpenModal} className='content'>
+        {!archived ? <MDBCardBody onClick={handleOpenModal} className='content'>
           <MDBCardTitle>{note.title}</MDBCardTitle>
           <MDBCardText>{note.description}</MDBCardText>
-        </MDBCardBody>
+        </MDBCardBody> : <MDBCardBody>
+          <MDBCardTitle>{note.title}</MDBCardTitle>
+          <MDBCardText>{note.description}</MDBCardText>
+        </MDBCardBody> }
+        
         <MDBCardHeader>
-          {/* Need to add a button with an event that contains the key of the note that Im going to delete */}
-          <button
-            className='btn btn-danger'
-            onClick={() => deleteNote(note.key)}
-          >
-            Delete
-          </button>
+          {archived ? <button className='btn btn-warning' onClick={() => restoreNote(note.key)}> Restore</button> : <button className='btn btn-danger' onClick={() => deleteNote(note.key)}> Archive</button>}
+        </MDBCardHeader>
+        <MDBCardHeader background='secondary'>
+          <p>Reminder: <Moment format='MMM Do h:mm a'>{note.reminderDate}</Moment></p>
         </MDBCardHeader>
       </MDBCard>
       <Modal
@@ -73,16 +62,8 @@ const Note = ({ note, deleteNote, editTheNote }) => {
         style={customStyles}
         contentLabel='Note Modal'
       >
-        <button onClick={handleCloseModal} className='close'>
-          ✖️
-        </button>
-        <Form
-          noteKey={note.key}
-          showModal={showModal}
-          setShowModal={setShowModal}
-          editTheNote={editTheNote}
-          note={note}
-        />
+        <button onClick={handleCloseModal} className='close'>✖️</button>
+        <Form noteKey={note.key} {...{showModal, handleCloseModal,updateNote, note, index}} />
       </Modal>
     </div>
   )

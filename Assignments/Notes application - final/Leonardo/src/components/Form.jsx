@@ -1,68 +1,49 @@
-import React, { useState } from 'react'
-import shortid from 'shortid'
+import { useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import Error from './Error'
-
-//In this Component Im going to have the form and save that information in an array
-//First of all I create the Form in the "return" and add the event that I gonna use ("onSubmit")
+import DateTimePicker from 'react-datetime-picker'
 
 const Form = ({
-  createTheNote,
-  editTheNote,
-  noteKey,
+  addNote,
+  updateNote,
+  index,
   showModal,
-  setShowModal,
+  handleCloseModal,
   note
 }) => {
-  //Set the states to save the form information
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
+  const editMode = note && Object.keys(note).length > 0 ? true : false
+  const emptyNote = { title: '', description: '', reminderDate: '' }
+  const [noteValue, setNoteValue] = useState(editMode ? note : emptyNote)
   const [error, setError] = useState(false)
+  
+  const handleTitleChange = e =>
+    setNoteValue({ ...noteValue, title: e.target.value })
+  const handledDescriptionChange = e =>
+    setNoteValue({ ...noteValue, description: e.target.value })
+  const handledReminderDateChange = e => {
+    setNoteValue({ ...noteValue, reminderDate: e })
+  }
 
-  //This function is to add a new note
   const submitNote = event => {
     //By default when you submit a form the page reload and clear everything out, so we call preventDefault()
     event.preventDefault()
 
-    //Because the description of the note is required I make a condition:
-    if (description.trim() === '') {
+    if (noteValue.description === '') {
       setError(true)
       return
     }
-
     //If I dont have error, I set the state of the error to False
     setError(false)
 
-    //First I create a variable that is going to store a new object note:
-    let newNote = {}
-    if (showModal) {
-      //When Im editing 
-      newNote = {
-        title,
-        description,
-        key: noteKey,
-        updateDate: new Date()
-      }
-      //Save the information of the new note to send to the principal component (App.js)
-      editTheNote(newNote, noteKey)
-
-      //Close the Modal
-      setShowModal(false)
+    if (!showModal) {
+      addNote(noteValue)
+      setNoteValue(emptyNote)
     } else {
-      //When Im creating
-      newNote = {
-        title,
-        description,
-        key: shortid.generate(),
-        date: new Date()
-      }
       //Save the information of the new note to send to the principal component (App.js)
-      createTheNote(newNote)
+      updateNote(noteValue, index)
+      //Close the Modal
+      handleCloseModal()
     }
-
-    //I reset the form
-    setTitle('')
-    setDescription('')
   }
 
   return (
@@ -76,21 +57,27 @@ const Form = ({
           type='text'
           className='form-control w-50 p-1 form__title'
           placeholder='Please enter a title for the note (optional)'
-          value= {title}
-          onChange={e => setTitle(e.target.value)}
+          value={noteValue.title}
+          onChange={handleTitleChange}
         />
         <TextareaAutosize
           className='form-control w-50 p-5'
           placeholder='Please enter description for the note'
-          value={description}
-          onChange={e => setDescription(e.target.value)}
+          value={noteValue.description}
+          onChange={handledDescriptionChange}
+        />
+        <DateTimePicker
+          id='datetime'
+          name='datetime'
+          value={noteValue.reminderDate}
+          onChange={handledReminderDateChange}
+          required
         />
         <button
           className='btn btn-success submit__button'
           type='submit'
           value='Add'
         >
-          {' '}
           {showModal ? <p>Edit</p> : <p>Add</p>}
         </button>
       </form>
