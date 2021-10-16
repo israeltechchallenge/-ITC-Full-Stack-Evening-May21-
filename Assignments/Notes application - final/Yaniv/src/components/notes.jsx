@@ -20,7 +20,7 @@ function Notes({ notes, isArchived, confirmToggle, openModal }) {
                 id={note.id} />) :
             <p className="text-bg">No {(isArchived) ? ' archived' : 'active'} notes</p>}
           </div>
-          <h2 className="notes-title text-bg">Active Notes</h2>
+          <h2 className="notes-title text-bg">{(isArchived) ? ' Archived' : 'Active'} Notes</h2>
         </section>
     )
 }

@@ -6,7 +6,7 @@ import dateToIsoStringWithTZ from '../utilities/dateToIsoStringWithTZ'
 function NoteForm({ onAdd, onUpdate, existingNote }) {
 
     const [noteInputs, setNoteInputs] = useState(existingNote ?
-        { title: existingNote.title, text: existingNote.text, reminder: (existingNote.reminder ? dateToIsoStringWithTZ(new Date(existingNote.reminder)) : '') }
+        { title: existingNote.title, text: existingNote.text, reminder: (existingNote.reminder ? dateToIsoStringWithTZ(existingNote.reminder) : '') }
         :
         { title: '', text: '', reminder: '' });
     const [reminderChanged, setReminderChanged] = useState(false);
@@ -36,7 +36,7 @@ function NoteForm({ onAdd, onUpdate, existingNote }) {
         const noteId = (existingNote) ? existingNote.id : uuidv4();
         const noteCreatedAt = (existingNote) ? existingNote.createdAt : new Date();
         const noteUpdatedAt = (existingNote) ? ((reminderChanged) ? existingNote.updatedAt : new Date()) : null;
-        const note = { title: noteInputs.title, text: noteInputs.text, reminder: noteInputs.reminder, createdAt: noteCreatedAt, updatedAt: noteUpdatedAt, id: noteId }
+        const note = { title: noteInputs.title, text: noteInputs.text, reminder: (noteInputs.reminder ? new Date(noteInputs.reminder) : null), createdAt: noteCreatedAt, updatedAt: noteUpdatedAt, id: noteId }
         if (existingNote) onUpdate(note);
         else onAdd(note);
         setNoteInputs({ title: '', text: '', reminder: '' });

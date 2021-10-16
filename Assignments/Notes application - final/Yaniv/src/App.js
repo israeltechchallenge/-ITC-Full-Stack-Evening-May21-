@@ -111,7 +111,7 @@ function App() {
       if ((note.reminder) && (note.reminder <= (new Date()))) {
         swal("Note Reminder!", "", "info", { button: "Show Note" })
         .then(() => {
-          note.reminder = '';  
+          note.reminder = null;  
           openModal(document.querySelector('.notes'), index, false);
           const updatedNotes = { ...notes, ...{ active: updatedActive } };
           setNotes(updatedNotes);
@@ -121,7 +121,7 @@ function App() {
     });
   }
 
-  setInterval(function() { checkReminder() }, 2 * 60 * 1000);
+  setInterval(function() { checkReminder() }, 0.5 * 60 * 1000);
 
   return (
     <div className="App">
