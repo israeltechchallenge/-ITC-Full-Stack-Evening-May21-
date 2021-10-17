@@ -25,7 +25,7 @@ export default class InputText extends React.Component {
         
           handleSubmit(event) {
             event.preventDefault();
-            
+            if(this.state.text.length === 0) return
             const note = {
                 title: this.state.title,
                 text: this.state.text,

@@ -3,6 +3,8 @@ import {
   NOTE_VALIDATE,
   CURRENT_NOTE,
   UPDATE_NOTE,
+  DELETE_NOTE,
+  ACHIVED_NOTE,
 } from "../../types/index";
 export default (state, action) => {
   switch (action.type) {
@@ -32,6 +34,20 @@ export default (state, action) => {
           note.id === action.payload.id ? action.payload : note
         ),
       };
+    case DELETE_NOTE:
+      return {
+        ...state,
+        notes: state.notes.filter((note) => note.id !== action.payload),
+        //! Si fuera === nos traeria el que le di click ver si cuando quiero archivarlas
+      };
+
+    case ACHIVED_NOTE:
+      return {
+        ...state,
+        achivednotes: [...state.achivednotes, action.payload],
+      
+      };
+
     default:
       return state;
   }

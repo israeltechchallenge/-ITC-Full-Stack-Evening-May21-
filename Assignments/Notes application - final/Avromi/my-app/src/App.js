@@ -11,6 +11,7 @@ class App extends React.Component  {
       }  
       this.addNote = this.addNote.bind(this);
       this.deleteNote = this.deleteNote.bind(this);
+      this.editNote = this.editNote.bind(this);
     }
   
     addNote(note){
@@ -21,6 +22,7 @@ class App extends React.Component  {
         
       })
     }
+
     deleteNote(index){
       const deleteIsTrue = window.confirm("Are you sure you want to delete this note?")
       if (deleteIsTrue === true) {
@@ -29,6 +31,9 @@ class App extends React.Component  {
         this.setState({notes:newNotes})
       }
     }
+    editNote(index){
+      console.log("editing");
+    }
     render(){
       console.log(this.state.notes);
   return (
@@ -36,7 +41,7 @@ class App extends React.Component  {
       <header className="App-header">
  <TextInput addNote={this.addNote}/>
  <br/>
- <NotesList notes = {this.state.notes} deleteNote={this.deleteNote}/>
+ <NotesList notes = {this.state.notes} editNote={this.editNote} deleteNote={this.deleteNote}/>
  </header>
  </div>
   );}
