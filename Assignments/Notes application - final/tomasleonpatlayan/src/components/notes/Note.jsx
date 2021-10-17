@@ -56,11 +56,10 @@ const Note = ({ note }) => {
     achivedCurrentNote(note);
   };
 
-  if (note.reminderDate === note.date) {
-    alert("Hey Remain thay you Have a task ");
-  }
+  
   return (
     <li className="note">
+ 
       <div className="notes-title">
         <p>{note.title}</p>
       </div>
@@ -68,7 +67,7 @@ const Note = ({ note }) => {
         <p>{note.contentNote}</p>
       </div>
       <div className="notes-date">
-        <p>{note.date}</p>
+         <p>{moment(note.date).format("MMM Do YY")}</p>
       </div>
       <div className="notes-date">
         <p>{moment(note.reminderDate).format("MMM Do YY")}</p>
@@ -82,6 +81,7 @@ const Note = ({ note }) => {
             handleOpen();
           }}
         >
+               {note.reminderDate ===  note.date ? alert('Hey Remaind that you Have a Task') : null}
           Edit
         </button>
         <button
