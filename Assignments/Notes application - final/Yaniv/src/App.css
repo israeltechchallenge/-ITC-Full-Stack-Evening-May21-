@@ -1,3 +1,9 @@
+:root {
+  --main-color:steelblue;
+  --sub-color: skyblue;
+  --paper-color: beige;
+}
+
 .tilt-in-fwd-br {
 	-webkit-animation: tilt-in-fwd-br 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: tilt-in-fwd-br 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
@@ -47,7 +53,7 @@ h2 {
 }
 
 .note-form {
-  width: 65vw;
+  width: 80vw;
   min-width: 280px;
   max-width: 1000px;
   display: flex;
@@ -56,7 +62,7 @@ h2 {
 }
 
 ::placeholder {
-  color:lightcoral;
+  color:var(--sub-color);
 }
 
 .note-form__item {
@@ -67,7 +73,7 @@ h2 {
 
 .note-form__item--title {
   border-radius: 5px 5px 0 0;
-  background-color: firebrick;
+  background-color: var(--main-color);
   color: white;
   font-weight: bold;
 }
@@ -75,7 +81,7 @@ h2 {
 .note-form__item--text {
   height: fit-content;
   border-radius: 0 0 5px 5px;
-  background-color: beige;
+  background-color: var(--paper-color);
 }
 
 .note-form__item--reminder {
@@ -98,7 +104,7 @@ h2 {
   content: '\f0f3';
   top: 1px;
   left: 15px;
-  color:firebrick;
+  color:var(--main-color);
 }
 
 .input-title, .input-text, .input-reminder {
@@ -109,7 +115,7 @@ h2 {
   white-space: pre-wrap;
   overflow-x: hidden;
   resize: none;
-  font-size: calc(10px + 1vmin)
+  font-size: calc(10px + 1vmin);
 }
 
 .input-title {
@@ -119,17 +125,18 @@ h2 {
 
 .input-text {
   padding-top: 8px;
-  background-color: beige;
-  background-image: linear-gradient(lightcoral 1px, transparent 1px);
+  background-color: var(--paper-color);
+  background-image: linear-gradient(var(--sub-color) 1px, transparent 1px);
   background-size: 100% 30px;
   background-repeat: repeat-y;
   background-attachment: local;
+  font-size: calc(12px + 1vmin);
 }
 
 .input-reminder {
   position: absolute;
   font-size: calc(6px + 1vmin);
-  color: firebrick;
+  color: var(--main-color);
   bottom: -5px;
   left: -5px;
 }
@@ -143,7 +150,7 @@ input, textarea {
 fieldset {
   position: relative;
   padding: 0;
-  width: 65vw;
+  width: 80vw;
   min-width: 280px;
   max-width: 1000px;
 }
@@ -154,7 +161,7 @@ fieldset {
     left: 25px;
     font-size: calc(2px + 1vmin);
     font-weight: bold;
-    color:lightcoral;
+    color:var(--sub-color);
 }
 
 legend {
@@ -163,27 +170,28 @@ legend {
   right: 6px;
   font-size: calc(5px + 1vmin);
   font-weight: bold;
-  color: lightcoral;
+  color: var(--sub-color);
   display: none;
 }
 
 .note-form__item--submit {
-  font-weight: bold;
   padding: 1vh;
+  margin: 10px;
   border-radius: 5px;
   color: white;
-  background-color: lightcoral;
+  background-color: var(--sub-color);
+  font-weight: bold;
   font-size: calc(15px + 1vmin);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
   cursor: pointer;
 }
 
 .note-form__item--submit:hover {
-  background-color: darkred;
+  background-color: darkblue;
 }
 
 .note-form__item--submit:active {
-  background-color: firebrick;
+  background-color: var(--main-color);
 }
 
 .App-main {
@@ -200,7 +208,7 @@ legend {
 }
 
 .text-bg {
-  background-color: beige;
+  background-color: var(--paper-color);
 }
 
 .ReactModal__Overlay {
@@ -208,20 +216,7 @@ legend {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100vw;
-  height: 100vh;
   z-index: 100;
-}
-
-.ReactModal__Content {
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  margin: 1vh 2vh;
-  height: 200px;
-  width: 190px;
 }
 
 .note, .ReactModal__Content {
@@ -236,9 +231,10 @@ legend {
 }
 
 .ReactModal__Content {
-  width: 60vw;
+  width: 80vw;
   min-width: 280px;
   max-width: 1000px;
+  height: 200px;
   display: unset;
 }
 
@@ -258,8 +254,12 @@ legend {
   width: fit-content;
   text-align: right;
   cursor: pointer;
-  color: lightcoral;
+  color: var(--sub-color);
   z-index: 1;
+}
+
+.note__item--close {
+  color: lightcoral;
 }
 
 .note__item--reminder {
@@ -267,7 +267,7 @@ legend {
   right: unset;
   bottom: 2px;
   left: 4px;
-  color: firebrick;
+  color: var(--main-color);
   z-index: 1;
   cursor: unset;
 }
@@ -277,7 +277,7 @@ legend {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: firebrick;
+  background-color: var(--main-color);
   border-radius: 5px 5px 0 0;
 }
 
@@ -301,11 +301,12 @@ legend {
 .note__item--text {
   padding-top: 8px;
   border-radius: 0 0 5px 5px;
-  background-color: beige;
-  background-image: linear-gradient(lightcoral 1px, transparent 1px);
+  background-color: var(--paper-color);
+  background-image: linear-gradient(var(--sub-color) 1px, transparent 1px);
   background-size: 100% 30px;
   background-repeat: repeat-y;
   background-attachment: local;
+  font-size: calc(12px + 1vmin);
   height: 100%;
   overflow-x: hidden;
   line-height: 30px;
