@@ -1,5 +1,6 @@
 import dateFormat from "dateformat";
 import ReactModal from 'react-modal';
+import TextInput from './textInput';
 import React, { useState } from "react"
 
 
@@ -9,7 +10,8 @@ function ToDo(props){
   function handleOpenModal () {
     setStateFunc(!currentState)
   }
-function handleCloseModal () {
+function handleCloseModal (e) {
+  
     setStateFunc(!currentState)
   }
 
@@ -29,14 +31,12 @@ return <div onClick={handleOpenModal} style={{
     {props.todo}
   <p style={{fontSize:'12px'}}>{dateFormat(props.time).toLocaleString()}</p>
   <button onClick={()=>props.deleteNote(props.index)}>Delete </button>
+  <button onClick={handleOpenModal}>Edit Note </button> 
   <ReactModal
            isOpen={currentState}
            contentLabel="Minimal Modal Example">
           <button onClick={handleCloseModal}>Close Modal</button>
-          <h3> {props.title}</h3>
-    {props.todo}
-  <p style={{fontSize:'12px'}}>{dateFormat(props.time).toLocaleString()}</p>
-  <button onClick={handleOpenModal}>Edit Note </button> 
+          <TextInput/>
         </ReactModal>
 </div>;
 }
