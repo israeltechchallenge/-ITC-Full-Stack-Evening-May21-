@@ -49,7 +49,8 @@ const Form = ({
   return (
     <div>
       <form className='form-group' onSubmit={submitNote}>
-        {error === true ? (
+        {error === true ? ( 
+          //  YS: You can just say: error ?
           <Error message='The description is requiered' />
         ) : null}
 

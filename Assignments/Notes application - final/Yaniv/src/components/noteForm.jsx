@@ -3,12 +3,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 import dateToIsoStringWithTZ from '../utilities/dateToIsoStringWithTZ'
 
-function NoteForm({ onAdd, onUpdate, existingNote }) {
+function NoteForm({ onAdd, onUpdate, existingNote }) { //YS Nice component! 
 
     const [noteInputs, setNoteInputs] = useState(existingNote ?
         { title: existingNote.title, text: existingNote.text, reminder: (existingNote.reminder ? dateToIsoStringWithTZ(existingNote.reminder) : '') }
         :
-        { title: '', text: '', reminder: '' });
+        { title: '', text: '', reminder: '' }); //YS: This ternary is a little messy, convert your values into variables/functions and have a simple ternary. 
     const [reminderChanged, setReminderChanged] = useState(false);
 
     useEffect(() => {
@@ -37,7 +37,7 @@ function NoteForm({ onAdd, onUpdate, existingNote }) {
         const noteCreatedAt = (existingNote) ? existingNote.createdAt : new Date();
         const noteUpdatedAt = (existingNote) ? ((reminderChanged) ? existingNote.updatedAt : new Date()) : null;
         const note = { title: noteInputs.title, text: noteInputs.text, reminder: (noteInputs.reminder ? new Date(noteInputs.reminder) : null), createdAt: noteCreatedAt, updatedAt: noteUpdatedAt, id: noteId }
-        if (existingNote) onUpdate(note);
+        if (existingNote) onUpdate(note); //YS: Nice
         else onAdd(note);
         setNoteInputs({ title: '', text: '', reminder: '' });
         const titleLegend = document.querySelector('.legend-title');

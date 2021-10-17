@@ -1,4 +1,4 @@
-function sortByDate(arrayToSort) {
+function sortByDate(arrayToSort) { //YS: Good
     arrayToSort.sort((a,b) => {
         const dateA = (a.updatedAt) ? a.updatedAt : a.createdAt;
         const dateB = (b.updatedAt) ? b.updatedAt : b.createdAt;

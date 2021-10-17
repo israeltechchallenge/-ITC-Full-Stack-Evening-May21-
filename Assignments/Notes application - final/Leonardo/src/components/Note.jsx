@@ -10,7 +10,7 @@ import {
 import Form from './Form'
 import Modal from 'react-modal'
 
-const customStyles = {
+const customStyles = { //YS: This should be in a separate CSS file
   content: {
     width: '80%',
     top: '50%',

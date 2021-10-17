@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
-function EditTask({ modal, toggle,notes,editNote}) {
+function EditTask({ modal, toggle,notes,editNote}) { //YS: OK but this should be the same component as your createTask (same form)
   const [titleChange, setTitle] = useState("");
   const [descriptionChange, setDescription] = useState("");
   

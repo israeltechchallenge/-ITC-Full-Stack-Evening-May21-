@@ -29,11 +29,13 @@ function App() {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalNoteIndex, setModalNoteIndex] = useState(null);
 
+  async function getLocalforageNotes() { //YS: It would be better if this function were declared outside your useEffect and in your useEffect you just call it. 
+    const getNotes = await localforage.getItem('notes');
+    setNotes((getNotes) ? getNotes : { active: [], archived: [] });
+  }
+
   useEffect(() => {
-    async function getLocalforageNotes() {
-      const getNotes = await localforage.getItem('notes');
-      setNotes((getNotes) ? getNotes : { active: [], archived: [] });
-    }
+
 
     getLocalforageNotes();
   },[]);
@@ -45,7 +47,7 @@ function App() {
     await localforage.setItem('notes', updatedNotes);
   }
 
-  const handleUpdate = async (updatedNote) => {
+  const handleUpdate = async (updatedNote) => {  //YS: This is a little DRY. You can give your inputs a name in the HTML and then with object notation using brackets do something like: updatedActive[modalNoteIndex][e.target.name] and you will need only one line
     let updatedActive = [...notes.active];
     if ((updatedActive[modalNoteIndex].title !== updatedNote.title) ||
         (updatedActive[modalNoteIndex].text !== updatedNote.text) ||
@@ -101,7 +103,8 @@ function App() {
     setIsOpen(true);
   }
 
-  const closeModal = () => {
+  const closeModal = () => { //YS: Instead of having a setOpen and setClose you can have only one called toggleModal and initialize a
+                            // state for example [isOpen, setIsopen] and in your function write setIsopen(!isOpen) - the opposite of what it was before
     setIsOpen(false);
   }
 
@@ -123,7 +126,7 @@ function App() {
     });
   }
 
-  setInterval(function() { checkReminder() }, 0.5 * 60 * 1000);
+  setInterval(function() { checkReminder() }, 0.5 * 60 * 1000); //YS: Nice! 
 
   return (
     <div className="App">
