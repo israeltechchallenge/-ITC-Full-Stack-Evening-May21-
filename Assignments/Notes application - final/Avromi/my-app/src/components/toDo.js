@@ -7,7 +7,8 @@ import React, { useState } from "react"
 
 function ToDo(props){
   const [currentState, setStateFunc] = useState(false)
-  function handleOpenModal () {
+  function handleOpenModal (e) {
+      e.preventDefault()
     setStateFunc(!currentState)
   }
 function handleCloseModal (e) {
@@ -15,7 +16,7 @@ function handleCloseModal (e) {
     setStateFunc(!currentState)
   }
 
-return <div onClick={handleOpenModal} style={{ 
+return <div style={{ 
     padding: 18,
     width:'150px',
     border: '1px solid white',
@@ -24,19 +25,21 @@ return <div onClick={handleOpenModal} style={{
     color: 'white'
     
 
-}}>
+ }}>
      
 
   <h3> {props.title}</h3>
     {props.todo}
   <p style={{fontSize:'12px'}}>{dateFormat(props.time).toLocaleString()}</p>
   <button onClick={()=>props.deleteNote(props.index)}>Delete </button>
-  <button onClick={handleOpenModal}>Edit Note </button> 
-  <ReactModal
+  <button onClick={handleOpenModal}  >Edit Note </button> 
+        <ReactModal
            isOpen={currentState}
            contentLabel="Minimal Modal Example">
-          <button onClick={handleCloseModal}>Close Modal</button>
-          <TextInput/>
+               <div>
+                    <button onClick={handleCloseModal}>Close Modal</button>
+                    <TextInput/>
+                </div>
         </ReactModal>
 </div>;
 }
