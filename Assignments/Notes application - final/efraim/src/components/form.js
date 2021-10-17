@@ -12,7 +12,7 @@ function Form({addNote, editNote, closeModal, note})  {
 
     useEffect(() => {
         if(addNote)
-        setIsAddNote(true)
+        setIsAddNote(true)   //YS: You can do: addNote && setIsAddNote(true)  instead of the if
     }, [addNote]) 
  
     
@@ -27,7 +27,7 @@ function Form({addNote, editNote, closeModal, note})  {
 // instructions specifically said to use a form so this is how i did it..
 // my other plan was to just have two onclick buttons with a handleEdit and handleAdd function and split it up
 // then use the isAddNote to hide which button i didn't need.. but here is my solution using a form
-    function submitNote(e) {
+    function submitNote(e) { //YS:  Well done!
         e.preventDefault();
         let title = titleValue
         let noteText = noteValue
@@ -38,12 +38,12 @@ function Form({addNote, editNote, closeModal, note})  {
                 const id = "id" + Math.random().toString(16).slice(2)
                 let newNote = {}
                 if(titleValue !== ''){
-                    newNote= {title: title, note: noteText, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
+                    newNote= {title: title, note: noteText, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id} //YS: OK, good logic but this is kind of DRY (the only thing that changes is the title)
                 }else{
                     newNote= {note: noteText, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
                 }
                 addNote(newNote)
-            }else{
+            }else{ //YS: Better to write else if (isAddNote === false) and at the end the final else will be an error. 
                 if(titleValue === ''){
                     title = note.title
                 }

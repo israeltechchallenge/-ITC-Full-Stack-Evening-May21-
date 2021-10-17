@@ -22,7 +22,7 @@ const App = () => {
   const [showArchiveList, setShowArchiveList] = useState(false)
 
   useEffect(() => {
-    async function getNotesFromForage() {
+    async function getNotesFromForage() {  //YS: This function declaration should be outside your useEffect.
       const savedNotes = await localForage.getItem('notes-app')
       const savedArchiveNotes = await localForage.getItem('notes-restore-app')
       if (savedNotes) {
@@ -35,7 +35,7 @@ const App = () => {
         alertNote(savedArchiveNotes)
       }
     }
-    getNotesFromForage()
+    getNotesFromForage() //YS: Only this should be in the useEffect (calling your function)
   }, [])
 
   function alertNote(notesToRemind) {
@@ -95,7 +95,7 @@ const App = () => {
   }
 
   function handleArchiveNotes(id) {
-    const index = notes.findIndex(note => note.id === id)
+    const index = notes.findIndex(note => note.id === id) //YS: Why not find if you already have the id? 
     const note = notes[index]
     const arrayArchiveNotes = [...archiveNotes, note]
     notes.splice(index, 1)
@@ -106,7 +106,7 @@ const App = () => {
   }
 
   function restoreNote(id) {
-    const index = archiveNotes.findIndex(restorenotes => restorenotes.id === id)
+    const index = archiveNotes.findIndex(restorenotes => restorenotes.id === id) //YS: Why not find if you already have the id? 
     const note = archiveNotes[index]
     const restoreNotes = [...notes, note]
     archiveNotes.splice(index, 1)
@@ -130,8 +130,9 @@ const App = () => {
           onClick={() => (archiveNotes.length === 0) ? alert('Empty Notes')
             : setShowArchiveList(!showArchiveList)}>Archive Notes
         </button>
-        {showArchiveList && <ArchiveList archivenotes={archiveNotes} handleRestoreNote={restoreNote} />}
-      </div>
+        {showArchiveList && <ArchiveList archivenotes={archiveNotes} handleRestoreNote={restoreNote} />}  
+        {/* YS: Very good! */}
+      </div>  
     </div >
 
   )

@@ -24,7 +24,7 @@ const Form = ({ handleSumbit, handleData, handleDate, handleChangeTitle, handleC
                     onChange={handleChangeBody}
                     required
                 />
-                {buttonLabel !== "Update" ?
+                {buttonLabel !== "Update" ? //YS: NIce
                     <div className="d-flex justify-content-center align-center">
                         <label htmlFor="datetime" className="me-2">DateToRemind:</label>
                         <DateTimePicker
