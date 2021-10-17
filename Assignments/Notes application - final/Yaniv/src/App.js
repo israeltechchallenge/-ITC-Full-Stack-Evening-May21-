@@ -109,6 +109,7 @@ function App() {
     let updatedActive = [...notes.active];
     if (!updatedActive.length) return;
     updatedActive.forEach((note, index) => {
+      if (notes.active[index] !== note) return;
       if ((note.reminder) && (note.reminder <= (new Date()))) {
         note.reminder = null;  
         const updatedNotes = { ...notes, ...{ active: updatedActive } };

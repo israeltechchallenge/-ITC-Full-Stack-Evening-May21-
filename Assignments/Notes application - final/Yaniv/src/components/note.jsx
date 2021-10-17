@@ -14,8 +14,8 @@ function Note( { title, createdAt, updatedAt, text, onToggleArchive, onOpenModal
             <div className={`note__item note__item--top${archiveTopClass}`}>
                 <h4 className='note__item note__item--title'>{title}</h4>
                 {updatedAt ?
-                <p className='note__item note__item--date'>updated:<br />{updatedFormattedDate}</p> : null}
-                <p className='note__item note__item--date'>created:<br />{createdFormattedDate}</p>
+                <p className='note__item note__item--date'>updated{relative ? ' ' : `:${<br />}`}{updatedFormattedDate}</p> : null}
+                <p className='note__item note__item--date'>created{relative ? ' ' : `:${<br />}`}{createdFormattedDate}</p>
             </div>
             :
             <div className={`note__item note__item--top${archiveTopClass}`}>
