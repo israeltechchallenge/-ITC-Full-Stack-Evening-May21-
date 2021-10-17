@@ -107,14 +107,15 @@ function App() {
 
   const checkReminder = () => {
     let updatedActive = [...notes.active];
+    if (!updatedActive.length) return;
     updatedActive.forEach((note, index) => {
       if ((note.reminder) && (note.reminder <= (new Date()))) {
+        note.reminder = null;  
+        const updatedNotes = { ...notes, ...{ active: updatedActive } };
+        setNotes(updatedNotes);
         swal("Note Reminder!", "", "info", { button: "Show Note" })
         .then(() => {
-          note.reminder = null;  
           openModal(document.querySelector('.notes'), index, false);
-          const updatedNotes = { ...notes, ...{ active: updatedActive } };
-          setNotes(updatedNotes);
           return;
         });
       }

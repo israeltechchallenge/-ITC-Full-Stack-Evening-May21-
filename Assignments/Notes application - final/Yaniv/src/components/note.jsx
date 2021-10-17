@@ -1,8 +1,9 @@
 import formatDate from '../utilities/fromatDate';
 
 function Note( { title, createdAt, updatedAt, text, onToggleArchive, onOpenModal, isArchived, hasReminder, index }) {
-    const createdFormattedDate = formatDate(createdAt, false, true);
-    const updatedFormattedDate = (updatedAt) ? formatDate(updatedAt, false, true) : null;
+    const relative = true;
+    const createdFormattedDate = formatDate(createdAt, false, relative);
+    const updatedFormattedDate = (updatedAt) ? formatDate(updatedAt, false, relative) : null;
     const createdClass = (updatedAt) ? 'date' : 'title';
     const archiveTopClass = (isArchived) ? ' note__item--archived' : '';
 
@@ -19,8 +20,8 @@ function Note( { title, createdAt, updatedAt, text, onToggleArchive, onOpenModal
             :
             <div className={`note__item note__item--top${archiveTopClass}`}>
                 {updatedAt ?
-                <p className='note__item note__item--title'>updated:<br />{updatedFormattedDate}</p> : null}
-                <p className={`note__item note__item--${createdClass}`}>created:<br />{createdFormattedDate}</p>
+                <p className='note__item note__item--title'>updated{relative ? ' ' : `:${<br />}`}{updatedFormattedDate}</p> : null}
+                <p className={`note__item note__item--${createdClass}`}>created{relative ? ' ' : `:${<br />}`}{createdFormattedDate}</p>
             </div>
             }
             <p className='note__item note__item--text'>{text}</p>
