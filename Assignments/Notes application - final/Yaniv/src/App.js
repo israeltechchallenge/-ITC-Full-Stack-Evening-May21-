@@ -9,7 +9,7 @@ import localforage from 'localforage';
 import sortByDate from './utilities/sortByDate';
 
 Modal.setAppElement('#root');
-const customStyles = {
+const customStyles = { //YS: Your CSS should be in a separate file.
   content: {
     inset: 'unset',
     border: 'unset',
