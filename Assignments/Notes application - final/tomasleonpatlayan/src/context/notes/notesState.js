@@ -1,22 +1,22 @@
 import React, { useReducer } from "react";
 import NoteContext from "./noteContext";
 import NoteReducer from "./notesReducer";
+
 import {
   ADD_NOTES,
   NOTE_VALIDATE,
   CURRENT_NOTE,
   UPDATE_NOTE,
+  DELETE_NOTE,
+  ACHIVED_NOTE,
 } from "../../types/index";
 const NoteState = (props) => {
   // set Initial State
   const initialState = {
-    notes: [
-      { id: 1, title: "HOla 1", contentNote: "Content Note" },
-      { id: 2, title: "HOla12", contentNote: "Content Note" },
-      { id: 3, title: "HOla 5", contentNote: "Content Note" },
-    ],
+    notes: [],
     selectednote: null,
     errornote: false,
+    achivednotes: [],
   };
 
   const [state, dispatch] = useReducer(NoteReducer, initialState);
@@ -44,6 +44,15 @@ const NoteState = (props) => {
       payload: note,
     });
   };
+
+  //*Delete Note by Id
+  const deleteNote = (id) => {
+    dispatch({
+      type: DELETE_NOTE,
+      payload: id,
+    });
+  };
+
   //* Update a Note
   const updateNote = (note) => {
     dispatch({
@@ -51,16 +60,29 @@ const NoteState = (props) => {
       payload: note,
     });
   };
+
+  //* Achived Note
+
+  const achivedCurrentNote = (note) => {
+    dispatch({
+      type: ACHIVED_NOTE,
+      payload: note,
+    });
+  };
+
   return (
     <NoteContext.Provider
       value={{
         notes: state.notes,
         errornote: state.errornote,
         selectednote: state.selectednote,
+        achivednotes: state.achivednotes,
         addNote,
         validateNote,
         setCurrentNote,
         updateNote,
+        deleteNote,
+        achivedCurrentNote,
       }}
     >
       {props.children}

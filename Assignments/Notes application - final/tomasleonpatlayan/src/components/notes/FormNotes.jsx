@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
+import moment from "moment";
 import NoteContext from "../../context/notes/noteContext";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 const FormNotes = () => {
   //*Get Note Context Function
   const noteContext = useContext(NoteContext);
@@ -11,11 +12,6 @@ const FormNotes = () => {
   useEffect(() => {
     if (selectednote !== null) {
       setNote(selectednote);
-    } else {
-      setNote({
-        title: "",
-        contentNote: "",
-      });
     }
   }, [selectednote]);
 
@@ -23,9 +19,10 @@ const FormNotes = () => {
   const [note, setNote] = useState({
     title: "",
     contentNote: "",
+    reminderDate: "",
   });
 
-  const { title, contentNote } = note;
+  const { title, contentNote, reminderDate } = note;
 
   const handleChange = (e) => {
     setNote({
@@ -46,21 +43,23 @@ const FormNotes = () => {
     if (selectednote === null) {
       //*Add new Note to note State
       note.id = uuidv4();
+      note.date =new Date().getFullYear() + "-" + (new Date().getMonth() + 1)+ "-" + new Date().getDate() 
+      moment(reminderDate).format("MMM Do YY");
       addNote(note);
     } else {
       //*Update the Current Note
       updateNote(note);
-      
-      
     }
 
     //*Restar Form
     setNote({
       title: "",
       contentNote: "",
+      reminderDate: "",
     });
   };
-
+ 
+  
   return (
     <div className="form">
       {errornote ? (
@@ -81,9 +80,16 @@ const FormNotes = () => {
             value={contentNote}
             cols="30"
             rows="10"
+            format="MMM Do h:mm:ss a"
             placeholder="Content Note"
             onChange={handleChange}
           ></textarea>
+          <input
+            type="date"
+            name="reminderDate"
+            value={reminderDate}
+            onChange={handleChange}
+          />
           <button type="submit">Add Note</button>
         </div>
       </form>
