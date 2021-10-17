@@ -105,22 +105,20 @@ function App() {
     setIsOpen(false);
   }
 
-  const checkReminder = () => {
+  const checkReminder = async () => {
     let updatedActive = [...notes.active];
     if (!updatedActive.length) return;
-    updatedActive.forEach((note, index) => {
-      if (notes.active[index] !== note) return;
-      if ((note.reminder) && (note.reminder <= (new Date()))) {
-        note.reminder = null;  
-        const updatedNotes = { ...notes, ...{ active: updatedActive } };
-        setNotes(updatedNotes);
-        swal("Note Reminder!", "", "info", { button: "Show Note" })
-        .then(() => {
-          openModal(document.querySelector('.notes'), index, false);
-          return;
-        });
-      }
-    });
+    const remindexIndex = updatedActive.findIndex((note) => ((note.reminder) && (note.reminder <= (new Date()))));
+    if (remindexIndex !== -1) {
+      updatedActive[remindexIndex].reminder = null;  
+      const updatedNotes = { ...notes, ...{ active: updatedActive } };
+      setNotes(updatedNotes);
+      await localforage.setItem('notes', updatedNotes);
+      swal("Note Reminder!", "", "info", { button: "Show Note" })
+      .then(() => {
+        openModal(document.querySelector('.notes'), remindexIndex, false);
+      });
+    }
   }
 
   setInterval(function() { checkReminder() }, 0.5 * 60 * 1000);
