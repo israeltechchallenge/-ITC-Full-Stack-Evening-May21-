@@ -1,4 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import Moment from "react-moment";
+import moment from "moment";
 import NoteContext from "../../context/notes/noteContext";
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
@@ -28,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const Note = ({ note }) => {
   //* Get the Note Context Function
   const noteContext = useContext(NoteContext);
-  const { setCurrentNote } = noteContext;
+  const { setCurrentNote, deleteNote, achivedCurrentNote } = noteContext;
 
   //*Add a current Note when the user Want to edit it
   const currentNote = (note) => {
@@ -47,13 +49,28 @@ const Note = ({ note }) => {
   const handleClose = () => {
     setOpen(false);
   };
+  const deleteNotes = (id) => {
+    deleteNote(id);
+  };
+  const selectAchivedNote = (note) => {
+    achivedCurrentNote(note);
+  };
+
+  
   return (
     <li className="note">
+ 
       <div className="notes-title">
         <p>{note.title}</p>
       </div>
       <div className="notes-noteContent">
         <p>{note.contentNote}</p>
+      </div>
+      <div className="notes-date">
+         <p>{moment(note.date).format("MMM Do YY")}</p>
+      </div>
+      <div className="notes-date">
+        <p>{moment(note.reminderDate).format("MMM Do YY")}</p>
       </div>
 
       <div className="actions">
@@ -64,9 +81,19 @@ const Note = ({ note }) => {
             handleOpen();
           }}
         >
+               {note.reminderDate ===  note.date ? alert('Hey Remaind that you Have a Task') : null}
           Edit
         </button>
-        <button type="button">Delete</button>
+        <button
+          type="button"
+          onClick={() => {
+            deleteNotes(note.id);
+            selectAchivedNote(note);
+            console.log(note);
+          }}
+        >
+          Delete
+        </button>
 
         <Modal
           aria-labelledby="simple-modal-title"
