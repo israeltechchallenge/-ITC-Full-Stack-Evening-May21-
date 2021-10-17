@@ -42,3 +42,7 @@ form{
   cursor: pointer;
   background-color: blueviolet;
 }
+
+.form__date{
+  margin: auto;
+}

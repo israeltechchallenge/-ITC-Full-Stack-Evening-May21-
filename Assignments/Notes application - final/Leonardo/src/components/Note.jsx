@@ -39,7 +39,7 @@ const Note = ({ note, index, deleteNote, updateNote, archived, restoreNote }) =>
       >
         <MDBCardHeader background='success'>
           <p>Created date: <Moment format='MMM Do h:mm:ss a'>{note.date}</Moment></p>
-          {note.updateDate ? (<p>Updated date:<Moment format='MMM Do h:mm:ss a'>{note.updateDate}</Moment></p>) : null}
+          {note.updateDate ? (<p>Updated date: <Moment format='MMM Do h:mm:ss a'>{note.updateDate}</Moment></p>) : null}
         </MDBCardHeader>
         {!archived ? <MDBCardBody onClick={handleOpenModal} className='content'>
           <MDBCardTitle>{note.title}</MDBCardTitle>

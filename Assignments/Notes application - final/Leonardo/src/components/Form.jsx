@@ -67,6 +67,7 @@ const Form = ({
           onChange={handledDescriptionChange}
         />
         <DateTimePicker
+          className='form-control w-50 p-1 form__date'
           id='datetime'
           name='datetime'
           value={noteValue.reminderDate}
