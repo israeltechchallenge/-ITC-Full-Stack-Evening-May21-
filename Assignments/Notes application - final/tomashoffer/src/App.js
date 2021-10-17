@@ -14,7 +14,7 @@ const App = () => {
 
   // Use Effect para realizar ciertas operaciones cuando el state cambia
   useEffect(() => {
-    async function getNotesData() {
+    async function getNotesData() { //YS: You dont need to write the whole function inside the useEffect, just call it (line 23) - the function declaration should go outside. 
       const notesFromStorage = await localforage.getItem("notes");
       if (notesFromStorage) {
         setNotes(notesFromStorage);
@@ -24,7 +24,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    async function getStoreData() {
+    async function getStoreData() { //YS: same as before
       const archivedNotesStorage = await localforage.getItem("notes");
       if (archivedNotesStorage) {
         setArchived(archivedNotesStorage);
@@ -53,7 +53,7 @@ const App = () => {
   }
 
   function editNote(data) {
-    const editArray = notes;
+    const editArray = notes; //YS: You shouldnt use your state directly, you should copy it: const editArray = [...notes]
     const findNoteIndex = editArray.findIndex((note) => note.id === data.id);
     editArray[findNoteIndex].title = data.title;
     editArray[findNoteIndex].note = data.note;
@@ -82,7 +82,7 @@ const App = () => {
   }
 
   function showAchivedNotes() {
-    if (showArchived === false && archived.length !== 0) {
+    if (showArchived === false && archived.length !== 0) { //YS: Nice
       setShowArchived(true);
     } else {
       setShowArchived(false);

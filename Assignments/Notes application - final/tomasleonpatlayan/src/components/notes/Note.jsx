@@ -18,7 +18,7 @@ function getModalStyle() {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({ //YS: You should add your styles in a separate css file
   paper: {
     position: "absolute",
     width: 400,
@@ -77,7 +77,7 @@ const Note = ({ note }) => {
         <button
           type="button"
           onClick={() => {
-            currentNote(note);
+            currentNote(note); //YS: You shouldnt have two function calls with the same click
             handleOpen();
           }}
         >
@@ -87,7 +87,7 @@ const Note = ({ note }) => {
         <button
           type="button"
           onClick={() => {
-            deleteNotes(note.id);
+            deleteNotes(note.id); //YS: You shouldnt have two function calls with the same click
             selectAchivedNote(note);
             console.log(note);
           }}

@@ -4,20 +4,20 @@ import localforage from "localforage";
 import CardList from "../Componets/CardList";
 import moment from "moment";
 import ArhList from "../Componets/ArhList";
-function TodoList() {
-  // localforage.clear()
+function TodoList() { //YS: Indentation! This is way too high
+ 
 
   const [modal, setModal] = useState(false);
 
   const toggle = () => {
-    setModal(!modal);
+    setModal(!modal); //YS: Nice! 
   };
   const [notes, setNotes] = useState([]);
   const [archivedNotes, setArchivedNotes] = useState([]);
   const [showArchive, setShowArchive] = useState(false);
 
   useEffect(() => {
-    async function getNotesFromForage() {
+    async function getNotesFromForage() {  //YS: Since you are not using one of your states in this function, you can declare it outside the useEffect and just call it inside. 
       const getNotes = await localforage.getItem("notes");
       const localForageNotes = getNotes ? getNotes : [];
       if (localForageNotes) {
@@ -39,7 +39,7 @@ function TodoList() {
 
   const editNote = (id, title, description) => {
     const findNoteToEdit = notes.find((note) => note.id === id);
-    findNoteToEdit.title = title;
+    findNoteToEdit.title = title;  //YS: This is a little DRY. You can give your inputs a name in the HTML and then with object notation using brackets do something like: findNoteToEdit[e.target.name] and you will need only one line
     findNoteToEdit.description = description;
     findNoteToEdit.updateDate = moment().format("MMM Do  h:mm A");
     setNotes(notes);
@@ -57,7 +57,7 @@ function TodoList() {
     })
   }
 
-  setInterval(function() { reminder() }, 2*60*1000);
+  setInterval(function() { reminder() }, 2*60*1000); //YS: This reminder will run forever!!!!
 
 
   const addNote = (newNote) => {
@@ -70,9 +70,9 @@ function TodoList() {
   const deleteNote = (index) => {
     const deletedNote = [...notes];
     const noteToArh = deletedNote[index];
-    const newArhNote = [...archivedNotes, noteToArh];
-    setArchivedNotes(newArhNote);
-    deletedNote.splice(index, 1);
+    const newArhNote = [...archivedNotes, noteToArh]; //YS: Ok, nice logic
+    setArchivedNotes(newArhNote); //YS: Good
+    deletedNote.splice(index, 1); //YS: Good 
 
     setNotes(deletedNote);
 

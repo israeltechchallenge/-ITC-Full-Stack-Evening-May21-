@@ -26,7 +26,7 @@ function Note({ note, index, deleteNote, editNote, restoreNote  }) {
     setIsOpen(true);
   }
 
-  function closeModal(e) {
+  function closeModal(e) { //YS: Nice
     e.stopPropagation()
     setIsOpen(false);
   }
@@ -37,7 +37,7 @@ function Note({ note, index, deleteNote, editNote, restoreNote  }) {
     {deleteNote && <button onClick={() => deleteNote(index, note.id)}>Delete</button>}
     {restoreNote && <button onClick={() => restoreNote(note, index)}>Restore</button>}
 
-    {deleteNote && <Modal
+    {deleteNote && <Modal 
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={customStyles}

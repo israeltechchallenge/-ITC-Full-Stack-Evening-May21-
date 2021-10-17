@@ -17,7 +17,7 @@ class Form extends Component {
     this.setState({
       title: e.target.value,
     });
-    console.log(this.props.modal);
+    console.log(this.props.modal); //YS: No
   };
   getNoteValue = (e) => {
     this.setState({
@@ -56,7 +56,7 @@ class Form extends Component {
   editHandle = (e) => {
     e.preventDefault();
     const { editNote } = this.props;
-    console.log("notaActual", this.props.notaActual);
+    console.log("notaActual", this.props.notaActual); //YS: No
     if (this.state.notes !== "") {
       const data = {
         title: this.state.title,

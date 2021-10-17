@@ -17,7 +17,8 @@ function App() {
   const [showArchiveList, setShowArchiveList] = useState(false)
 
   //Save the information in localForage when the state of "notesList" or "archiveList" change
-  useEffect(() => {
+  useEffect(() => { //YS: Nice
+
     const saveNotesList = async () => {
       await localForage.setItem('notes', notesList);
       await localForage.setItem('notesArchived', archiveList);
@@ -96,7 +97,7 @@ function App() {
       }
     })
   }
-  setInterval(alertNoteReminder, 1000);
+  setInterval(alertNoteReminder, 1000); //YS: Nice
 
   return (
     <div>

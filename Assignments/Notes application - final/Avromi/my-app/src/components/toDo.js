@@ -16,7 +16,7 @@ function handleCloseModal (e) {
     setStateFunc(!currentState)
   }
 
-return <div style={{ 
+return <div style={{  //YS: Format your code! 
     padding: 18,
     width:'150px',
     border: '1px solid white',
@@ -26,6 +26,7 @@ return <div style={{
     
 
  }}>
+   
      
 
   <h3> {props.title}</h3>

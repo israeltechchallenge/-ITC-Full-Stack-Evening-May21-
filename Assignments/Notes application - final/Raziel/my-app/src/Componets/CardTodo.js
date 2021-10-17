@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 
 import EditTask from "../Modals/EditTask";
-const colors = [
+const colors = [ //YS: This should be in a separate CSS file. 
   {
     primaryColor: "#5D93E1",
     secondaryColor: "#ECF3FC",
@@ -49,12 +49,12 @@ function CardTodo({ notes, index, deleteNote, editNote }) {
             {notes.title}
           </span>
         ) : (
-          <div className="empty"></div>
+          <div className="empty"></div> 
         )}
 
         <p className="mt-3">{notes.description}</p>
         <span className="date">{notes.date}</span>
-        {notes.updateDate ? (
+        {notes.updateDate ? ( 
           <span
             style={{ color: colors[index % 5].primaryColor }}
             className="dateUpdate"

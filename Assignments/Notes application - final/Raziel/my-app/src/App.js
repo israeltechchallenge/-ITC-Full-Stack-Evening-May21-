@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
-function App() {
+function App() { //YS: This is usually the main component (App)
   return (
     <div className="App">
    <TodosList/>

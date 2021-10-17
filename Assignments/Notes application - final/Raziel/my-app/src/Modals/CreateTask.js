@@ -5,7 +5,7 @@ import moment from "moment";
 import TextareaAutosize from "react-textarea-autosize";
 import DateTimePicker from "react-datetime-picker";
 
-function CreateTask({ modal, toggle, addNote }) {
+function CreateTask({ modal, toggle, addNote }) { //YS: Good
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [value, setDateRemind] = useState(new Date());

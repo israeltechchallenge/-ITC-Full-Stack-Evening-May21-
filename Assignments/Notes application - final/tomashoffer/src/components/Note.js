@@ -13,7 +13,7 @@ const Note = (props) => {
   const [reminderAlert, setReminderAlert] = useState(true)
   const [modalIsOpen, setIsOpen] = React.useState(false);
 
-  const customStyles = {
+  const customStyles = { //YS: You should add your styles in a separate css file. 
     content: {
       top: '50%',
       left: '50%',
@@ -25,7 +25,7 @@ const Note = (props) => {
     },
   };
   
-  function openModal() {
+  function openModal() {  //YS: You can also have one function that toggles the modal by setting the state to the opposite of what it was: setModal(!isOpen)  - you initialize isOpen as false 
     setIsOpen(true);
     setModal(true)
   }
@@ -75,7 +75,8 @@ const Note = (props) => {
         <h5>Note: {autoLineBreaks(`${note}`, 30)}</h5>
         <p>Created: {date}</p>
         </div>
-        <Form id={id} modal={modal} editNote={props.editNote} closeModal={closeModal} notaActual={props.notes}/>
+        <Form id={id} modal={modal} editNote={props.editNote} closeModal={closeModal} notaActual={props.notes}/>     
+        {/* YS: write everyting in english! (notaActual)    */}
       </Modal>
     </div>
   );

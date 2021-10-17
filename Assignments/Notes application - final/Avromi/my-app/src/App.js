@@ -25,8 +25,8 @@ class App extends React.Component  {
 
     deleteNote(index){
       const deleteIsTrue = window.confirm("Are you sure you want to delete this note?")
-      if (deleteIsTrue === true) {
-        const newNotes = this.state.notes
+      if (deleteIsTrue === true) { //YS: You can just write: if (deleteIsTrue) ... 
+        const newNotes = this.state.notes //YS: You should copy the state  [...this.state.notes] and not update it directly.
         newNotes.splice(index,1)
         this.setState({notes:newNotes})
       }

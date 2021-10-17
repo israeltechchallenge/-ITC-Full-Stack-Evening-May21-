@@ -9,7 +9,7 @@ const ListAchivedNote = () => {
 
   const setAchivesNotes = () => {
     localForage.setItem("achivednotes", achivednotes);
-    console.log(achivednotes);
+    console.log(achivednotes); //YS: No console log, also use camelCase
   };
 
   setAchivesNotes()

@@ -2,7 +2,7 @@ import React from 'react'
 
 
 import {AiOutlineRedo} from  "react-icons/ai"
-const colors = [
+const colors = [ //YS: This should be in a separate CSS file. 
     {
       primaryColor: "#5D93E1",
       secondaryColor: "#ECF3FC",

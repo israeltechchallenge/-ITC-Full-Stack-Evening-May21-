@@ -27,7 +27,7 @@ const FormNotes = () => {
   const handleChange = (e) => {
     setNote({
       ...note,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value, //YS: Nice
     });
   };
 
@@ -40,7 +40,7 @@ const FormNotes = () => {
       return;
     }
     //* See if is Edit o if a New Note
-    if (selectednote === null) {
+    if (selectednote === null) {  //YS: This isnt working properly 
       //*Add new Note to note State
       note.id = uuidv4();
       note.date =new Date().getFullYear() + "-" + (new Date().getMonth() + 1)+ "-" + new Date().getDate() 

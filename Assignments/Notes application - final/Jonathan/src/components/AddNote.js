@@ -6,7 +6,7 @@ const AddNote = ({ handleAddNotes }) => {
 
     const [value, setDatePicker] = useState(new Date());
 
-    const [state, setState] = useState({
+    const [state, setState] = useState({  //YS: Dont call your state "state"! Call it "noteText" "note" or something.
         body: '',
         title: ''
     })
@@ -14,10 +14,10 @@ const AddNote = ({ handleAddNotes }) => {
     
 
     function handleChange(e){
-        const value = e.target.value
+        const value = e.target.value //YS: Dont call your value VALUE!!
         setState({
             ...state,
-            [e.target.name]:value
+            [e.target.name]:value //YS: Very nice! 
         })
     }
 

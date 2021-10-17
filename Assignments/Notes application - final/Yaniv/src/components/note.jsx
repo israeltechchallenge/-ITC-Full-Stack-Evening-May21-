@@ -13,8 +13,9 @@ function Note( { title, createdAt, updatedAt, text, onToggleArchive, onOpenModal
             {title ?
             <div className={`note__item note__item--top${archiveTopClass}`}>
                 <h4 className='note__item note__item--title'>{title}</h4>
-                {updatedAt ?
+                {updatedAt ?  
                 <p className='note__item note__item--date'>updated{relative ? ' ' : `:${<br />}`}{updatedFormattedDate}</p> : null}
+                {/* YS: A ternary inside a ternary is too much */}
                 <p className='note__item note__item--date'>created{relative ? ' ' : `:${<br />}`}{createdFormattedDate}</p>
             </div>
             :
