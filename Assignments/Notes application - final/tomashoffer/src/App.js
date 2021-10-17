@@ -1,91 +1,124 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Form from "./components/Form";
-import Note from "./components/Note";
+import NoteList from "./components/NoteList";
 import "./App.css";
-import { v4 as uuidv4 } from "uuid";
+import localforage from "localforage";
+import ArchivedNotes from "./components/ArchivedNotes";
+import { Button } from "react-bootstrap";
 
+const App = () => {
+  // ARREGLO DE NOTAS
+  const [notes, setNotes] = useState([]);
+  const [archived, setArchived] = useState([]);
+  const [showArchived, setShowArchived] = useState(false);
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      notes: [],
-      modalOpen: false,
-    };
-    this.addNote = this.addNote.bind(this);
-    this.deleteNote = this.deleteNote.bind(this);
-    this.editNote = this.editNote.bind(this);
+  // Use Effect para realizar ciertas operaciones cuando el state cambia
+  useEffect(() => {
+    async function getNotesData() {
+      const notesFromStorage = await localforage.getItem("notes");
+      if (notesFromStorage) {
+        setNotes(notesFromStorage);
+      }
+    }
+    getNotesData();
+  }, []);
+
+  useEffect(() => {
+    async function getStoreData() {
+      const archivedNotesStorage = await localforage.getItem("notes");
+      if (archivedNotesStorage) {
+        setArchived(archivedNotesStorage);
+      }
+    }
+    getStoreData();
+  }, []);
+
+  function addNote(newNote) {
+    const addNewNote = [...notes, newNote];
+    setNotes(addNewNote);
+    localforage.setItem("notes", addNewNote);
   }
 
-  addNote(title, note) {
-    const newData = {
-      title: title,
-      note: note,
-      date: new Date().toLocaleString("en-GB"),
-      id: uuidv4(),
-    };
-    this.actualizarState(newData)
-  }
-
-  deleteNote(id) {
-    let r = window.confirm("You are going to delete this Note, are you sure?");
-    if (r === true) {
-      const newNotes = this.state.notes.filter((note) => note.id !== id);
-      this.setState({ notes: newNotes });
+  function deleteNote(id) {
+    let resp = window.confirm(
+      "You are going to delete this Note, are you sure?"
+    );
+    if (resp === true) {
+      const deleteNote = notes.filter((note) => note.id !== id);
+      setNotes(deleteNote);
+      localforage.setItem("notes", deleteNote);
     } else {
       return;
     }
   }
 
-  editNote(data){
-    console.log(data)
-    const editArray = this.state.notes;
+  function editNote(data) {
+    const editArray = notes;
     const findNoteIndex = editArray.findIndex((note) => note.id === data.id);
     editArray[findNoteIndex].title = data.title;
     editArray[findNoteIndex].note = data.note;
-    editArray[findNoteIndex].date = new Date().toLocaleString("en-GB");
-
-    this.setState((oldState) => ({ ...oldState, notes: editArray }));
+    editArray[findNoteIndex].update = Date.now();
+    editArray[findNoteIndex].reminder = data.reminder;
+    setNotes(editArray);
+    localforage.setItem("notes", editArray);
   }
 
-  actualizarState(data){
-    this.setState((oldState) => {
-      console.log("oldState", oldState)
-      const newNotes = [...oldState.notes, data];
-      console.log("new state", { ...oldState, notes: newNotes })
-      return { ...oldState, notes: newNotes };
-    });
-  }
-  
-  openModal(e){
-    this.setState({ modalOpen: true });
-  }
-  closeModal(e){
-    this.setState({ modalOpen: false });
+  function archivedNote(note) {
+    const archiveNotes = [...archived, note];
+    const deleteNote = notes.filter((notes) => notes.id !== note.id);
+    setNotes(deleteNote);
+    setArchived(archiveNotes);
+    localforage.setItem("notes", deleteNote);
+    localforage.setItem("archivedNotes", archiveNotes);
   }
 
-  render() {
-    return (
-      <div className="App">
-        <h1>Take Notes!</h1>
-        <Form 
-        addNote={this.addNote}
+  function unarchiveNote(note) {
+    const restoreNote = [...notes, note];
+    const unArchiveNote = archived.filter((notes) => notes.id !== note.id);
+    setArchived(unArchiveNote);
+    setNotes(restoreNote);
+    localforage.setItem("notes", restoreNote);
+    localforage.setItem("archivedNotes", unArchiveNote);
+  }
+
+  function showAchivedNotes() {
+    if (showArchived === false && archived.length !== 0) {
+      setShowArchived(true);
+    } else {
+      setShowArchived(false);
+    }
+  }
+
+  return (
+    <div className="App">
+      <h1>Take Notes!</h1>
+      <Form addNote={addNote} />
+      {archived.length === 0 ? null : (
+        <Button
+          style={{ marginTop: "20px", color: "white" }}
+          type="submit"
+          variant="primary"
+          onClick={() => showAchivedNotes()}
+        >
+          SHOW ARCHIVED
+        </Button>
+      )}
+
+      <NoteList
+        notes={notes}
+        archivedNote={archivedNote}
+        deleteNote={deleteNote}
+        editNote={editNote}
+      />
+      {showArchived ? (
+        <ArchivedNotes
+          archived={archived}
+          unarchiveNote={unarchiveNote}
+          addNote={addNote}
         />
-        <div style={{display: 'grid', gridTemplateColumns:'repeat(3, 1fr)'}}>
-          {this.state.notes.length === 0
-            ? null
-            : this.state.notes.map((notes) => (
-              <Note 
-              key={notes.id} 
-              notes={notes} 
-              deleteNote={this.deleteNote} 
-              editNote={this.editNote} 
-                 />
-            ))}
-        </div>
-      </div>
-    );
-  }
-}
+      ) : null}
+    </div>
+  );
+};
 
 export default App;

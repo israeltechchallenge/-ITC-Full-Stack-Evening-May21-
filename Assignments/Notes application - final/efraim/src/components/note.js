@@ -1,6 +1,7 @@
 import Modal from 'react-modal';
-import Form from './form'
+import Form from './Form'
 import { useState } from 'react'
+import DisplayNote from './DisplayNote'
 
 const customStyles = {
     content: {
@@ -16,7 +17,7 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-function Note({ note, index, deleteNote, editNote }) {
+function Note({ note, index, deleteNote, editNote, restoreNote  }) {
 
     const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -31,25 +32,23 @@ function Note({ note, index, deleteNote, editNote }) {
   }
 
     return <div className="note" onClick={openModal}>
-    <h2>{note.title}</h2>
-    <h3>{note.readbleDate}</h3>
-    <h3>{note.updatedDate}</h3>
-    <p>{note.note}</p>
-    <button onClick={() => deleteNote(index, note.id)}>Delete</button>
-    <Modal
+    <DisplayNote note={note} />
+
+    {deleteNote && <button onClick={() => deleteNote(index, note.id)}>Delete</button>}
+    {restoreNote && <button onClick={() => restoreNote(note, index)}>Restore</button>}
+
+    {deleteNote && <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Note Modal"
       >
-        <h2>{note.title}</h2>
-        <h3>{note.readbleDate}</h3>
-        <h3>{note.updatedDate}</h3>
-        <p>{note.note}</p>
+       <DisplayNote note={note} />
         <label>Edit Note Below!</label>
-        <Form editNote={editNote} noteID={note.id} />
+        <Form editNote={editNote} closeModal={closeModal} note={note} />
         <button onClick={(e)=>closeModal(e)}>close</button>
-      </Modal>
+      </Modal>}
+      
 </div>
     }
     export default Note

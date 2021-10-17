@@ -1,61 +1,115 @@
-import React, { useState, Fragment } from 'react';
+import { useState, useEffect } from 'react';
 import Form from './components/Form'
 import ListNotes from './components/ListNotes';
+import * as localForage from "localforage";
+import shortid from 'shortid'
+import swal from 'sweetalert'
+
+//LINK TO THE PAGE: /* https://notesreminder.netlify.app/ */
 
 function App() {
 
-  //Set the state to create and save ALL the notes, initialize as an empty array:
-  const [notes, setNotes] = useState([])
+  //All the notes:
+  const [notesList, setNotesList] = useState([])
+  //All the archive notes:
+  const [archiveList, setArchiveList] = useState([])
+  //Boolean to show or not archive notes:
+  const [showArchiveList, setShowArchiveList] = useState(false)
 
-  //Add the note to the array of notes
-  const createTheNote = (newNote) => {
-    //Add the new note to the previous array
-    setNotes([
-      ...notes, newNote
-    ])
+  //Save the information in localForage when the state of "notesList" or "archiveList" change
+  useEffect(() => {
+    const saveNotesList = async () => {
+      await localForage.setItem('notes', notesList);
+      await localForage.setItem('notesArchived', archiveList);
+    }
+    saveNotesList()
+  }, [notesList, archiveList])
+
+  //Get the information from localForage when I initialite the App
+  useEffect(() => {
+    const getNotesList = async () => {
+      const notesListFromForage = await localForage.getItem('notes');
+      const archiveListFromForage = await localForage.getItem('notesArchived');
+      if (notesListFromForage) {
+        setNotesList(notesListFromForage)
+      }
+      if (archiveListFromForage) {
+        setArchiveList(archiveListFromForage)
+      }
+    }
+    getNotesList()
+  }, [])
+
+  const addNote = (newNote) => {
+    //Copy the old array of notes and add the note that I recieve from the Form with an Id and a created date
+    setNotesList([...notesList, { ...newNote, key: shortid.generate(), date: new Date() }])
   }
 
-
-  //I pass this function by prop and call from the other Component with the "key" of the note I want to delete
-  const deleteTheNote = key => {
-    const filteredNotes = notes.filter(note => note.key !== key)
-    //The new state (new array of note) is going to be all the array as before but without the note that I deleted
-    setNotes(filteredNotes)
+  const updateNote = (noteInformation, index) => {
+    //Copy the array of notes, then update the element on that index, and save the array
+    const copyNotesList = [...notesList]
+    copyNotesList[index] = { ...noteInformation, updateDate: new Date() }
+    setNotesList(copyNotesList)
   }
 
-  //I pass this function by prop and call from the other Component with the information of the note I want to edit and the new information
-  const editTheNote = (noteInformation, key) => {
-    //Search the note in the array
-    const noteToEdit = notes.find(note => note.key === key)
-    noteToEdit.title = noteInformation.title;
-    noteToEdit.description = noteInformation.description;
-    noteToEdit.updateDate = noteInformation.updateDate;
+  const archiveNote = key => {
+    //Delete the note from the list of notes array
+    const filteredNotes = notesList.filter(note => note.key !== key)
+    setNotesList(filteredNotes);
 
-    //Update the array of notes
-    setNotes(notes)
+    //Add the note into the archive array
+    const newArchiveNote = notesList.find(note => note.key === key)
+    const newArchiveArray = [...archiveList, newArchiveNote]
+    setArchiveList(newArchiveArray)
   }
+
+  const restoreNote = key => {
+    //Add the note into the list of notes array
+    const newRestoreNote = archiveList.find(note => note.key === key)
+    const newNotesArray = [...notesList, newRestoreNote]
+    setNotesList(newNotesArray)
+
+    //Delete the note from the archive array
+    const filteredArchivedNotes = archiveList.filter(note => note.key !== key)
+    setArchiveList(filteredArchivedNotes);
+  }
+
+  const changeStatusShowArchive = () => {
+    setShowArchiveList(!showArchiveList)
+  }
+
+  const sortNotesByReminderDate = () => {
+    notesList.sort((a, b) => a.reminderDate - b.reminderDate)
+  }
+  sortNotesByReminderDate()
+
+
+  const alertNoteReminder = () => {
+    notesList.forEach(note => {
+      if ((note.reminderDate.getHours() === new Date().getHours()) && (note.reminderDate.getMinutes() === new Date().getMinutes()) && (note.reminderDate.getSeconds() === new Date().getSeconds())) {
+        swal({
+          title: `Reminder of task ${note.title}`,
+          text: `${note.description}!`,
+          icon: "info",
+          button: "I will do it now!",
+        });
+      }
+    })
+  }
+  setInterval(alertNoteReminder, 1000);
 
   return (
-    <Fragment>
-      <div>
-        <h1 className="text-center">Note App</h1>
-        <Form createTheNote={createTheNote} />
+    <div>
+      <h1 className="text-center">Notes App</h1>
+      <Form {...{ addNote, updateNote }} />
+      <div className="text-center mb-3">
+        <button onClick={changeStatusShowArchive} className={showArchiveList ? 'btn btn-danger' : 'btn btn-primary'}>{showArchiveList ? 'Hide archived notes' : 'Show archived notes'}</button>
       </div>
-      {   /* I need to pass the information to the other component to render it, so I pass the array of Notes and the function to delete a note
-            Also I pass the function to Edit a Note, and the state and set state of the Editing
-            As well I do a ternary operator to show a message if the array is empty, that means that I dont have any note to show */}
-      {
-        notes.length ? (
-          <ListNotes
-            notes={notes}
-            deleteTheNote={deleteTheNote}
-            editTheNote={editTheNote}
-          />
-        ) : (
-          <h3 className='text-center'>There are not notes to show</h3>
-        )
-      }
-    </Fragment>
+      <h2>Notes: </h2>
+      {notesList.length ? <ListNotes notes={notesList} {...{ updateNote, restoreNote, archiveNote }} /> : (<h3 className='text-center'>There are not notes to show</h3>)}
+      {showArchiveList ? <h2>Archived Notes: </h2> : null}
+      {showArchiveList ? <ListNotes notes={archiveList} {...{ updateNote, restoreNote, archiveNote }} archived /> : null}
+    </div>
   )
 }
 

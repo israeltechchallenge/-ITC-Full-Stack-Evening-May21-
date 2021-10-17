@@ -36,6 +36,9 @@
     transform: rotate(360deg);
   }
 }
+h1, h2{
+  text-align: center;
+}
 textarea {
   resize: none;
 }
@@ -56,6 +59,9 @@ textarea {
   flex-direction: column;
   margin:auto;
   width: fit-content;
+  text-align: center;
+}
+label{
   text-align: center;
 }
 
