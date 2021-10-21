@@ -38,7 +38,7 @@ function App() {
     //   }
     // }
     }
-    getNotesFromDatabase(); //YS: This is all you need in the useEffect.
+    getNotesFromDatabase(); 
   }, []);
 
   // useEffect(() => {
@@ -52,7 +52,7 @@ function App() {
   async function addNote(newNote) {
     const newNotesArray = [...notes, newNote];
     setNotes(newNotesArray);
-    const post = await axios.post("/notes/addNote", {
+    const notes = await axios.post("/notes/addNote", {
       note: newNote
     })
     alert("Noted Added!");

@@ -26,7 +26,7 @@ function Note({ note, index, deleteNote, editNote, restoreNote  }) {
     setIsOpen(true);
   }
 
-  function closeModal(e) { //YS: Nice
+  function closeModal(e) { 
     e.stopPropagation()
     setIsOpen(false);
   }
