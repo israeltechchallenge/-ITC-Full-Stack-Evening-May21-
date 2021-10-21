@@ -52,7 +52,7 @@ function App() {
   async function addNote(newNote) {
     const newNotesArray = [...notes, newNote];
     setNotes(newNotesArray);
-    const notes = await axios.post("/notes/addNote", {
+    const addedNote = await axios.post("/notes/addNote", {
       note: newNote
     })
     alert("Noted Added!");
