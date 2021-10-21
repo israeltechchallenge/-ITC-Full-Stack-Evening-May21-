@@ -12,14 +12,14 @@ query(
   .then(() => console.log("Table Created"))
   .catch((err) => console.log(err));
 
-router.get("/", (req, res) => {
-  const allTodos = getAllTodos();
+router.get("/", async (req, res) => {
+  const allTodos = await getAllTodos();
   res.send(allTodos);
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const { text } = req.body;
-  const addedTodo = addTodo(text);
+  const addedTodo = await addTodo(text);
   console.log(addedTodo);
   res.send("Todo Added");
 });
