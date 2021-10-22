@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import TextareaAutosize from "react-textarea-autosize";
+// import TextareaAutosize from "react-textarea-autosize";
 import { Button } from "react-bootstrap";
 import { v4 as uuidv4 } from "uuid";
+import TextField from '@mui/material/TextField';
 
 class Form extends Component {
   constructor(props) {
@@ -96,16 +97,20 @@ class Form extends Component {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
-            }}
+              }}
           >
-            <label style={{ margin: "10px" }} htmlFor="">
-              Title:
-            </label>
-            <input
+
+            <TextField id="outlined-basic" label="Title:" variant="outlined" 
               value={this.state.title}
               onChange={this.getTitleValue}
               type="text"
-            />
+              style={{marginTop: '10px'}}
+              />
+            {/* <input
+              value={this.state.title}
+              onChange={this.getTitleValue}
+              type="text"
+            /> */}
           </div>
           <div
             style={{
@@ -119,14 +124,20 @@ class Form extends Component {
               alignItems: "center",
             }}
           >
-            <label style={{ margin: "10px" }} htmlFor="">
-              Note:
-            </label>
-            <TextareaAutosize
+            {/* <TextareaAutosize
               value={this.state.notes}
               onChange={this.getNoteValue}
               style={{ overflow: "hidden" }}
-            />
+            /> */}
+            <TextField
+              id="outlined-multiline-flexible"
+              label="Note:"
+              multiline
+              maxRows={4}
+              value={this.state.notes}
+              onChange={this.getNoteValue}
+              style={{  marginTop: "20px",}}
+          />
           </div>
           <div
             style={{
@@ -148,6 +159,7 @@ class Form extends Component {
               onChange={this.getNoteReminder}
               type="date"
             />
+            
           </div>
           <Button
             style={{ marginTop: "20px", marginRight: "10px", color: "white" }}
