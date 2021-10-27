@@ -4,6 +4,7 @@ import NoteList from "./components/NoteList";
 import "./App.css";
 import localforage from "localforage";
 import ArchivedNotes from "./components/ArchivedNotes";
+import Fecha from "./components/Fecha";
 import { Button } from "react-bootstrap";
 
 const App = () => {
@@ -117,6 +118,7 @@ const App = () => {
           addNote={addNote}
         />
       ) : null}
+      <Fecha/>
     </div>
   );
 };
