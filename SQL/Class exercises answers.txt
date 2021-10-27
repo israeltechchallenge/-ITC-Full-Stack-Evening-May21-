@@ -1,0 +1,37 @@
+q17:
+SELECT count(employee_id) as n, avg(salary) department_id 
+FROM hr.employees 
+group by department_id
+HAVING n > 10;
+q18
+SELECT first_name, salary 
+FROM hr.employees 
+WHERE salary > (SELECT salary FROM hr.employees WHERE last_name = "bull") 
+ORDER BY salary DESC
+q19
+SELECT * 
+FROM hr.employees as e
+JOIN hr.departments as d
+	ON e.department_id = d.department_id
+WHERE d.department_name = 'it'
+
+q20
+SELECT e.first_name 
+FROM hr.departments as d
+JOIN hr.locations as l
+	ON d.location_id = l.location_id
+JOIN hr.employees as e
+	ON e.manager_id = d.manager_id	
+WHERE d.manager_id > 0 AND l.country_id = 'us'
+
+q21
+SELECT e.first_name 
+FROM hr.employees as e
+JOIN hr.departments as d
+	ON d.manager_id = e.employee_id
+q22
+SELECT first_name, salary,department_id
+FROM hr.employees e
+JOIN hr.jobs j
+	ON j.job_id = e.job_id
+WHERE j.min_salary = e.salary
