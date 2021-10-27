@@ -1,0 +1,176 @@
+Stretching
+Q1 - How many unique employees are there?
+
+        SELECT COUNT(*) FROM employees.employees
+
+Q2 - How many males and females employees are there? Order the counts in descending order.
+
+        SELECT gender, COUNT(emp_no) AS number_of_employees
+        FROM employees.employees
+        GROUP BY gender
+        ORDER BY number_of_employees DESC;
+
+Q3 - Display the year and total hires for the year with the most hires
+
+        SELECT YEAR(hire_date) as years, COUNT(emp_no) as number_of_employees 
+        FROM employees.employees 
+        GROUP BY years
+        ORDER BY number_of_employees DESC
+        LIMIT 1;
+
+Q4 - What is the name of the department with the most employees
+
+        SELECT COUNT(emp_no) as employees, dept_name
+        FROM employees.dept_emp AS dept_emp
+        INNER JOIN employees.departments AS departments
+            ON dept_emp.dept_no = departments.dept_no
+        GROUP BY dept_name
+        ORDER BY employees DESC
+        LIMIT 1;
+
+Q5 - How many employees were born on November 12? What's the percentage out of all the employees?
+
+        SELECT COUNT(DATE_FORMAT(birth_date, '%d%m')) AS number_of_birthdays, COUNT(DATE_FORMAT(birth_date, '%d%m')) / (SELECT COUNT(emp_no) FROM employees.employees) * 100 AS percentage
+        FROM employees.employees
+        WHERE DATE_FORMAT(birth_date, '%d%m') = 1211;
+
+
+Q6 - What are the 3 most common employee titles (display the employee titles and the number of times they occur)
+
+        SELECT title, COUNT(title) AS number_of_employees 
+        FROM employees.titles
+        GROUP BY title
+        ORDER BY number_of_employees DESC
+        LIMIT 3;
+
+Q7 - Find the avg salary for each department (department name). Round to the nearest integer and order by avg salary from the highest to the lowest.
+
+        SELECT ROUND(AVG(salary)) AS avg_salary, dept_name 
+        FROM employees.salaries AS salaries
+        JOIN employees.dept_emp AS dept_emp
+            ON salaries.emp_no = dept_emp.emp_no
+        JOIN employees.departments AS departments
+            on dept_emp.dept_no = departments.dept_no
+        GROUP BY dept_name
+        ORDER BY avg_salary DESC;
+
+Pouring some spices
+Q8 - Find the average salary by employee title. Round to 2 decimals and order by descending order
+
+        SELECT ROUND(AVG(salary), 2) AS avg_sal, title
+        FROM employees.salaries as salaries
+        JOIN employees.titles AS titles
+        ON salaries.emp_no = titles.emp_no
+        GROUP BY title
+        ORDER BY avg_sal DESC;
+
+Q9 - Find the number of employees who have worked in at least 2 departments
+
+
+        SELECT (COUNT(emp_no) - COUNT(DISTINCT emp_no)) AS emp_worked_more_than_one_department
+        FROM dept_emp;
+
+
+Q10 - Get the distribution of the year of the hire dates. (hint: you should end up with a number of employees per year of hiring date)
+Do you notice any pattern? Assuming there is no missing data, is the company hiring more or less as time goes by?
+
+        SELECT COUNT(YEAR(hire_date)) AS hires, YEAR(hire_date) AS years 
+        FROM employees.employees
+        GROUP BY years
+        ORDER BY years ASC;
+
+        The company is hiring a lot less people over time. 0 in 1999 and only 13 in 2000. It makes sense as when the company began (seemingly in 1985) there were lots and slowly as time progressed they hired less and less as the older employees are probably mostly still working.
+
+Q11 - Display the first name, last name, and salary of the highest paid employee
+
+        HIGHEST PAID IN ONE YEAR
+            SELECT salary, first_name, last_name
+            FROM employees.salaries AS salaries
+            JOIN employees.employees AS employees
+            ON salaries.emp_no = employees.emp_no
+            ORDER BY salary DESC
+            LIMIT 1;
+
+
+        HIGHEST PAID ON AVERAGE SALARY
+            SELECT AVG(salary) AS avg_sal, first_name, last_name, employees.emp_no AS emp_no
+            FROM employees.salaries AS salaries
+            JOIN employees.employees AS employees
+            ON salaries.emp_no = employees.emp_no
+            GROUP BY emp_no
+            ORDER BY avg_sal DESC
+            LIMIT 1;
+
+
+
+Q12 - Display the first name, last name, and salary of the THIRD highest paid employee
+
+        THIRD HIGHEST SALARY PAID IN ONE YEAR (although first 2 were both to the same employee)
+            SELECT salary, first_name, last_name
+            FROM employees.salaries AS salaries
+            JOIN employees.employees AS employees
+            on salaries.emp_no = employees.emp_no
+            ORDER BY salary DESC
+            LIMIT 1 OFFSET 2;
+
+        THIRD HIGHEST SALARY PAID IN ONE YEAR (only counting each employees highest salary for one year)
+            SELECT employees.emp_no AS emp_no, MAX(salary) as max_salary, first_name, last_name
+            FROM employees.salaries AS salaries
+            JOIN employees.employees AS employees
+            on salaries.emp_no = employees.emp_no
+            GROUP BY emp_no
+            ORDER BY max_salary DESC
+            LIMIT 1 OFFSET 2;
+
+
+        THIRD HIGHEST AVERAGE SALARY OF EMPLOYEES 
+            SELECT AVG(salary) AS avg_sal, first_name, last_name, employees.emp_no AS emp_no
+            FROM employees.salaries AS salaries
+            JOIN employees.employees AS employees
+            ON salaries.emp_no = employees.emp_no
+            GROUP BY emp_no
+            ORDER BY avg_sal DESC
+            limit 1 OFFSET 2;
+
+Why so serious?
+Q13 - Display each department name and the age of the youngest employee at hire date
+
+        SELECT dept_name, MIN(DATE_FORMAT(FROM_DAYS(DATEDIFF(hire_date, birth_date)), '%Y')+0) AS Age_At_Hire
+        FROM employees.employees AS employees
+        JOIN employees.dept_emp AS dept_emp
+            ON employees.emp_no = dept_emp.emp_no
+        JOIN employees.departments AS department
+            ON dept_emp.dept_no = department.dept_no
+        GROUP BY dept_name;
+
+
+
+Q14 - What's the range of age the employees would be today (calculate their age whole years)
+
+        (SELECT DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), birth_date)), '%Y')+0 AS Age
+        FROM employees.employees
+        ORDER BY AGE ASC
+        LIMIT 1)
+        UNION
+        (SELECT DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), birth_date)), '%Y')+0 AS Age
+        FROM employees.employees
+        ORDER BY AGE DESC
+        LIMIT 1);
+
+
+Q15 - How many employees were born on the same date (day-month-year) as those born in 1955.
+NB: Change the according to preferences parameters if your query fails because of a timeout
+
+
+        SELECT SUM(number_births_on_date) AS born_same_day_in_1955
+        FROM
+        (
+        SELECT birth_date, COUNT(*) AS number_births_on_date
+        FROM employees.employees
+        GROUP BY birth_date
+        HAVING number_births_on_date > 1
+        ) AS table_employees_same_birthday
+        WHERE year(birth_date) = 1955
+
+
+        more than one employee born on all 365 days of 1955 so this also equals total employees born in 1955
