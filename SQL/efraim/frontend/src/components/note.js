@@ -34,7 +34,7 @@ function Note({ note, index, deleteNote, editNote, restoreNote  }) {
     return <div className="note" onClick={openModal}>
     <DisplayNote note={note} />
 
-    {deleteNote && <button onClick={() => deleteNote(index, note)}>Delete</button>}
+    {deleteNote && <button onClick={() => deleteNote(index, note.id)}>Delete</button>}
     {restoreNote && <button onClick={() => restoreNote(note, index)}>Restore</button>}
 
     {deleteNote && <Modal 

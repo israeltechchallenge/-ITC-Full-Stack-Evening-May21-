@@ -14,20 +14,19 @@ query(
 
 router.get("/getAllNotes", async (req, res) => {
     const allNotes = await getAllNotes()
-    console.log(allNotes)
     res.send(allNotes)
 })
 
-router.post("/addNote", (req, res) => {
+router.post("/addNote", async (req, res) => {
     const {note} = req.body
-    const addedNote = addNote(note)
-    res.send("Note Added")
+    const addedNote = await addNote(note)
+    res.send(addedNote)
 })
 
-router.post("/deleteNote", (req, res) => {
-    const {note} = req.body
-    const deletedNote = deleteNote(note)
-    res.send("Note Deleted")
+router.delete("/deleteNote/:noteID", async (req, res) => {
+    const {noteID} = req.params
+    const deletedNote = await deleteNote(noteID)
+    res.send(deletedNote)
 })
 
 module.exports = router

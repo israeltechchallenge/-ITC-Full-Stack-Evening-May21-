@@ -26,24 +26,55 @@ router.get("/getAllNotes", function _callee(req, res) {
 
         case 2:
           allNotes = _context.sent;
-          console.log(allNotes);
           res.send(allNotes);
 
-        case 5:
+        case 4:
         case "end":
           return _context.stop();
       }
     }
   });
 });
-router.post("/addNote", function (req, res) {
-  var note = req.body.note;
-  var addedNote = addNote(note);
-  res.send("Note Added");
+router.post("/addNote", function _callee2(req, res) {
+  var note, addedNote;
+  return regeneratorRuntime.async(function _callee2$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          note = req.body.note;
+          _context2.next = 3;
+          return regeneratorRuntime.awrap(addNote(note));
+
+        case 3:
+          addedNote = _context2.sent;
+          res.send(addedNote);
+
+        case 5:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  });
 });
-router.post("/deleteNote", function (req, res) {
-  var note = req.body.note;
-  var deletedNote = deleteNote(note);
-  res.send("Note Deleted");
+router["delete"]("/deleteNote/:noteID", function _callee3(req, res) {
+  var noteID, deletedNote;
+  return regeneratorRuntime.async(function _callee3$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          noteID = req.params.noteID;
+          _context3.next = 3;
+          return regeneratorRuntime.awrap(deleteNote(noteID));
+
+        case 3:
+          deletedNote = _context3.sent;
+          res.send(deletedNote);
+
+        case 5:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  });
 });
 module.exports = router;

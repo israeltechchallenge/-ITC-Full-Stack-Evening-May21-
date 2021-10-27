@@ -1,7 +1,6 @@
 import "./App.css";
 import Form from "./components/form";
 import NoteList from "./components/Notelist";
-import localforage from "localforage";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -13,14 +12,14 @@ function App() {
   const [showArchive, setShowArchive] = useState(false);
   const [data, setData] = useState(null);
 
-  useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
+  // useEffect(() => {
+  //   fetch("/api")
+  //     .then((res) => res.json())
+  //     .then((data) => setData(data.message));
+  // }, []);
 
   useEffect(() => {
-    async function getNotesFromDatabase() { //YS: This function should be outside your useEffect, you only need to call it here. 
+    async function getNotesFromDatabase() { 
       const notesFromDatabase = await axios.get("/notes/getAllNotes")
       console.log(notesFromDatabase.data)
     //   const archiveFromStorage = await localforage.getItem("archivedNotes");
@@ -74,17 +73,15 @@ function App() {
     alert("Note Restored!");
   }
 
-  async function deleteNote(index, note) {
+  async function deleteNote(index, noteID) {
     if (window.confirm("Do you really want to delete?")) {
-      const newNoteArray = [...notes];
-      const noteToArchive = newNoteArray[index];
-      const newArchiveArray = [...archivedNotes, noteToArchive];
-      setArchivedNotes(newArchiveArray);
-      newNoteArray.splice(index, 1);
-      setNotes(newNoteArray);
-      const deleteNote = await axios.post("/notes/deleteNote", {
-        note: note
-      })
+      // const newNoteArray = [...notes];
+      // const noteToArchive = newNoteArray[index];
+      // const newArchiveArray = [...archivedNotes, noteToArchive];
+      // setArchivedNotes(newArchiveArray);
+      // newNoteArray.splice(index, 1);
+      const deleteNote = await axios.delete(`/notes/deleteNote/${noteID}`)
+      setNotes(deleteNote.data);
       alert("Note Deleted! You can now find it in the archives.");
     }
   }

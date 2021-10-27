@@ -26,18 +26,19 @@ const getAllNotes = async () => {
 
 const addNote = async (note) => {
     try{
-        console.log("hey")
         const queryResult = await query(`INSERT INTO notes (title, note) VALUES ('${note.title}', '${note.note}')`)
-        return queryResult
+        const allNotes = await getAllNotes()
+        return allNotes
     } catch (error){
         console.log(error)
     }
 }
 
-const deleteNote = async (note) => {
+const deleteNote = async (noteID) => {
     try{
-        const queryResult = await query(`DELETE FROM notes WHERE title='${note.title}' AND note='${note.note}';`)
-        return queryResult
+        const queryResult = await query(`DELETE FROM notes WHERE id=${noteID};`)
+        const allNotes = await getAllNotes()
+        return allNotes
     } catch (error){
         console.log(error)
     }

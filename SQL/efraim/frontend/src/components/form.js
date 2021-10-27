@@ -36,9 +36,9 @@ function Form({addNote, editNote, closeModal, note})  {
                 const id = "id" + Math.random().toString(16).slice(2)
                 let newNote = {}
                 if(titleValue !== ''){
-                    newNote= {title: title, note: noteText, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id} //YS: OK, good logic but this is kind of DRY (the only thing that changes is the title)
+                    newNote= {title: title, note: noteText, readbleDate: readbleDate, dateToRemind: dateToRemind} //YS: OK, good logic but this is kind of DRY (the only thing that changes is the title)
                 }else{
-                    newNote= {note: noteText, readbleDate: readbleDate, dateToRemind: dateToRemind, id: id}
+                    newNote= {note: noteText, readbleDate: readbleDate, dateToRemind: dateToRemind}
                 }
                 addNote(newNote)
             }else{ //YS: Better to write else if (isAddNote === false) and at the end the final else will be an error. 
