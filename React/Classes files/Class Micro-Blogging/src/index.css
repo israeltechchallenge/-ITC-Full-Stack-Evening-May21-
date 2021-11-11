@@ -96,3 +96,7 @@ code {
 .tweet-text {
   color: white;
 }
+.loading {
+  color:white;
+  text-align: center;
+}

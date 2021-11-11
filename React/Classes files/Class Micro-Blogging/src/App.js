@@ -2,29 +2,52 @@ import { useEffect } from 'react';
 import AddTweet from './components/AddTweet';
 import TweetList from './components/TweetList';
 import { useState } from 'react';
-import { getTweetsFromLocalStore, saveTweets } from './utlis/localstore'
+import { getTweetsFromServer, addTweet } from './utlis/server'
+import InfoContext from './components/InfoContext';
 function App() {
+
   const [tweets, setTweets] = useState([])
-  const AddNewTweet = (newTweet) => setTweets([ newTweet,...tweets ])
+  const [inAddingProcces, setInAddingProcces] = useState(false)
+  const [isLoading, setIsloading] = useState(true)
+
+  const getTweets = async () => {
+    const currentTweets = await getTweetsFromServer()
+    setTweets(currentTweets)
+    setIsloading(false)
+  }
+
+  const AddNewTweet = async (newTweet) => {
+    setInAddingProcces(true)
+    const newServerTweet = await addTweet(newTweet)
+    setInAddingProcces(false)
+    console.log({newServerTweet})
+    setTweets([ newServerTweet,...tweets ])
+  }
+  
+
   useEffect(() => {
-    const getTweets = async () => {
-      const currentTweets = await getTweetsFromLocalStore()
-      setTweets(currentTweets)
-      console.log('got the tweets:',currentTweets )
-    }
     getTweets()
   }, [])
 
   useEffect(() => {
-    saveTweets(tweets)
-    console.log('saved tweets:',tweets)
-  }, [tweets])
+    setInterval(getTweets,2000)
+  },[])
+
+
   return (
 
     <div className="app">
       <div className="content">
-      <AddTweet AddNewTweet={AddNewTweet}/>
-      <TweetList tweets={tweets} />
+        <InfoContext.Provider value={{AddNewTweet,inAddingProcces,tweets}}>
+          <AddTweet/>
+          {isLoading ?
+            <div className="loading">
+                Loading...
+            </div> 
+          :
+            <TweetList />
+          }
+          </InfoContext.Provider>
       </div>
     </div>
   );

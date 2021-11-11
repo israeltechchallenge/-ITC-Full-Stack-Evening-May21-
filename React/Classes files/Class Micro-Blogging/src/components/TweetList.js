@@ -1,10 +1,11 @@
-import React from 'react'
+import { useContext } from 'react'
 import Tweet from './Tweet';
-
-export default function TweetList({ tweets }) {
+import InfoContext from './InfoContext'
+export default function TweetList() {
+    const infoConsumer = useContext(InfoContext)
     return (
         <div className="tweetsList">
-            {tweets && tweets.map(tweet => <Tweet tweet={tweet} key={tweet.id || ''} />)}
+            {infoConsumer.tweets && infoConsumer.tweets.map(tweet => <Tweet tweet={tweet} key={tweet.id || ''} />)}
         </div>
     )
 }

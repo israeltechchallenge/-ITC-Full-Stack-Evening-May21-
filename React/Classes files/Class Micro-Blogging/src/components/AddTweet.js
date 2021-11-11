@@ -1,9 +1,9 @@
-import { useState } from 'react'
-
-export default function AddTweet({ AddNewTweet }) {
+import { useState, useContext } from 'react'
+import InfoContext from './InfoContext'
+export default function AddTweet() {
     const [tweetText, setTweetText] = useState('')
     const [submitDisabled, setSubmitDisabled] = useState(true)
-    
+    const infoConsumer = useContext(InfoContext)
     const handleChange = (e) => {
         setTweetText(e.target.value)
         if(e.target.value.length < 1 || e.target.value.length > 140)
@@ -13,7 +13,8 @@ export default function AddTweet({ AddNewTweet }) {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        AddNewTweet({text:tweetText,user:'israel'})
+        const newDate = new Date().toISOString()
+        infoConsumer.AddNewTweet({content:tweetText,userName:'israel',date:newDate})
     }
     return (
         <div className="addTweet">
@@ -25,7 +26,7 @@ export default function AddTweet({ AddNewTweet }) {
                     onChange={handleChange}
                     />
                 <div className="submitButton" style={{opacity:submitDisabled ? '0.5' : '1'}}>
-                    <input type="submit" className="addTweetSubmit" value="Tweet" disabled={submitDisabled}/>    
+                    <input type="submit" className="addTweetSubmit" value="Tweet" disabled={submitDisabled || infoConsumer.inAddingProcces}/>    
                 </div>
                 
             </form>
