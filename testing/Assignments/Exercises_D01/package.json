@@ -1,0 +1,16 @@
+{
+  "name": "unit_testing_day_01",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest",
+    "testDev": "jest --watchAll"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.12.10",
+    "@types/jest": "^26.0.19",
+    "babel-jest": "^26.6.3",
+    "jest": "^26.6.3"
+  }
+}
