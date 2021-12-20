@@ -1,5 +1,5 @@
 import '../App.css';
-import DateRemind from './DateRemind'
+import DateRemind from './dateRemind'
 import {useState, useEffect} from 'react'
 import TextareaAutosize from 'react-textarea-autosize';
 

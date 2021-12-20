@@ -1,4 +1,4 @@
-import Note from './Note'
+import Note from './note'
 function NoteList ({ notes, deleteNote, editNote, restoreNote  }) {
         return <div className="flex">
             {deleteNote && notes.map((note, index) => <Note note={note} key={note.id} index={index} deleteNote={deleteNote} editNote={editNote} />)}

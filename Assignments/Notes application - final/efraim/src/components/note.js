@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import Form from './Form'
+import Form from './form'
 import { useState } from 'react'
 import DisplayNote from './DisplayNote'
 
